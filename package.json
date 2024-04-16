@@ -4,12 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+   "start:dev": "tsx watch ./src/server.ts",
+   "build": "node build/server.js",
+   "start": "tsup ./src --out-dir build"
   },
   "keywords": [],
   "author": "Vinicius <viniciuferreira32@gmail.com>",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^20.12.7",
+    "tsup": "^8.0.2",
+    "tsx": "^4.7.2",
     "typescript": "^5.4.5"
   }
 }
