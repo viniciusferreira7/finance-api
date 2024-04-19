@@ -1,3 +1,7 @@
-const a = 1, b =2
+import { app } from './app';
+import { env } from './env';
 
-console.log(a + b)
+app.listen({
+  port: env.PORT,
+  host: '0.0.0.0',
+}).then(() => console.log('🚀 HTTP server listening on port'))
