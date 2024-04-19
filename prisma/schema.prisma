@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String           @id @default(uuid())
+  name            String
+  email           String           @unique
+  password_hash   String
+  created_at      DateTime         @default(now())
+  Expense         Expense[]
+  Income          Income[]
+  Category        Category[]
+  Monthly_budgets Monthly_budget[]
+  Balance         Balance[]
+
+  @@map("users")
+}
+
+model Income {
+  id         String   @id @default(uuid())
+  value      Int
+  desciption String
+  created_at DateTime @default(now())
+  update_at  DateTime @default(now())
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
+  category    Category @relation(fields: [category_id], references: [id])
+  category_id String
+
+  @@map("incomes")
+}
+
+model Expense {
+  id         String   @id @default(uuid())
+  value      Int
+  desciption String
+  created_at DateTime @default(now())
+  update_at  DateTime @default(now())
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
+  category    Category @relation(fields: [category_id], references: [id])
+  category_id String
+
+  @@map("expenses")
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  created_at  DateTime @default(now())
+  update_at   DateTime @default(now())
+
+  user    User      @relation(fields: [user_id], references: [id])
+  user_id String
+  Expense Expense[]
+  Income  Income[]
+
+  @@map("categories")
+}
+
+model Monthly_budget {
+  id         String   @id @default(uuid())
+  budget     Int
+  deadline   DateTime
+  created_at DateTime @default(now())
+  update_at  DateTime @default(now())
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
+  @@map("monthly_budgets")
+}
+
+model Balance {
+  id         String   @id @default(uuid())
+  amount     Int
+  created_at DateTime @default(now())
+  update_at  DateTime @default(now())
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
+  @@map("balances")
+}
