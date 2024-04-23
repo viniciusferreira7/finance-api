@@ -7,13 +7,13 @@
     "start:dev": "tsx watch ./src/server.ts",
     "build": "node build/server.js",
     "start": "tsup ./src --out-dir build",
-    "lint": "eslint --ext src --fix"
+    "lint": "eslint --ext .ts --fix"
   },
   "keywords": [],
   "author": "Vinicius <viniciuferreira32@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "@rocketseat/eslint-config": "^2.2.2",
+    "@rocketseat/eslint-config": "2.2.2",
     "@types/node": "^20.12.7",
     "eslint": "8.56.0",
     "prisma": "5.12.1",
