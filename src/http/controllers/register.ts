@@ -1,35 +1,27 @@
-import { prisma } from '@/lib/prisma'
+import { PrismaUserRepository } from '@/repositories/prisma-users-repository'
+import { RegisterUseCase } from '@/use-cases/register'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 export async function register(request: FastifyRequest, reply: FastifyReply) {
-  const regiterBodySchema = z.object({
+  const registerBodySchema = z.object({
     name: z.string(),
     email: z.string().email(),
     password: z
       .string()
-      .min(6, { message: 'A senha deve conter no minimo 6 caracteres.' }),
+      .min(6, { message: 'The password must contain at least 6 characters.' }),
   })
 
-  const { name, email, password } = regiterBodySchema.parse(request.body)
+  const { name, email, password } = registerBodySchema.parse(request.body)
 
-  const userWithSameEmail = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  })
+  try {
+    const usersRepository = new PrismaUserRepository()
+    const registerUseCase = new RegisterUseCase(usersRepository)
 
-  if (userWithSameEmail) {
+    await registerUseCase.execute({ name, email, password })
+  } catch (err) {
     return reply.status(409).send()
   }
-
-  await prisma.user.create({
-    data: {
-      name,
-      email,
-      password_hash: password,
-    },
-  })
 
   return reply.status(201).send()
 }
