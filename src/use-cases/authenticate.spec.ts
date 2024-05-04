@@ -1,7 +1,9 @@
-import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { describe, expect, it } from 'vitest'
-import { AuthenticateUseCase } from './authenticate'
 import { hash } from 'bcryptjs'
+import { describe, expect, it } from 'vitest'
+
+import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
+
+import { AuthenticateUseCase } from './authenticate'
 import { InvalidCredentialsError } from './error/invalid-credentials-error'
 
 describe('Authenticate use case', () => {

@@ -1,8 +1,9 @@
-import fastify from 'fastify'
-import { AppRoutes } from './http/controllers/routes'
-import { ZodError } from 'zod'
 import fastifyJwt from '@fastify/jwt'
+import fastify from 'fastify'
+import { ZodError } from 'zod'
+
 import { env } from './env'
+import { AppRoutes } from './http/controllers/routes'
 
 export const app = fastify()
 

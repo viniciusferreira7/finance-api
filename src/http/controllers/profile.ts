@@ -1,6 +1,7 @@
+import { FastifyReply, FastifyRequest } from 'fastify'
+
 import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-repository'
 import { GetUserProfileUserCase } from '@/use-cases/get-user-profile'
-import { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function profile(request: FastifyRequest, reply: FastifyReply) {
   const usersRepository = new PrismaUsersRepository()

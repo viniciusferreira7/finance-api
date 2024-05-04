@@ -1,8 +1,10 @@
-import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { describe, expect, it } from 'vitest'
-import { GetUserProfileUserCase } from './get-user-profile'
 import { hash } from 'bcryptjs'
+import { describe, expect, it } from 'vitest'
+
+import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
+
 import { ResourceNotFound } from './error/resource-not-found-error'
+import { GetUserProfileUserCase } from './get-user-profile'
 
 describe('Get user profile use case', () => {
   it('should be able to get user profile', async () => {
