@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:dev": "tsx watch ./src/server.ts",
+    "prestart:dev": "docker compose up -d",
+    "start:dev": "tsx watch --env-file=.env ./src/server.ts",
     "build": "node build/server.js",
     "start": "tsup ./src --out-dir build",
     "lint": "eslint --ext .ts --fix",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@rocketseat/eslint-config": "2.2.2",
     "@types/bcryptjs": "2.4.6",
+    "@types/fastify-jwt": "0.8.1",
     "@types/node": "^20.12.7",
     "@vitest/coverage-v8": "1.5.3",
     "@vitest/ui": "1.5.3",
@@ -31,6 +33,7 @@
     "vitest": "1.5.3"
   },
   "dependencies": {
+    "@fastify/jwt": "8.0.0",
     "@prisma/client": "5.12.1",
     "bcryptjs": "2.4.3",
     "fastify": "4.26.2",
