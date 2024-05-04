@@ -29,11 +29,11 @@ model User {
 }
 
 model Income {
-  id         String   @id @default(uuid())
-  value      Int
-  desciption String
-  created_at DateTime @default(now())
-  update_at  DateTime @default(now())
+  id          String   @id @default(uuid())
+  value       Int
+  description String
+  created_at  DateTime @default(now())
+  update_at   DateTime @default(now())
 
   user    User   @relation(fields: [user_id], references: [id])
   user_id String
@@ -45,11 +45,11 @@ model Income {
 }
 
 model Expense {
-  id         String   @id @default(uuid())
-  value      Int
-  desciption String
-  created_at DateTime @default(now())
-  update_at  DateTime @default(now())
+  id          String   @id @default(uuid())
+  value       Int
+  description String
+  created_at  DateTime @default(now())
+  update_at   DateTime @default(now())
 
   user    User   @relation(fields: [user_id], references: [id])
   user_id String
