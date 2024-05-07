@@ -7,7 +7,7 @@ import { register } from './register'
 
 export async function AppRoutes(app: FastifyInstance) {
   app.post('/users', register)
-  app.post('/session', authenticate)
+  app.post('/sessions', authenticate)
 
   // Authenticate
   app.get(
