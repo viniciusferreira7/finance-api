@@ -43,11 +43,13 @@ export class CreateIncomeUseCase {
       throw new ResourceNotFound()
     }
 
+    const convertsValueToCents = value * 100
+
     const income = await this.incomesRepository.create({
-      value,
+      value: convertsValueToCents,
       description,
-      category: { connect: { id: category.id } },
-      user: { connect: { id: user_id } },
+      user_id,
+      category_id,
     })
 
     return { income }

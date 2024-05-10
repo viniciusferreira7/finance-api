@@ -1,3 +1,5 @@
+import { Prisma } from '@prisma/client'
+
 import { prisma } from '@/lib/prisma'
 
 import { CategoriesRepository } from '../categories-repository'
@@ -8,6 +10,14 @@ export class PrismaCategoriesRepository implements CategoriesRepository {
       where: {
         id,
       },
+    })
+
+    return category
+  }
+
+  async create(data: Prisma.CategoryUncheckedCreateInput) {
+    const category = await prisma.category.create({
+      data,
     })
 
     return category
