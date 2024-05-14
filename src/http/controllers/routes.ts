@@ -2,6 +2,7 @@ import { FastifyInstance } from 'fastify'
 
 import { verifyJWT } from '../middleware/verify-jwt'
 import { authenticate } from './authenticate'
+import { createIncome } from './create-income'
 import { profile } from './profile'
 import { register } from './register'
 
@@ -18,5 +19,11 @@ export async function AppRoutes(app: FastifyInstance) {
     profile,
   )
 
-  // app.post('/income', createIncome)
+  app.post(
+    '/incomes',
+    {
+      onRequest: [verifyJWT],
+    },
+    createIncome,
+  )
 }

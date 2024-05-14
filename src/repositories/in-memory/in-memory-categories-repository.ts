@@ -5,6 +5,22 @@ import { CategoriesRepository } from '../categories-repository'
 export class InMemoryCategoriesRepository implements CategoriesRepository {
   public categories: Category[] = []
 
+  async findByUserIdAndName(userId: string, name: string) {
+    const category = this.categories.find((category) => {
+      if (category.user_id === userId && category.name === name) {
+        return category
+      }
+
+      return null
+    })
+
+    if (!category) {
+      return null
+    }
+
+    return category
+  }
+
   async findById(id: string) {
     const category = this.categories.find((item) => item.id === id)
 
