@@ -1,4 +1,5 @@
 import { Income, Prisma } from '@prisma/client'
+import { randomUUID } from 'crypto'
 
 import { IncomeRepository } from '../incomes.repository'
 
@@ -7,7 +8,7 @@ export class InMemoryIncomesRepository implements IncomeRepository {
 
   async create(data: Prisma.IncomeUncheckedCreateInput) {
     const income = {
-      id: 'income-1',
+      id: randomUUID(),
       value: data.value,
       description: data.description,
       created_at: new Date(),

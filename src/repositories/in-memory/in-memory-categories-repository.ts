@@ -1,4 +1,5 @@
 import { Category, Prisma } from '@prisma/client'
+import { randomUUID } from 'crypto'
 
 import { CategoriesRepository } from '../categories-repository'
 
@@ -33,7 +34,7 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
 
   async create(data: Prisma.CategoryUncheckedCreateInput) {
     const category = {
-      id: 'category-1',
+      id: randomUUID(),
       name: data.name,
       description: data.description,
       created_at: new Date(),
