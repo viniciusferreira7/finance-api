@@ -19,19 +19,19 @@ export async function createIncome(
   )
 
   try {
-    const createIncome = makeCreateIncomeUseCase()
+    const createIncomeUseCase = makeCreateIncomeUseCase()
 
-    createIncome.execute({
+    createIncomeUseCase.execute({
       value,
       description,
       category_id,
       user_id: request.user.sub,
     })
-
-    return reply.status(201).send()
   } catch (err) {
     if (err instanceof ResourceNotFound) {
       return reply.status(404).send({ message: err.message })
     }
   }
+
+  return reply.status(201).send()
 }
