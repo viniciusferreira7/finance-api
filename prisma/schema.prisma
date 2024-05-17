@@ -29,9 +29,9 @@ model User {
 }
 
 model Income {
-  id          String   @id @default(uuid())
+  id          String   @id @default(cuid())
   value       Int
-  description String
+  description String?
   created_at  DateTime @default(now())
   update_at   DateTime @default(now())
 
@@ -45,9 +45,9 @@ model Income {
 }
 
 model Expense {
-  id          String   @id @default(uuid())
+  id          String   @id @default(cuid())
   value       Int
-  description String
+  description String?
   created_at  DateTime @default(now())
   update_at   DateTime @default(now())
 
@@ -61,9 +61,10 @@ model Expense {
 }
 
 model Category {
-  id          String   @id @default(uuid())
+  id          String   @id @default(cuid())
   name        String
-  description String
+  description String?
+  icon_name   String?
   created_at  DateTime @default(now())
   update_at   DateTime @default(now())
 
@@ -76,7 +77,7 @@ model Category {
 }
 
 model Monthly_budget {
-  id         String   @id @default(uuid())
+  id         String   @id @default(cuid())
   budget     Int
   deadline   DateTime
   created_at DateTime @default(now())
@@ -89,7 +90,7 @@ model Monthly_budget {
 }
 
 model Balance {
-  id         String   @id @default(uuid())
+  id         String   @id @default(cuid())
   amount     Int
   created_at DateTime @default(now())
   update_at  DateTime @default(now())

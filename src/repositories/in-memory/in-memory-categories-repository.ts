@@ -8,11 +8,7 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
 
   async findByUserIdAndName(userId: string, name: string) {
     const category = this.categories.find((category) => {
-      if (category.user_id === userId && category.name === name) {
-        return category
-      }
-
-      return null
+      return category.user_id === userId && category.name === name
     })
 
     if (!category) {
@@ -33,10 +29,11 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
   }
 
   async create(data: Prisma.CategoryUncheckedCreateInput) {
-    const category = {
+    const category: Category = {
       id: randomUUID(),
       name: data.name,
-      description: data.description,
+      description: data.description ?? null,
+      icon_name: data.icon_name ?? null,
       created_at: new Date(),
       update_at: new Date(),
       user_id: data.user_id,

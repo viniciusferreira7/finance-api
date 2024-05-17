@@ -8,7 +8,7 @@ import { ResourceNotFound } from './error/resource-not-found-error'
 
 interface CreateIncomeRequest {
   value: number
-  description: string
+  description: string | null
   category_id: string
   user_id: string
 }

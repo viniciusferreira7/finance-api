@@ -3,18 +3,16 @@ import { describe } from 'node:test'
 import { hash } from 'bcryptjs'
 import { beforeEach, expect, it } from 'vitest'
 
-import { CategoriesRepository } from '@/repositories/categories-repository'
 import { InMemoryCategoriesRepository } from '@/repositories/in-memory/in-memory-categories-repository'
 import { InMemoryIncomesRepository } from '@/repositories/in-memory/in-memory-incomes.repository'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { IncomeRepository } from '@/repositories/incomes.repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
 import { CreateIncomeUseCase } from './create-income'
 import { ResourceNotFound } from './error/resource-not-found-error'
 
-let incomesRepository: IncomeRepository
-let categoriesRepository: CategoriesRepository
+let incomesRepository: InMemoryIncomesRepository
+let categoriesRepository: InMemoryCategoriesRepository
 let usersRepository: UsersRepository
 
 let sut: CreateIncomeUseCase
