@@ -1,9 +1,9 @@
 import { Income, Prisma } from '@prisma/client'
 import { randomUUID } from 'crypto'
 
-import { IncomeRepository } from '../incomes.repository'
+import { IncomesRepository } from '../incomes.repository'
 
-export class InMemoryIncomesRepository implements IncomeRepository {
+export class InMemoryIncomesRepository implements IncomesRepository {
   public incomes: Income[] = []
 
   async create(data: Prisma.IncomeUncheckedCreateInput) {

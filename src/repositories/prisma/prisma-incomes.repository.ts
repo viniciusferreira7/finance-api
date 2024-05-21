@@ -2,9 +2,9 @@ import { Prisma } from '@prisma/client'
 
 import { prisma } from '@/lib/prisma'
 
-import { IncomeRepository } from '../incomes.repository'
+import { IncomesRepository } from '../incomes.repository'
 
-export class PrismaIncomesRepository implements IncomeRepository {
+export class PrismaIncomesRepository implements IncomesRepository {
   async create(data: Prisma.IncomeUncheckedCreateInput) {
     const income = await prisma.income.create({
       data,

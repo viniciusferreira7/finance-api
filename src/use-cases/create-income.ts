@@ -1,8 +1,9 @@
 import { Income } from '@prisma/client'
 
 import { CategoriesRepository } from '@/repositories/categories-repository'
-import { IncomeRepository } from '@/repositories/incomes.repository'
+import { IncomesRepository } from '@/repositories/incomes.repository'
 import { UsersRepository } from '@/repositories/users-repository'
+import { convertToCents } from '@/utils/convert-to-cents'
 
 import { ResourceNotFound } from './error/resource-not-found-error'
 
@@ -19,7 +20,7 @@ interface CreateIncomeResponse {
 
 export class CreateIncomeUseCase {
   constructor(
-    private incomesRepository: IncomeRepository,
+    private incomesRepository: IncomesRepository,
     private categoriesRepositores: CategoriesRepository,
     private usersRepositores: UsersRepository,
     // eslint-disable-next-line prettier/prettier
@@ -43,10 +44,8 @@ export class CreateIncomeUseCase {
       throw new ResourceNotFound()
     }
 
-    const convertsValueToCents = value * 100
-
     const income = await this.incomesRepository.create({
-      value: convertsValueToCents,
+      value: convertToCents(value),
       description,
       user_id,
       category_id,
