@@ -3,6 +3,7 @@ import { FastifyInstance } from 'fastify'
 import { verifyJWT } from '../middleware/verify-jwt'
 import { authenticate } from './authenticate'
 import { createCategory } from './create-category'
+import { createExpense } from './create-expense'
 import { createIncome } from './create-income'
 import { profile } from './profile'
 import { register } from './register'
@@ -26,6 +27,14 @@ export async function AppRoutes(app: FastifyInstance) {
       onRequest: [verifyJWT],
     },
     createIncome,
+  )
+
+  app.post(
+    '/expenses',
+    {
+      onRequest: [verifyJWT],
+    },
+    createExpense,
   )
 
   app.post(
