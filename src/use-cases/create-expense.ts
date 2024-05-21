@@ -32,13 +32,13 @@ export class CreateExpenseUseCase {
     category_id,
     user_id,
   }: CreateExpenseUseCaseRequest): Promise<CreateExpenseUseCaseResponse> {
-    const category = this.categoriesRepository.findById(category_id)
+    const category = await this.categoriesRepository.findById(category_id)
 
     if (!category) {
       throw new ResourceNotFound()
     }
 
-    const user = this.usersRepository.findById(user_id)
+    const user = await this.usersRepository.findById(user_id)
 
     if (!user) {
       throw new ResourceNotFound()

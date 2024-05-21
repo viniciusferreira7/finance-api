@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto'
 
 import { ExpensesRepository } from '../expenses-repository'
 
-export class InMemoryExpenseRepository implements ExpensesRepository {
+export class InMemoryExpensesRepository implements ExpensesRepository {
   public expense: Expense[] = []
 
   async create(data: Prisma.IncomeUncheckedCreateInput) {
