@@ -38,10 +38,15 @@ export async function AppRoutes(app: FastifyInstance) {
   )
 
   app.post(
-    '/category',
+    '/categories',
     {
       onRequest: [verifyJWT],
     },
     createCategory,
   )
 }
+
+// TODO: Create another methods of GET, DELETE, PUT for the incomes, categories and expanse
+
+// TODO: Finally create use case from monthly budget and balance
+// TODO: Create E2E test
