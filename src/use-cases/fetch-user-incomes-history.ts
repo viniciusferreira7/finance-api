@@ -1,18 +1,16 @@
 import { Income } from '@prisma/client'
 
+import { PaginationRequest, PaginationResponse } from '@/@types/pagintation'
 import { IncomesRepository } from '@/repositories/incomes.repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
 import { ResourceNotFound } from './error/resource-not-found-error'
 
-interface FetchUserIncomesHistoryUseCaseRequest {
+interface FetchUserIncomesHistoryUseCaseRequest extends PaginationRequest {
   userId: string
-  page: number
 }
 
-interface FetchUserIncomesHistoryUseCaseResponse {
-  incomes: Income[]
-}
+type FetchUserIncomesHistoryUseCaseResponse = PaginationResponse<Income>
 
 export class FetchUserIncomesHistoryUseCase {
   constructor(
@@ -24,6 +22,7 @@ export class FetchUserIncomesHistoryUseCase {
   async execute({
     userId,
     page,
+    per_page,
   }: FetchUserIncomesHistoryUseCaseRequest): Promise<FetchUserIncomesHistoryUseCaseResponse> {
     const user = await this.usersRepository.findById(userId)
 
@@ -31,8 +30,11 @@ export class FetchUserIncomesHistoryUseCase {
       throw new ResourceNotFound()
     }
 
-    const incomes = await this.incomesRepository.findManyByUserId(userId, page)
+    const results = await this.incomesRepository.findManyByUserId(userId, {
+      page,
+      per_page,
+    })
 
-    return { incomes }
+    return { ...results }
   }
 }
