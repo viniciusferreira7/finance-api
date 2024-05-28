@@ -28,7 +28,7 @@ describe('Create income use case', () => {
     )
   })
 
-  it('Should be to create a expense', async () => {
+  it('should be to create a expense', async () => {
     const user = await usersRepository.create({
       name: 'John',
       email: 'john@example.com',

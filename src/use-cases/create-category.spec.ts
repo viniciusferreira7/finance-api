@@ -21,7 +21,7 @@ describe('Create category use case', () => {
     sut = new CreateCategoryUseCase(categoriesRepository, usersRepository)
   })
 
-  it('Should be able to create a new category', async () => {
+  it('should be able to create a new category', async () => {
     const user = await usersRepository.create({
       name: 'John Doe',
       email: 'john.doe@example.com',
@@ -38,7 +38,7 @@ describe('Create category use case', () => {
     expect(category.id).toEqual(expect.any(String))
   })
 
-  it('Should not be able to create a new category without a user', async () => {
+  it('should not be able to create a new category without a user', async () => {
     await expect(() =>
       sut.execute({
         name: 'category-01',
@@ -49,7 +49,7 @@ describe('Create category use case', () => {
     ).rejects.toBeInstanceOf(ResourceNotFound)
   })
 
-  it('Should not be able to create a new category with the same name as an existing category', async () => {
+  it('should not be able to create a new category with the same name as an existing category', async () => {
     const user = await usersRepository.create({
       name: 'John Doe',
       email: 'john.doe@example.com',
