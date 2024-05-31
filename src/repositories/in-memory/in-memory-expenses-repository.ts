@@ -2,7 +2,6 @@ import { Expense, Prisma } from '@prisma/client'
 import { randomUUID } from 'crypto'
 
 import { PaginationRequest } from '@/@types/pagination'
-import { prisma } from '@/lib/prisma'
 
 import { ExpensesRepository } from '../expenses-repository'
 
@@ -10,19 +9,16 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
   public expense: Expense[] = []
 
   async findManyByUserId(userId: string, pagination: PaginationRequest) {
-    const count = await prisma.expense.count({
-      where: {
-        user_id: userId,
-      },
-    })
+    const count = this.expense.length
 
-    const totalPages = Math.round(count / pagination.per_page)
+    const totalPages = Math.ceil(count / pagination.per_page)
 
-    const expenses = await prisma.expense.findMany({
-      where: {
-        user_id: userId,
-      },
-    })
+    const expenses = this.expense
+      .filter((item) => item.user_id === userId)
+      .slice(
+        (pagination.page - 1) * pagination.per_page,
+        pagination.page * pagination.per_page,
+      )
 
     const nextPage = totalPages === pagination.page ? null : pagination.page + 1
     const previousPage = pagination.page === 1 ? null : pagination.page - 1
