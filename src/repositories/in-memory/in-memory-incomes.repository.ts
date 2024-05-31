@@ -1,7 +1,7 @@
 import { Income, Prisma } from '@prisma/client'
 import { randomUUID } from 'crypto'
 
-import { PaginationRequest } from '@/@types/pagintation'
+import { PaginationRequest } from '@/@types/pagination'
 
 import { IncomesRepository } from '../incomes.repository'
 

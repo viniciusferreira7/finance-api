@@ -1,6 +1,6 @@
 import { Income, Prisma } from '@prisma/client'
 
-import { PaginationRequest, PaginationResponse } from '@/@types/pagintation'
+import { PaginationRequest, PaginationResponse } from '@/@types/pagination'
 import { prisma } from '@/lib/prisma'
 
 import { IncomesRepository } from '../incomes.repository'

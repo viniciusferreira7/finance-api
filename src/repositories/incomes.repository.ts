@@ -1,6 +1,6 @@
 import { Income, Prisma } from '@prisma/client'
 
-import { PaginationRequest, PaginationResponse } from '@/@types/pagintation'
+import { PaginationRequest, PaginationResponse } from '@/@types/pagination'
 
 export interface IncomesRepository {
   findManyByUserId(

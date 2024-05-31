@@ -1,20 +1,20 @@
-import { Income } from '@prisma/client'
+import { Expense } from '@prisma/client'
 
 import { PaginationRequest, PaginationResponse } from '@/@types/pagination'
-import { IncomesRepository } from '@/repositories/incomes.repository'
+import { ExpensesRepository } from '@/repositories/expenses-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
 import { ResourceNotFound } from './error/resource-not-found-error'
 
-interface FetchUserIncomesHistoryUseCaseRequest extends PaginationRequest {
+interface FetchUserExpensesHistoryUseCaseRequest extends PaginationRequest {
   userId: string
 }
 
-type FetchUserIncomesHistoryUseCaseResponse = PaginationResponse<Income>
+type FetchUserExpensesHistoryUseCaseResponse = PaginationResponse<Expense>
 
-export class FetchUserIncomesHistoryUseCase {
+export class FetchUserExpensesHistoryUseCase {
   constructor(
-    private incomesRepository: IncomesRepository,
+    private expensesRepository: ExpensesRepository,
     private usersRepository: UsersRepository,
     // eslint-disable-next-line prettier/prettier
   ) { }
@@ -23,14 +23,14 @@ export class FetchUserIncomesHistoryUseCase {
     userId,
     page,
     per_page,
-  }: FetchUserIncomesHistoryUseCaseRequest): Promise<FetchUserIncomesHistoryUseCaseResponse> {
+  }: FetchUserExpensesHistoryUseCaseRequest): Promise<FetchUserExpensesHistoryUseCaseResponse> {
     const user = await this.usersRepository.findById(userId)
 
     if (!user) {
       throw new ResourceNotFound()
     }
 
-    const results = await this.incomesRepository.findManyByUserId(userId, {
+    const results = await this.expensesRepository.findManyByUserId(userId, {
       page,
       per_page,
     })
