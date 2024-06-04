@@ -10,7 +10,7 @@ export async function createExpense(
 ) {
   const expenseSchemaBody = z.object({
     value: z.number().positive({ message: 'Must be the positive number.' }),
-    description: z.string(),
+    description: z.string().max(220, 'Must be 220 characters.').optional(),
     category_id: z.string(),
   })
 
@@ -23,7 +23,7 @@ export async function createExpense(
 
     createExpenseUseCase.execute({
       value,
-      description,
+      description: description ?? null,
       category_id,
       user_id: request.user.sub,
     })
