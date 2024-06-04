@@ -1,6 +1,6 @@
 export interface PaginationRequest {
-  page: number
-  per_page: number
+  page?: number
+  per_page?: number
   pagination_disabled?: boolean
 }
 

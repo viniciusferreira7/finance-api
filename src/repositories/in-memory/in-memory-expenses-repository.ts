@@ -20,31 +20,31 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
         previous: null,
         page: 1,
         total_pages: 1,
-        per_page: pagination.per_page,
+        per_page: count,
         pagination_disabled: !!pagination.pagination_disabled,
         results: expenses,
       }
     }
 
-    const totalPages = Math.ceil(count / pagination.per_page)
+    const perPage = pagination?.per_page ?? 10
+    const currentPage = pagination?.page ?? 1
+
+    const totalPages = Math.ceil(count / perPage)
 
     const expensesPaginated = this.expenses
       .filter((item) => item.user_id === userId)
-      .slice(
-        (pagination.page - 1) * pagination.per_page,
-        pagination.page * pagination.per_page,
-      )
+      .slice((currentPage - 1) * perPage, currentPage * perPage)
 
-    const nextPage = totalPages === pagination.page ? null : pagination.page + 1
-    const previousPage = pagination.page === 1 ? null : pagination.page - 1
+    const nextPage = totalPages === currentPage ? null : currentPage + 1
+    const previousPage = currentPage === 1 ? null : currentPage - 1
 
     return {
       count,
       next: nextPage,
       previous: previousPage,
-      page: pagination.page,
+      page: currentPage,
       total_pages: totalPages,
-      per_page: pagination.per_page,
+      per_page: perPage,
       pagination_disabled: !!pagination.pagination_disabled,
       results: expensesPaginated,
     }

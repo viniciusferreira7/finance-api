@@ -38,7 +38,10 @@ export class PrismaIncomesRepository implements IncomesRepository {
       }
     }
 
-    const totalPages = Math.ceil(count / pagination.per_page)
+    const perPage = pagination?.per_page ?? 10
+    const currentPage = pagination?.page ?? 1
+
+    const totalPages = Math.ceil(count / perPage)
 
     const incomesPaginated = await prisma.income.findMany({
       where: {
@@ -47,19 +50,19 @@ export class PrismaIncomesRepository implements IncomesRepository {
       orderBy: {
         created_at: 'asc',
       },
-      take: pagination.per_page,
-      skip: (pagination.page - 1) * pagination.per_page,
+      take: perPage,
+      skip: (currentPage - 1) * perPage,
     })
 
-    const nextPage = totalPages === pagination.page ? null : pagination.page + 1
-    const previousPage = pagination.page === 1 ? null : pagination.page - 1
+    const nextPage = totalPages === currentPage ? null : currentPage + 1
+    const previousPage = currentPage === 1 ? null : currentPage - 1
 
     return {
       count,
       next: nextPage,
       previous: previousPage,
-      page: pagination.page,
-      per_page: pagination.per_page,
+      page: currentPage,
+      per_page: perPage,
       total_pages: totalPages,
       pagination_disabled: !!pagination.pagination_disabled,
       results: incomesPaginated,
