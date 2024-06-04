@@ -89,7 +89,3 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
     return category
   }
 }
-
-// TODO: Adds pagination_disabled in incomes history and expenses history
-// TODO: Adds more test for pagination_disabled
-// TODO: pagination_disabled or pagination_enabled

@@ -12,7 +12,7 @@ interface FetchUserCategoriesUseCaseRequest extends PaginationRequest {
 
 type FetchUserCategoriesUseCaseResponse = PaginationResponse<Category>
 
-export class FetchUserCategoriesUseCase {
+export class FetchUserCategoriesHistoryUseCase {
   constructor(
     private categoriesRepository: CategoriesRepository,
     private usersRepository: UsersRepository,
