@@ -5,6 +5,7 @@ import { authenticate } from './authenticate'
 import { createCategory } from './create-category'
 import { createExpense } from './create-expense'
 import { createIncome } from './create-income'
+import { fetchCategories } from './fetch-categories'
 import { profile } from './profile'
 import { register } from './register'
 
@@ -43,6 +44,21 @@ export async function AppRoutes(app: FastifyInstance) {
       onRequest: [verifyJWT],
     },
     createCategory,
+  )
+
+  app.get(
+    '/categories',
+    {
+      schema: {
+        querystring: {
+          page: { type: 'string' },
+          per_page: { type: 'string' },
+          pagination_disabled: { type: 'string' },
+        },
+      },
+      onRequest: [verifyJWT],
+    },
+    fetchCategories,
   )
 }
 
