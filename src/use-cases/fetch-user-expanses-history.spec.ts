@@ -99,4 +99,28 @@ describe('Fetch user expenses history use case', () => {
       expect.objectContaining({ category_id: 'category-22' }),
     ])
   })
+
+  it('should be able to fetch without pagination history', async () => {
+    const user = await usersRepository.create({
+      name: 'John',
+      email: 'john@example.com',
+      password_hash: await hash('123456', 6),
+    })
+
+    for (let i = 1; i <= 22; i++) {
+      await expensesRepository.create({
+        value: 500 + i * 10,
+        description: 'Course',
+        category_id: `category-${i}`,
+        user_id: user.id,
+      })
+    }
+
+    const { results } = await sut.execute({
+      userId: user.id,
+      pagination_disabled: true,
+    })
+
+    expect(results).toHaveLength(22)
+  })
 })

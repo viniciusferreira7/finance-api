@@ -23,6 +23,7 @@ export class FetchUserIncomesHistoryUseCase {
     userId,
     page,
     per_page,
+    pagination_disabled,
   }: FetchUserIncomesHistoryUseCaseRequest): Promise<FetchUserIncomesHistoryUseCaseResponse> {
     const user = await this.usersRepository.findById(userId)
 
@@ -33,6 +34,7 @@ export class FetchUserIncomesHistoryUseCase {
     const results = await this.incomesRepository.findManyByUserId(userId, {
       page,
       per_page,
+      pagination_disabled,
     })
 
     return { ...results }
