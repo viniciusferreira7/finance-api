@@ -6,14 +6,29 @@ import { PaginationRequest } from '@/@types/pagination'
 import { ExpensesRepository } from '../expenses-repository'
 
 export class InMemoryExpensesRepository implements ExpensesRepository {
-  public expense: Expense[] = []
+  public expenses: Expense[] = []
 
   async findManyByUserId(userId: string, pagination: PaginationRequest) {
-    const count = this.expense.length
+    const count = this.expenses.length
+
+    const expenses = this.expenses.filter((item) => item.user_id === userId)
+
+    if (pagination.pagination_disabled) {
+      return {
+        count,
+        next: null,
+        previous: null,
+        page: 1,
+        total_pages: 1,
+        per_page: pagination.per_page,
+        pagination_disabled: !!pagination.pagination_disabled,
+        results: expenses,
+      }
+    }
 
     const totalPages = Math.ceil(count / pagination.per_page)
 
-    const expenses = this.expense
+    const expensesPaginated = this.expenses
       .filter((item) => item.user_id === userId)
       .slice(
         (pagination.page - 1) * pagination.per_page,
@@ -30,7 +45,8 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
       page: pagination.page,
       total_pages: totalPages,
       per_page: pagination.per_page,
-      results: expenses,
+      pagination_disabled: !!pagination.pagination_disabled,
+      results: expensesPaginated,
     }
   }
 
@@ -45,7 +61,7 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
       category_id: data.category_id,
     }
 
-    this.expense.push(expense)
+    this.expenses.push(expense)
 
     return expense
   }

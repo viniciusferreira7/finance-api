@@ -13,12 +13,26 @@ export class InMemoryIncomesRepository implements IncomesRepository {
       (income) => income.user_id === userId,
     ).length
 
+    const incomes = this.incomes.filter((income) => income.user_id === userId)
+
+    if (pagination.pagination_disabled) {
+      return {
+        count,
+        next: null,
+        previous: null,
+        page: 1,
+        total_pages: 1,
+        per_page: pagination.per_page,
+        pagination_disabled: !!pagination.pagination_disabled,
+        results: incomes,
+      }
+    }
     const totalPages = Math.ceil(count / pagination.per_page)
 
     const nextPage = totalPages === pagination.page ? null : pagination.page + 1
     const previousPage = pagination.page === 1 ? null : pagination.page - 1
 
-    const incomes = this.incomes
+    const incomesPaginated = this.incomes
       .filter((income) => income.user_id === userId)
       .slice(
         (pagination.page - 1) * pagination.per_page,
@@ -32,7 +46,8 @@ export class InMemoryIncomesRepository implements IncomesRepository {
       page: pagination.page,
       total_pages: totalPages,
       per_page: pagination.per_page,
-      results: incomes,
+      pagination_disabled: !!pagination.pagination_disabled,
+      results: incomesPaginated,
     }
   }
 

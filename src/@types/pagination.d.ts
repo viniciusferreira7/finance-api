@@ -1,6 +1,7 @@
 export interface PaginationRequest {
   page: number
   per_page: number
+  pagination_disabled?: boolean
 }
 
 export interface PaginationResponse<T> {
@@ -10,5 +11,6 @@ export interface PaginationResponse<T> {
   page: number
   total_pages: number
   per_page: number
+  pagination_disabled: boolean
   results: T[]
 }
