@@ -2,13 +2,13 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 import { ResourceNotFound } from '@/use-cases/error/resource-not-found-error'
-import { makeFetchUserCategoriesHistory } from '@/use-cases/factories/make-fetch-user-categories-history'
+import { makeFetchUserIncomesHistory } from '@/use-cases/factories/make-fetch-user-incomes-history'
 
-export async function fetchCategories(
+export async function fetchIncomesHistory(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const fetchCategoriesSchema = z.object({
+  const fetchIncomesSchema = z.object({
     page: z.coerce
       .number()
       .positive({ message: 'Must be the positive number.' })
@@ -22,14 +22,14 @@ export async function fetchCategories(
     pagination_disabled: z.coerce.boolean().default(false).optional(),
   })
 
-  const { page, per_page, pagination_disabled } = fetchCategoriesSchema.parse(
+  const { page, per_page, pagination_disabled } = fetchIncomesSchema.parse(
     request.query,
   )
 
   try {
-    const fetchUserCategoriesHistoryUseCase = makeFetchUserCategoriesHistory()
+    const fetchUserIncomesHistoryUseCase = makeFetchUserIncomesHistory()
 
-    const history = await fetchUserCategoriesHistoryUseCase.execute({
+    const history = await fetchUserIncomesHistoryUseCase.execute({
       userId: request.user.sub,
       page,
       per_page,

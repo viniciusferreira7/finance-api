@@ -5,7 +5,7 @@ import { authenticate } from './authenticate'
 import { createCategory } from './create-category'
 import { createExpense } from './create-expense'
 import { createIncome } from './create-income'
-import { fetchCategories } from './fetch-categories'
+import { fetchCategoriesHistory } from './fetch-categories-history'
 import { profile } from './profile'
 import { register } from './register'
 
@@ -23,15 +23,30 @@ export async function AppRoutes(app: FastifyInstance) {
   )
 
   app.post(
-    '/incomes',
+    '/income',
     {
       onRequest: [verifyJWT],
     },
     createIncome,
   )
 
+  app.get(
+    '/incomes',
+    {
+      schema: {
+        querystring: {
+          page: { type: 'string' },
+          per_page: { type: 'string' },
+          pagination_disabled: { type: 'string' },
+        },
+      },
+      onRequest: [verifyJWT],
+    },
+    fetchCategoriesHistory,
+  )
+
   app.post(
-    '/expenses',
+    '/expense',
     {
       onRequest: [verifyJWT],
     },
@@ -39,7 +54,7 @@ export async function AppRoutes(app: FastifyInstance) {
   )
 
   app.post(
-    '/categories',
+    '/category',
     {
       onRequest: [verifyJWT],
     },
@@ -58,7 +73,7 @@ export async function AppRoutes(app: FastifyInstance) {
       },
       onRequest: [verifyJWT],
     },
-    fetchCategories,
+    fetchCategoriesHistory,
   )
 }
 
