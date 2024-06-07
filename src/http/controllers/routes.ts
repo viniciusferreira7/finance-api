@@ -6,6 +6,7 @@ import { createCategory } from './create-category'
 import { createExpense } from './create-expense'
 import { createIncome } from './create-income'
 import { fetchCategoriesHistory } from './fetch-categories-history'
+import { fetchExpensesHistory } from './fetch-expenses-history'
 import { profile } from './profile'
 import { register } from './register'
 
@@ -46,15 +47,30 @@ export async function AppRoutes(app: FastifyInstance) {
   )
 
   app.post(
-    '/expense',
+    '/expenses',
     {
       onRequest: [verifyJWT],
     },
     createExpense,
   )
 
+  app.get(
+    '/expenses',
+    {
+      schema: {
+        querystring: {
+          page: { type: 'string' },
+          per_page: { type: 'string' },
+          pagination_disabled: { type: 'string' },
+        },
+      },
+      onRequest: [verifyJWT],
+    },
+    fetchExpensesHistory,
+  )
+
   app.post(
-    '/category',
+    '/categories',
     {
       onRequest: [verifyJWT],
     },
