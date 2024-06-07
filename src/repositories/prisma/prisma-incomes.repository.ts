@@ -69,6 +69,26 @@ export class PrismaIncomesRepository implements IncomesRepository {
     }
   }
 
+  async findById(id: string) {
+    const income = await prisma.income.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    return income
+  }
+
+  async deleteIncome(incomeId: string) {
+    const income = await prisma.income.delete({
+      where: {
+        id: incomeId,
+      },
+    })
+
+    return income
+  }
+
   async create(data: Prisma.IncomeUncheckedCreateInput) {
     const income = await prisma.income.create({
       data,
