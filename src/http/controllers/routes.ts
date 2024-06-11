@@ -96,5 +96,8 @@ export async function AppRoutes(app: FastifyInstance) {
 // TODO: Create another methods of GET, DELETE, PUT for the incomes, categories and expanse
 // Rest: DELETE, PUT
 
+// TODO: create filters to fetch categories, expenses and incomes: created_at, update_at, value, name, category
+// TODO: Implements history from category, expense and income
+
 // TODO: Finally create use case from monthly budget and balance
 // TODO: Create E2E test

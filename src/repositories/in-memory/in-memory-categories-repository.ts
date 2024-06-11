@@ -73,6 +73,20 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
     return category
   }
 
+  async delete(id: string) {
+    const categoryIndex = this.categories.findIndex((item) => item.id === id)
+
+    if (categoryIndex >= 0) {
+      const category = this.categories[categoryIndex]
+
+      this.categories.splice(categoryIndex, 1)
+
+      return category
+    }
+
+    return null
+  }
+
   async create(data: Prisma.CategoryUncheckedCreateInput) {
     const category: Category = {
       id: randomUUID(),
