@@ -1,20 +1,20 @@
 import { Income } from '@prisma/client'
 
-import { IncomesRepository } from '@/repositories/incomes.repository'
+import { IncomesRepository } from '@/repositories/incomes-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
 import { ResourceNotFound } from './error/resource-not-found-error'
 
-interface DeleteUserIncomesRequest {
+interface DeleteUserIncomeRequest {
   userId: string
   incomeId: string
 }
 
-interface DeleteUserIncomesResponse {
+interface DeleteUserIncomeResponse {
   income: Income | null
 }
 
-export class DeleteUserIncomes {
+export class DeleteUserIncome {
   constructor(
     private incomesRepository: IncomesRepository,
     private usersRepository: UsersRepository,
@@ -24,7 +24,7 @@ export class DeleteUserIncomes {
   async execute({
     userId,
     incomeId,
-  }: DeleteUserIncomesRequest): Promise<DeleteUserIncomesResponse> {
+  }: DeleteUserIncomeRequest): Promise<DeleteUserIncomeResponse> {
     const user = await this.usersRepository.findById(userId)
 
     if (!user) {

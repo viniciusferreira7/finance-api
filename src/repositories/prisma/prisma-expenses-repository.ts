@@ -60,6 +60,26 @@ export class PrismaExpensesRepository implements ExpensesRepository {
     }
   }
 
+  async findById(id: string) {
+    const expense = await prisma.expense.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    return expense
+  }
+
+  async deleteExpense(id: string) {
+    const expense = await prisma.expense.delete({
+      where: {
+        id,
+      },
+    })
+
+    return expense
+  }
+
   async create(data: Prisma.ExpenseUncheckedCreateInput) {
     const expense = await prisma.expense.create({
       data,

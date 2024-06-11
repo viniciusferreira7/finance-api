@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 
 import { InMemoryIncomesRepository } from '@/repositories/in-memory/in-memory-incomes.repository'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { IncomesRepository } from '@/repositories/incomes.repository'
+import { IncomesRepository } from '@/repositories/incomes-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
 import { ResourceNotFound } from './error/resource-not-found-error'

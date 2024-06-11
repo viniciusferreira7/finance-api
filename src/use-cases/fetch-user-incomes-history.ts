@@ -1,7 +1,7 @@
 import { Income } from '@prisma/client'
 
 import { PaginationRequest, PaginationResponse } from '@/@types/pagination'
-import { IncomesRepository } from '@/repositories/incomes.repository'
+import { IncomesRepository } from '@/repositories/incomes-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
 import { ResourceNotFound } from './error/resource-not-found-error'
