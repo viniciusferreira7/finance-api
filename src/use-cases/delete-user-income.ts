@@ -11,7 +11,7 @@ interface DeleteUserIncomesRequest {
 }
 
 interface DeleteUserIncomesResponse {
-  income: Income
+  income: Income | null
 }
 
 export class DeleteUserIncomes {
@@ -25,13 +25,13 @@ export class DeleteUserIncomes {
     userId,
     incomeId,
   }: DeleteUserIncomesRequest): Promise<DeleteUserIncomesResponse> {
-    const user = this.usersRepository.findById(userId)
+    const user = await this.usersRepository.findById(userId)
 
     if (!user) {
       throw new ResourceNotFound()
     }
 
-    const income = this.incomesRepository.findById(incomeId)
+    const income = await this.incomesRepository.findById(incomeId)
 
     if (!income) {
       throw new ResourceNotFound()

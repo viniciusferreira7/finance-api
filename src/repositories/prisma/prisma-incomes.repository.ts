@@ -79,10 +79,10 @@ export class PrismaIncomesRepository implements IncomesRepository {
     return income
   }
 
-  async deleteIncome(incomeId: string) {
+  async deleteIncome(id: string) {
     const income = await prisma.income.delete({
       where: {
-        id: incomeId,
+        id,
       },
     })
 

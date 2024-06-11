@@ -51,6 +51,30 @@ export class InMemoryIncomesRepository implements IncomesRepository {
     }
   }
 
+  async findById(id: string) {
+    const income = this.incomes.find((item) => item.id === id)
+
+    if (!income) {
+      return null
+    }
+
+    return income
+  }
+
+  async deleteIncome(id: string) {
+    const incomeIndex = this.incomes.findIndex((item) => item.id === id)
+
+    if (incomeIndex >= 0) {
+      const deletedIncome = this.incomes[incomeIndex]
+
+      this.incomes.splice(incomeIndex, 1)
+
+      return deletedIncome
+    }
+
+    return null
+  }
+
   async create(data: Prisma.IncomeUncheckedCreateInput) {
     const income: Income = {
       id: randomUUID(),

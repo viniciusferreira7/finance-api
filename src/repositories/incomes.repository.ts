@@ -8,6 +8,6 @@ export interface IncomesRepository {
     pagination: PaginationRequest,
   ): Promise<PaginationResponse<Income>>
   findById(id: string): Promise<Income | null>
-  deleteIncome(incomeId: string): Promise<Income>
+  deleteIncome(id: string): Promise<Income | null>
   create(data: Prisma.IncomeUncheckedCreateInput): Promise<Income>
 }
