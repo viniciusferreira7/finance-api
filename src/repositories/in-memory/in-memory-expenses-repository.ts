@@ -50,6 +50,30 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
     }
   }
 
+  async findById(id: string) {
+    const income = this.expenses.find((item) => item.id === id)
+
+    if (!income) {
+      return null
+    }
+
+    return income
+  }
+
+  async deleteExpense(id: string) {
+    const expenseIndex = this.expenses.findIndex((item) => item.id === id)
+
+    if (expenseIndex >= 0) {
+      const deletedExpenses = this.expenses[expenseIndex]
+
+      this.expenses.splice(expenseIndex, 1)
+
+      return deletedExpenses
+    }
+
+    return null
+  }
+
   async create(data: Prisma.IncomeUncheckedCreateInput) {
     const expense: Expense = {
       id: randomUUID(),
