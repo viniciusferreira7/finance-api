@@ -9,5 +9,6 @@ export interface CategoriesRepository {
     pagination?: Partial<PaginationRequest>,
   ): Promise<PaginationResponse<Category>>
   findById(id: string): Promise<Category | null>
+  delete(id: string): Promise<Category | null>
   create(data: Prisma.CategoryUncheckedCreateInput): Promise<Category>
 }
