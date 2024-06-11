@@ -8,6 +8,6 @@ export interface ExpensesRepository {
     pagination: PaginationRequest,
   ): Promise<PaginationResponse<Expense>>
   findById(id: string): Promise<Expense | null>
-  deleteExpense(id: string): Promise<Expense | null>
+  delete(id: string): Promise<Expense | null>
   create(data: Prisma.ExpenseUncheckedCreateInput): Promise<Expense>
 }

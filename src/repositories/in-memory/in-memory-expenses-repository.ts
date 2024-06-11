@@ -60,7 +60,7 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
     return income
   }
 
-  async deleteExpense(id: string) {
+  async delete(id: string) {
     const expenseIndex = this.expenses.findIndex((item) => item.id === id)
 
     if (expenseIndex >= 0) {

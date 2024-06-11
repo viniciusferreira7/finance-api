@@ -70,7 +70,7 @@ export class PrismaExpensesRepository implements ExpensesRepository {
     return expense
   }
 
-  async deleteExpense(id: string) {
+  async delete(id: string) {
     const expense = await prisma.expense.delete({
       where: {
         id,

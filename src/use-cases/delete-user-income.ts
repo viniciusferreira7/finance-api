@@ -37,7 +37,7 @@ export class DeleteUserIncome {
       throw new ResourceNotFound()
     }
 
-    const deletedIncome = await this.incomesRepository.deleteIncome(incomeId)
+    const deletedIncome = await this.incomesRepository.delete(incomeId)
 
     return { income: deletedIncome }
   }

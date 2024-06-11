@@ -38,7 +38,7 @@ export class DeleteUserExpense {
     }
 
     const deletedExpense =
-      await this.expensesRepository.deleteExpense(expenseId)
+      await this.expensesRepository.delete(expenseId)
 
     return { expense: deletedExpense }
   }
