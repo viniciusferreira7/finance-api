@@ -83,6 +83,16 @@ export class PrismaCategoriesRepository implements CategoriesRepository {
     return category
   }
 
+  async delete(id: string) {
+    const category = await prisma.category.delete({
+      where: {
+        id,
+      },
+    })
+
+    return category
+  }
+
   async create(data: Prisma.CategoryUncheckedCreateInput) {
     const category = await prisma.category.create({
       data,
