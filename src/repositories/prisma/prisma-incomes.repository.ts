@@ -5,6 +5,13 @@ import { prisma } from '@/lib/prisma'
 
 import { IncomesRepository } from '../incomes-repository'
 
+interface UpdateIncome {
+  id: string
+  value?: number
+  description?: string
+  categoryId?: string
+}
+
 export class PrismaIncomesRepository implements IncomesRepository {
   async findManyByUserId(
     userId: string,
@@ -87,6 +94,22 @@ export class PrismaIncomesRepository implements IncomesRepository {
     })
 
     return income
+  }
+
+  async update(updateIncome: UpdateIncome) {
+    const prismaIncome = await prisma.income.update({
+      where: {
+        id: updateIncome.id,
+      },
+      data: {
+        value: updateIncome.value,
+        description: updateIncome.description,
+        update_at: new Date(),
+        category_id: updateIncome.categoryId,
+      },
+    })
+
+    return prismaIncome
   }
 
   async create(data: Prisma.IncomeUncheckedCreateInput) {
