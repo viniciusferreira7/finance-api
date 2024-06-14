@@ -5,6 +5,7 @@ import { authenticate } from './authenticate'
 import { createCategory } from './create-category'
 import { createExpense } from './create-expense'
 import { createIncome } from './create-income'
+import { deleteExpense } from './delete-expense'
 import { deleteIncome } from './delete-income'
 import { fetchCategoriesHistory } from './fetch-categories-history'
 import { fetchExpensesHistory } from './fetch-expenses-history'
@@ -53,6 +54,8 @@ export async function AppRoutes(app: FastifyInstance) {
     },
     fetchExpensesHistory,
   )
+
+  app.delete('/expenses/:id', { onRequest: [verifyJWT] }, deleteExpense)
 
   app.post('/categories', { onRequest: [verifyJWT] }, createCategory)
 
