@@ -73,9 +73,9 @@ export async function AppRoutes(app: FastifyInstance) {
     },
     fetchCategoriesHistory,
   )
-}
 
-// TODO: Friday you will want implements factories from deletes use cases and controllers
+  app.delete('/categories/:id', { onRequest: [verifyJWT] }, deleteExpense)
+}
 
 // TODO: Create another methods of GET, DELETE, PUT for the incomes, categories and expanse
 // Rest: PUT, GET (specific category, expense and income)
