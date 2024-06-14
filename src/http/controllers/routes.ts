@@ -5,6 +5,7 @@ import { authenticate } from './authenticate'
 import { createCategory } from './create-category'
 import { createExpense } from './create-expense'
 import { createIncome } from './create-income'
+import { deleteIncome } from './delete-income'
 import { fetchCategoriesHistory } from './fetch-categories-history'
 import { fetchExpensesHistory } from './fetch-expenses-history'
 import { profile } from './profile'
@@ -15,21 +16,9 @@ export async function AppRoutes(app: FastifyInstance) {
   app.post('/sessions', authenticate)
 
   // Authenticate
-  app.get(
-    '/me',
-    {
-      onRequest: [verifyJWT],
-    },
-    profile,
-  )
+  app.get('/me', { onRequest: [verifyJWT] }, profile)
 
-  app.post(
-    '/income',
-    {
-      onRequest: [verifyJWT],
-    },
-    createIncome,
-  )
+  app.post('/income', { onRequest: [verifyJWT] }, createIncome)
 
   app.get(
     '/incomes',
@@ -46,13 +35,9 @@ export async function AppRoutes(app: FastifyInstance) {
     fetchCategoriesHistory,
   )
 
-  app.post(
-    '/expenses',
-    {
-      onRequest: [verifyJWT],
-    },
-    createExpense,
-  )
+  app.delete('/incomes/:id', { onRequest: [verifyJWT] }, deleteIncome)
+
+  app.post('/expenses', { onRequest: [verifyJWT] }, createExpense)
 
   app.get(
     '/expenses',
@@ -69,13 +54,7 @@ export async function AppRoutes(app: FastifyInstance) {
     fetchExpensesHistory,
   )
 
-  app.post(
-    '/categories',
-    {
-      onRequest: [verifyJWT],
-    },
-    createCategory,
-  )
+  app.post('/categories', { onRequest: [verifyJWT] }, createCategory)
 
   app.get(
     '/categories',
@@ -93,11 +72,12 @@ export async function AppRoutes(app: FastifyInstance) {
   )
 }
 
+// TODO: Friday you will want implements factories from deletes use cases and controllers
+
 // TODO: Create another methods of GET, DELETE, PUT for the incomes, categories and expanse
-// Rest: DELETE, PUT
+// Rest: PUT, GET (specific category, expense and income)
 
 // TODO: create filters to fetch categories, expenses and incomes: created_at, update_at, value, name, category
-// TODO: Implements history from category, expense and income
-
+// TODO: Implements history from category, expense and income-
 // TODO: Finally create use case from monthly budget and balance
 // TODO: Create E2E test
