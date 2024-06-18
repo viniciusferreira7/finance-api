@@ -1,7 +1,7 @@
 import { Income } from '@prisma/client'
 
 import { CategoriesRepository } from '@/repositories/categories-repository'
-import { IncomeHistories } from '@/repositories/income-histories'
+import { IncomeHistories } from '@/repositories/income-histories-repository'
 import { IncomesRepository } from '@/repositories/incomes-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 import { convertToCents } from '@/utils/convert-to-cents'
