@@ -20,14 +20,14 @@ interface UpdateUserIncomeUseCaseRequest {
 }
 
 interface UpdateUserIncomeUseCaseResponse {
-  income: Income
+  income: Income | null
 }
 
 export class UpdateUserIncomeUseCase {
   constructor(
     private incomesRepository: IncomesRepository,
-    private usersRepository: UsersRepository,
     private categoriesRepository: CategoriesRepository,
+    private usersRepository: UsersRepository,
     // eslint-disable-next-line prettier/prettier
   ) { }
 

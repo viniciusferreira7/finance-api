@@ -5,6 +5,13 @@ import { PaginationRequest } from '@/@types/pagination'
 
 import { IncomesRepository } from '../incomes-repository'
 
+interface UpdateIncome {
+  id: string
+  value?: number
+  description?: string
+  categoryId?: string
+}
+
 export class InMemoryIncomesRepository implements IncomesRepository {
   public incomes: Income[] = []
 
@@ -70,6 +77,30 @@ export class InMemoryIncomesRepository implements IncomesRepository {
       this.incomes.splice(incomeIndex, 1)
 
       return deletedIncome
+    }
+
+    return null
+  }
+
+  async update(updateIncome: UpdateIncome) {
+    const incomeIndex = this.incomes.findIndex(
+      (item) => item.id === updateIncome.id,
+    )
+
+    if (incomeIndex >= 0) {
+      let income = this.incomes[incomeIndex]
+
+      income = {
+        ...income,
+        value: updateIncome?.value ?? income.value,
+        description: updateIncome?.description ?? income.description,
+        update_at: new Date(),
+        category_id: updateIncome?.categoryId ?? income.category_id,
+      }
+
+      this.incomes.splice(incomeIndex, 1, income)
+
+      return income
     }
 
     return null

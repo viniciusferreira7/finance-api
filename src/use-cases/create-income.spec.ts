@@ -4,7 +4,8 @@ import { hash } from 'bcryptjs'
 import { beforeEach, expect, it } from 'vitest'
 
 import { InMemoryCategoriesRepository } from '@/repositories/in-memory/in-memory-categories-repository'
-import { InMemoryIncomesRepository } from '@/repositories/in-memory/in-memory-incomes.repository'
+import { InMemoryIncomeHistoriesRepository } from '@/repositories/in-memory/in-memory-income-histories-repository'
+import { InMemoryIncomesRepository } from '@/repositories/in-memory/in-memory-incomes-repository'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
@@ -12,6 +13,7 @@ import { CreateIncomeUseCase } from './create-income'
 import { ResourceNotFound } from './error/resource-not-found-error'
 
 let incomesRepository: InMemoryIncomesRepository
+let incomeHistories: InMemoryIncomeHistoriesRepository
 let categoriesRepository: InMemoryCategoriesRepository
 let usersRepository: UsersRepository
 
@@ -20,11 +22,13 @@ let sut: CreateIncomeUseCase
 describe('Create income use case', () => {
   beforeEach(() => {
     incomesRepository = new InMemoryIncomesRepository()
+    incomeHistories = new InMemoryIncomeHistoriesRepository()
     categoriesRepository = new InMemoryCategoriesRepository()
     usersRepository = new InMemoryUsersRepository()
 
     sut = new CreateIncomeUseCase(
       incomesRepository,
+      incomeHistories,
       categoriesRepository,
       usersRepository,
     )
