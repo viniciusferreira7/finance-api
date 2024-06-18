@@ -4,4 +4,6 @@ export function convertToCents(value: number | undefined) {
 
     return convertsValueToCents
   }
+
+  return 0
 }

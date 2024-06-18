@@ -14,16 +14,17 @@ datasource db {
 }
 
 model User {
-  id              String           @id @default(uuid())
-  name            String
-  email           String           @unique
-  password_hash   String
-  created_at      DateTime         @default(now())
-  Expense         Expense[]
-  Income          Income[]
-  Category        Category[]
-  Monthly_budgets Monthly_budget[]
-  Balance         Balance[]
+  id             String          @id @default(uuid())
+  name           String
+  email          String          @unique
+  password_hash  String
+  created_at     DateTime        @default(now())
+  Expense        Expense[]
+  Income         Income[]
+  Category       Category[]
+  MonthlyBudgets MonthlyBudget[]
+  Balance        Balance[]
+  IncomeHistory  IncomeHistory[]
 
   @@map("users")
 }
@@ -38,10 +39,30 @@ model Income {
   user    User   @relation(fields: [user_id], references: [id])
   user_id String
 
+  category      Category        @relation(fields: [category_id], references: [id])
+  category_id   String
+  IncomeHistory IncomeHistory[]
+
+  @@map("incomes")
+}
+
+model IncomeHistory {
+  id          String   @id @default(cuid())
+  value       Int
+  description String?
+  created_at  DateTime @default(now())
+  update_at   DateTime @default(now())
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
   category    Category @relation(fields: [category_id], references: [id])
   category_id String
 
-  @@map("incomes")
+  income    Income @relation(fields: [income_id], references: [id])
+  income_id String
+
+  @@map("income_histories")
 }
 
 model Expense {
@@ -68,15 +89,16 @@ model Category {
   created_at  DateTime @default(now())
   update_at   DateTime @default(now())
 
-  user    User      @relation(fields: [user_id], references: [id])
-  user_id String
-  Expense Expense[]
-  Income  Income[]
+  user          User            @relation(fields: [user_id], references: [id])
+  user_id       String
+  Expense       Expense[]
+  Income        Income[]
+  IncomeHistory IncomeHistory[]
 
   @@map("categories")
 }
 
-model Monthly_budget {
+model MonthlyBudget {
   id         String   @id @default(cuid())
   budget     Int
   deadline   DateTime
