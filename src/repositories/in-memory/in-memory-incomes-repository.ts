@@ -109,6 +109,7 @@ export class InMemoryIncomesRepository implements IncomesRepository {
   async create(data: Prisma.IncomeUncheckedCreateInput) {
     const income: Income = {
       id: randomUUID(),
+      name: data.name,
       value: data.value,
       description: data.description ?? null,
       created_at: new Date(),

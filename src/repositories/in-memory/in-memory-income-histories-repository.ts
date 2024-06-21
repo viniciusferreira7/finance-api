@@ -3,7 +3,9 @@ import { randomUUID } from 'crypto'
 
 import { IncomeHistoriesRepository } from '../income-histories-repository'
 
-export class InMemoryIncomeHistoriesRepository implements IncomeHistoriesRepository {
+export class InMemoryIncomeHistoriesRepository
+  // eslint-disable-next-line prettier/prettier
+  implements IncomeHistoriesRepository {
   public incomeHistoriesRepository: IncomeHistory[] = []
 
   async deleteMany(incomeId: string, userId: string) {
@@ -11,9 +13,11 @@ export class InMemoryIncomeHistoriesRepository implements IncomeHistoriesReposit
       return income.income_id === incomeId && income.user_id === userId
     })
 
-    const notDeletedIncomes = this.incomeHistoriesRepository.filter((income) => {
-      return income.income_id !== incomeId && income.user_id !== userId
-    })
+    const notDeletedIncomes = this.incomeHistoriesRepository.filter(
+      (income) => {
+        return income.income_id !== incomeId && income.user_id !== userId
+      },
+    )
 
     this.incomeHistoriesRepository = notDeletedIncomes
 
@@ -23,6 +27,7 @@ export class InMemoryIncomeHistoriesRepository implements IncomeHistoriesReposit
   async create(data: Prisma.IncomeHistoryUncheckedCreateInput) {
     const income: IncomeHistory = {
       id: randomUUID(),
+      name: data.name,
       value: data.value,
       description: data.description ?? null,
       created_at: new Date(),
