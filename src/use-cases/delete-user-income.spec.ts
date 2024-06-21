@@ -1,6 +1,7 @@
 import { hash } from 'bcryptjs'
 import { beforeEach, describe, expect, it } from 'vitest'
 
+import { InMemoryIncomeHistoriesRepository } from '@/repositories/in-memory/in-memory-income-histories-repository'
 import { InMemoryIncomesRepository } from '@/repositories/in-memory/in-memory-incomes-repository'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 
@@ -8,14 +9,20 @@ import { DeleteUserIncome } from './delete-user-income'
 import { ResourceNotFound } from './error/resource-not-found-error'
 
 let incomesRepository: InMemoryIncomesRepository
+let incomeHistories: InMemoryIncomeHistoriesRepository
 let usersRepository: InMemoryUsersRepository
 let sut: DeleteUserIncome
 
 describe('Delete user income use case', () => {
   beforeEach(() => {
     usersRepository = new InMemoryUsersRepository()
+    incomeHistories = new InMemoryIncomeHistoriesRepository()
     incomesRepository = new InMemoryIncomesRepository()
-    sut = new DeleteUserIncome(incomesRepository, usersRepository)
+    sut = new DeleteUserIncome(
+      incomesRepository,
+      incomeHistories,
+      usersRepository,
+    )
   })
 
   it('should be able to delete an existing income', async () => {

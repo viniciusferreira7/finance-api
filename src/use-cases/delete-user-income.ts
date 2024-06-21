@@ -41,7 +41,7 @@ export class DeleteUserIncome {
 
     const deletedIncome = await this.incomesRepository.delete(incomeId)
 
-    await this.incomeHistories.deleteMany(incomeId, user.id)
+    await this.incomeHistories.deleteMany(incomeId, userId)
 
     return { income: deletedIncome }
   }

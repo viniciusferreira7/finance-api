@@ -6,6 +6,20 @@ import { IncomeHistories } from '../income-histories-repository'
 export class InMemoryIncomeHistoriesRepository implements IncomeHistories {
   public incomeHistories: IncomeHistory[] = []
 
+  async deleteMany(incomeId: string, userId: string) {
+    const deletedIncomes = this.incomeHistories.filter((income) => {
+      return income.income_id === incomeId && income.user_id === userId
+    })
+
+    const notDeletedIncomes = this.incomeHistories.filter((income) => {
+      return income.income_id !== incomeId && income.user_id !== userId
+    })
+
+    this.incomeHistories = notDeletedIncomes
+
+    return deletedIncomes.length
+  }
+
   async create(data: Prisma.IncomeHistoryUncheckedCreateInput) {
     const income: IncomeHistory = {
       id: randomUUID(),
