@@ -1,21 +1,21 @@
 import { IncomeHistory, Prisma } from '@prisma/client'
 import { randomUUID } from 'crypto'
 
-import { IncomeHistories } from '../income-histories-repository'
+import { IncomeHistoriesRepository } from '../income-histories-repository'
 
-export class InMemoryIncomeHistoriesRepository implements IncomeHistories {
-  public incomeHistories: IncomeHistory[] = []
+export class InMemoryIncomeHistoriesRepository implements IncomeHistoriesRepository {
+  public incomeHistoriesRepository: IncomeHistory[] = []
 
   async deleteMany(incomeId: string, userId: string) {
-    const deletedIncomes = this.incomeHistories.filter((income) => {
+    const deletedIncomes = this.incomeHistoriesRepository.filter((income) => {
       return income.income_id === incomeId && income.user_id === userId
     })
 
-    const notDeletedIncomes = this.incomeHistories.filter((income) => {
+    const notDeletedIncomes = this.incomeHistoriesRepository.filter((income) => {
       return income.income_id !== incomeId && income.user_id !== userId
     })
 
-    this.incomeHistories = notDeletedIncomes
+    this.incomeHistoriesRepository = notDeletedIncomes
 
     return deletedIncomes.length
   }
@@ -32,7 +32,7 @@ export class InMemoryIncomeHistoriesRepository implements IncomeHistories {
       income_id: data.income_id,
     }
 
-    this.incomeHistories.push(income)
+    this.incomeHistoriesRepository.push(income)
 
     return income
   }

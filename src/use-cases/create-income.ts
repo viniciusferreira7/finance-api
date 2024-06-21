@@ -1,7 +1,7 @@
 import { Income } from '@prisma/client'
 
 import { CategoriesRepository } from '@/repositories/categories-repository'
-import { IncomeHistories } from '@/repositories/income-histories-repository'
+import { IncomeHistoriesRepository } from '@/repositories/income-histories-repository'
 import { IncomesRepository } from '@/repositories/incomes-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 import { convertToCents } from '@/utils/convert-to-cents'
@@ -23,7 +23,7 @@ interface CreateIncomeResponse {
 export class CreateIncomeUseCase {
   constructor(
     private incomesRepository: IncomesRepository,
-    private incomeHistories: IncomeHistories,
+    private incomeHistoriesRepository: IncomeHistoriesRepository,
     private categoriesRepositores: CategoriesRepository,
     private usersRepositores: UsersRepository,
     // eslint-disable-next-line prettier/prettier
@@ -56,7 +56,7 @@ export class CreateIncomeUseCase {
       category_id,
     })
 
-    await this.incomeHistories.create({
+    await this.incomeHistoriesRepository.create({
       name,
       value: convertToCents(value),
       description,

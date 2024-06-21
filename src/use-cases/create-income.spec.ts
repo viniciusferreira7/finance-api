@@ -13,7 +13,7 @@ import { CreateIncomeUseCase } from './create-income'
 import { ResourceNotFound } from './error/resource-not-found-error'
 
 let incomesRepository: InMemoryIncomesRepository
-let incomeHistories: InMemoryIncomeHistoriesRepository
+let incomeHistoriesRepository: InMemoryIncomeHistoriesRepository
 let categoriesRepository: InMemoryCategoriesRepository
 let usersRepository: UsersRepository
 
@@ -22,13 +22,13 @@ let sut: CreateIncomeUseCase
 describe('Create income use case', () => {
   beforeEach(() => {
     incomesRepository = new InMemoryIncomesRepository()
-    incomeHistories = new InMemoryIncomeHistoriesRepository()
+    incomeHistoriesRepository = new InMemoryIncomeHistoriesRepository()
     categoriesRepository = new InMemoryCategoriesRepository()
     usersRepository = new InMemoryUsersRepository()
 
     sut = new CreateIncomeUseCase(
       incomesRepository,
-      incomeHistories,
+      incomeHistoriesRepository,
       categoriesRepository,
       usersRepository,
     )

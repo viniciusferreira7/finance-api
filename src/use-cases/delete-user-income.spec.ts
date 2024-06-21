@@ -9,18 +9,18 @@ import { DeleteUserIncome } from './delete-user-income'
 import { ResourceNotFound } from './error/resource-not-found-error'
 
 let incomesRepository: InMemoryIncomesRepository
-let incomeHistories: InMemoryIncomeHistoriesRepository
+let incomeHistoriesRepository: InMemoryIncomeHistoriesRepository
 let usersRepository: InMemoryUsersRepository
 let sut: DeleteUserIncome
 
 describe('Delete user income use case', () => {
   beforeEach(() => {
     usersRepository = new InMemoryUsersRepository()
-    incomeHistories = new InMemoryIncomeHistoriesRepository()
+    incomeHistoriesRepository = new InMemoryIncomeHistoriesRepository()
     incomesRepository = new InMemoryIncomesRepository()
     sut = new DeleteUserIncome(
       incomesRepository,
-      incomeHistories,
+      incomeHistoriesRepository,
       usersRepository,
     )
   })

@@ -14,17 +14,18 @@ datasource db {
 }
 
 model User {
-  id             String          @id @default(uuid())
+  id             String           @id @default(uuid())
   name           String
-  email          String          @unique
+  email          String           @unique
   password_hash  String
-  created_at     DateTime        @default(now())
+  created_at     DateTime         @default(now())
   Expense        Expense[]
   Income         Income[]
   Category       Category[]
   MonthlyBudgets MonthlyBudget[]
   Balance        Balance[]
   IncomeHistory  IncomeHistory[]
+  ExpenseHistory ExpenseHistory[]
 
   @@map("users")
 }
@@ -78,10 +79,31 @@ model Expense {
   user    User   @relation(fields: [user_id], references: [id])
   user_id String
 
+  category       Category         @relation(fields: [category_id], references: [id])
+  category_id    String
+  ExpenseHistory ExpenseHistory[]
+
+  @@map("expenses")
+}
+
+model ExpenseHistory {
+  id          String   @id @default(cuid())
+  name        String
+  value       Int
+  description String?
+  created_at  DateTime @default(now())
+  update_at   DateTime @default(now())
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
   category    Category @relation(fields: [category_id], references: [id])
   category_id String
 
-  @@map("expenses")
+  expense    Expense @relation(fields: [expense_id], references: [id])
+  expense_id String
+
+  @@map("expense_histories")
 }
 
 model Category {
@@ -92,11 +114,12 @@ model Category {
   created_at  DateTime @default(now())
   update_at   DateTime @default(now())
 
-  user          User            @relation(fields: [user_id], references: [id])
-  user_id       String
-  Expense       Expense[]
-  Income        Income[]
-  IncomeHistory IncomeHistory[]
+  user           User             @relation(fields: [user_id], references: [id])
+  user_id        String
+  Expense        Expense[]
+  Income         Income[]
+  IncomeHistory  IncomeHistory[]
+  ExpenseHistory ExpenseHistory[]
 
   @@map("categories")
 }

@@ -1,6 +1,6 @@
 import { Income } from '@prisma/client'
 
-import { IncomeHistories } from '@/repositories/income-histories-repository'
+import { IncomeHistoriesRepository } from '@/repositories/income-histories-repository'
 import { IncomesRepository } from '@/repositories/incomes-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
@@ -18,7 +18,7 @@ interface DeleteUserIncomeResponse {
 export class DeleteUserIncome {
   constructor(
     private incomesRepository: IncomesRepository,
-    private incomeHistories: IncomeHistories,
+    private incomeHistoriesRepository: IncomeHistoriesRepository,
     private usersRepository: UsersRepository,
     // eslint-disable-next-line prettier/prettier
   ) { }
@@ -41,7 +41,7 @@ export class DeleteUserIncome {
 
     const deletedIncome = await this.incomesRepository.delete(incomeId)
 
-    await this.incomeHistories.deleteMany(incomeId, userId)
+    await this.incomeHistoriesRepository.deleteMany(incomeId, userId)
 
     return { income: deletedIncome }
   }
