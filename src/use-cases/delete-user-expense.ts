@@ -1,5 +1,6 @@
 import { Expense } from '@prisma/client'
 
+import { ExpenseHistoriesRepository } from '@/repositories/expense-histories-repository'
 import { ExpensesRepository } from '@/repositories/expenses-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
@@ -17,6 +18,7 @@ interface DeleteUserExpenseResponse {
 export class DeleteUserExpense {
   constructor(
     private expensesRepository: ExpensesRepository,
+    private expenseHistoriesRepository: ExpenseHistoriesRepository,
     private usersRepository: UsersRepository,
     // eslint-disable-next-line prettier/prettier
   ) { }
@@ -37,8 +39,9 @@ export class DeleteUserExpense {
       throw new ResourceNotFound()
     }
 
-    const deletedExpense =
-      await this.expensesRepository.delete(expenseId)
+    const deletedExpense = await this.expensesRepository.delete(expenseId)
+
+    await this.expenseHistoriesRepository.deleteMany(expenseId, userId)
 
     return { expense: deletedExpense }
   }

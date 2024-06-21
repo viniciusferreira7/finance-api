@@ -11,6 +11,7 @@ import { ResourceNotFound } from './error/resource-not-found-error'
 let incomesRepository: InMemoryIncomesRepository
 let incomeHistoriesRepository: InMemoryIncomeHistoriesRepository
 let usersRepository: InMemoryUsersRepository
+
 let sut: DeleteUserIncome
 
 describe('Delete user income use case', () => {
@@ -18,6 +19,7 @@ describe('Delete user income use case', () => {
     usersRepository = new InMemoryUsersRepository()
     incomeHistoriesRepository = new InMemoryIncomeHistoriesRepository()
     incomesRepository = new InMemoryIncomesRepository()
+
     sut = new DeleteUserIncome(
       incomesRepository,
       incomeHistoriesRepository,
@@ -33,6 +35,7 @@ describe('Delete user income use case', () => {
     })
 
     const income = await incomesRepository.create({
+      name: 'job',
       value: 1000,
       user_id: user.id,
       category_id: 'non-existing',
@@ -48,6 +51,7 @@ describe('Delete user income use case', () => {
 
   it('should not be able to delete an existing income without user', async () => {
     const income = await incomesRepository.create({
+      name: 'job',
       value: 1000,
       user_id: 'user-1',
       category_id: 'non-existing',
