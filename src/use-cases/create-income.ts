@@ -9,6 +9,7 @@ import { convertToCents } from '@/utils/convert-to-cents'
 import { ResourceNotFound } from './error/resource-not-found-error'
 
 interface CreateIncomeRequest {
+  name: string
   value: number
   description: string | null
   category_id: string
@@ -29,6 +30,7 @@ export class CreateIncomeUseCase {
   ) { }
 
   async execute({
+    name,
     value,
     description,
     category_id,
@@ -47,6 +49,7 @@ export class CreateIncomeUseCase {
     }
 
     const income = await this.incomesRepository.create({
+      name,
       value: convertToCents(value),
       description,
       user_id,
@@ -54,6 +57,7 @@ export class CreateIncomeUseCase {
     })
 
     await this.incomeHistories.create({
+      name,
       value: convertToCents(value),
       description,
       user_id,

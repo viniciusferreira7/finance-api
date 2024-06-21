@@ -42,6 +42,7 @@ describe('Create income use case', () => {
     })
 
     const { expense } = await sut.execute({
+      name: 'video game',
       value: 1000,
       description: 'Salary',
       category_id: category.id,
@@ -60,6 +61,7 @@ describe('Create income use case', () => {
 
     await expect(() =>
       sut.execute({
+        name: 'video game',
         value: 1000,
         description: 'Salary',
         category_id: 'non-existing-category-id',
@@ -83,6 +85,7 @@ describe('Create income use case', () => {
 
     await expect(() =>
       sut.execute({
+        name: 'video game',
         value: 1000,
         description: 'Salary',
         category_id: category.id,

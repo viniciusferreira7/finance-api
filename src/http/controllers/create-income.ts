@@ -9,12 +9,13 @@ export async function createIncome(
   reply: FastifyReply,
 ) {
   const incomeSchemaBody = z.object({
+    name: z.string().max(40, 'Must be 40 characters.'),
     value: z.number().positive({ message: 'Must be the positive number.' }),
     description: z.string().max(220, 'Must be 220 characters.').optional(),
     category_id: z.string(),
   })
 
-  const { value, description, category_id } = incomeSchemaBody.parse(
+  const { name, value, description, category_id } = incomeSchemaBody.parse(
     request.body,
   )
 
@@ -22,6 +23,7 @@ export async function createIncome(
     const createIncomeUseCase = makeCreateIncomeUseCase()
 
     createIncomeUseCase.execute({
+      name,
       value,
       description: description ?? null,
       category_id,

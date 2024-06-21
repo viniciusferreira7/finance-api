@@ -8,6 +8,7 @@ import { convertToCents } from '@/utils/convert-to-cents'
 import { ResourceNotFound } from './error/resource-not-found-error'
 
 interface CreateExpenseUseCaseRequest {
+  name: string
   value: number
   description: string | null
   category_id: string
@@ -27,6 +28,7 @@ export class CreateExpenseUseCase {
   ) { }
 
   async execute({
+    name,
     value,
     description,
     category_id,
@@ -45,6 +47,7 @@ export class CreateExpenseUseCase {
     }
 
     const expense = await this.expensesRepository.create({
+      name,
       value: convertToCents(value),
       description,
       category_id,
