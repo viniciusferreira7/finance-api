@@ -4,8 +4,9 @@ import { PaginationRequest, PaginationResponse } from '@/@types/pagination'
 
 interface UpdateIncome {
   id: string
+  name?: string
   value?: number
-  description?: string
+  description?: string | null
   categoryId?: string
 }
 

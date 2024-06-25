@@ -9,8 +9,9 @@ import { ResourceNotFound } from './error/resource-not-found-error'
 
 interface UpdateIncome {
   id: string
+  name?: string
   value?: number
-  description?: string
+  description?: string | null
   categoryId?: string
 }
 
@@ -59,6 +60,7 @@ export class UpdateUserIncomeUseCase {
 
     const updatedIncome = await this.incomesRepository.update({
       id: updateIncome.id,
+      name: updateIncome.name,
       value: convertToCents(updateIncome?.value),
       description: updateIncome.description,
       categoryId: updateIncome.categoryId,

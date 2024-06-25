@@ -7,8 +7,9 @@ import { IncomesRepository } from '../incomes-repository'
 
 interface UpdateIncome {
   id: string
+  name?: string
   value?: number
-  description?: string
+  description?: string | null
   categoryId?: string
 }
 
@@ -92,6 +93,7 @@ export class InMemoryIncomesRepository implements IncomesRepository {
 
       income = {
         ...income,
+        name: updateIncome.name ?? income.name,
         value: updateIncome?.value ?? income.value,
         description: updateIncome?.description ?? income.description,
         update_at: new Date(),

@@ -7,6 +7,7 @@ import { IncomesRepository } from '../incomes-repository'
 
 interface UpdateIncome {
   id: string
+  name?: string
   value?: number
   description?: string
   categoryId?: string
@@ -102,6 +103,7 @@ export class PrismaIncomesRepository implements IncomesRepository {
         id: updateIncome.id,
       },
       data: {
+        name: updateIncome.name,
         value: updateIncome.value,
         description: updateIncome.description,
         update_at: new Date(),
