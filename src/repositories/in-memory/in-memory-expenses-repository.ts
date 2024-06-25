@@ -5,6 +5,14 @@ import { PaginationRequest } from '@/@types/pagination'
 
 import { ExpensesRepository } from '../expenses-repository'
 
+interface UpdateExpense {
+  id: string
+  name?: string
+  value?: number
+  description?: string | null
+  categoryId?: string
+}
+
 export class InMemoryExpensesRepository implements ExpensesRepository {
   public expenses: Expense[] = []
 
@@ -51,13 +59,13 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
   }
 
   async findById(id: string) {
-    const income = this.expenses.find((item) => item.id === id)
+    const expense = this.expenses.find((item) => item.id === id)
 
-    if (!income) {
+    if (!expense) {
       return null
     }
 
-    return income
+    return expense
   }
 
   async delete(id: string) {
@@ -74,7 +82,32 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
     return null
   }
 
-  async create(data: Prisma.IncomeUncheckedCreateInput) {
+  async update(updateExpense: UpdateExpense) {
+    const expenseIndex = this.expenses.findIndex(
+      (item) => item.id === updateExpense.id,
+    )
+
+    if (expenseIndex >= 0) {
+      let expense = this.expenses[expenseIndex]
+
+      expense = {
+        ...expense,
+        name: updateExpense.name ?? expense.name,
+        value: updateExpense?.value ?? expense.value,
+        description: updateExpense?.description ?? expense.description,
+        update_at: new Date(),
+        category_id: updateExpense?.categoryId ?? expense.category_id,
+      }
+
+      this.expenses.splice(expenseIndex, 1, expense)
+
+      return expense
+    }
+
+    return null
+  }
+
+  async create(data: Prisma.ExpenseUncheckedCreateInput) {
     const expense: Expense = {
       id: randomUUID(),
       name: data.name,

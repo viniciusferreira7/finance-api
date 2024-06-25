@@ -5,6 +5,14 @@ import { prisma } from '@/lib/prisma'
 
 import { ExpensesRepository } from '../expenses-repository'
 
+interface UpdateExpense {
+  id: string
+  name?: string
+  value?: number
+  description?: string | null
+  categoryId?: string
+}
+
 export class PrismaExpensesRepository implements ExpensesRepository {
   async findManyByUserId(userId: string, pagination: PaginationRequest) {
     const count = await prisma.expense.count({
@@ -81,6 +89,23 @@ export class PrismaExpensesRepository implements ExpensesRepository {
     })
 
     return expense
+  }
+
+  async update(updateExpense: UpdateExpense) {
+    const prismaExpense = await prisma.expense.update({
+      where: {
+        id: updateExpense.id,
+      },
+      data: {
+        name: updateExpense.name,
+        value: updateExpense.value,
+        description: updateExpense.description,
+        update_at: new Date(),
+        category_id: updateExpense.categoryId,
+      },
+    })
+
+    return prismaExpense
   }
 
   async create(data: Prisma.ExpenseUncheckedCreateInput) {
