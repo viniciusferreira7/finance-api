@@ -18,6 +18,9 @@ export class PrismaExpensesRepository implements ExpensesRepository {
         where: {
           user_id: userId,
         },
+        include: {
+          category: true,
+        },
       })
 
       return {

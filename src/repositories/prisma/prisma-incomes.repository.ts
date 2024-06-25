@@ -32,6 +32,9 @@ export class PrismaIncomesRepository implements IncomesRepository {
         orderBy: {
           created_at: 'asc',
         },
+        include: {
+          category: true,
+        },
       })
 
       return {
