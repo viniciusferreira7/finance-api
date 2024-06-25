@@ -1,6 +1,7 @@
 import { Income } from '@prisma/client'
 
 import { CategoriesRepository } from '@/repositories/categories-repository'
+import { IncomeHistoriesRepository } from '@/repositories/income-histories-repository'
 import { IncomesRepository } from '@/repositories/incomes-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 import { convertToCents } from '@/utils/convert-to-cents'
@@ -27,6 +28,7 @@ interface UpdateUserIncomeUseCaseResponse {
 export class UpdateUserIncomeUseCase {
   constructor(
     private incomesRepository: IncomesRepository,
+    private incomeHistoriesRepository: IncomeHistoriesRepository,
     private categoriesRepository: CategoriesRepository,
     private usersRepository: UsersRepository,
     // eslint-disable-next-line prettier/prettier
@@ -57,6 +59,15 @@ export class UpdateUserIncomeUseCase {
         throw new ResourceNotFound()
       }
     }
+
+    await this.incomeHistoriesRepository.create({
+      name: updateIncome.name ?? income.name,
+      value: convertToCents(updateIncome?.value),
+      description: updateIncome.description,
+      category_id: updateIncome.categoryId ?? income.category_id,
+      income_id: income.id,
+      user_id: user.id,
+    })
 
     const updatedIncome = await this.incomesRepository.update({
       id: updateIncome.id,
