@@ -10,7 +10,10 @@ export async function createCategory(
   reply: FastifyReply,
 ) {
   const categorySchemaBody = z.object({
-    name: z.string().max(40, 'Must be 40 characters.'),
+    name: z
+      .string()
+      .min(1, 'Mut be at least 1 character')
+      .max(40, 'Must be 40 characters.'),
     description: z.string().max(220, 'Must be 220 characters.').optional(),
     iconName: z.string().optional(),
   })
