@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 import { ResourceNotFound } from '@/use-cases/error/resource-not-found-error'
-import { makeDeleteUserCategory } from '@/use-cases/factories/make-delete-user-category'
+import { makeDeleteUserCategory } from '@/use-cases/factories/categories/make-delete-user-category'
 
 const deleteCategoryBodySchema = z.object({
   id: z.string(),

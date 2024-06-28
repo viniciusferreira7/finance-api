@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 import { ResourceNotFound } from '@/use-cases/error/resource-not-found-error'
-import { makeDeleteUserIncome } from '@/use-cases/factories/make-delete-user-income'
+import { makeDeleteUserIncome } from '@/use-cases/factories/incomes/make-delete-user-income'
 
 const deleteIncomeBodySchema = z.object({
   id: z.string(),

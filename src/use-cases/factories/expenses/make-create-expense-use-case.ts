@@ -3,7 +3,7 @@ import { PrismaExpenseHistoriesRepository } from '@/repositories/prisma/prisma-e
 import { PrismaExpensesRepository } from '@/repositories/prisma/prisma-expenses-repository'
 import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-repository'
 
-import { CreateExpenseUseCase } from '../create-expense'
+import { CreateExpenseUseCase } from '../../create-expense'
 
 export function makeCreateExpenseUseCase() {
   const expensesRepository = new PrismaExpensesRepository()

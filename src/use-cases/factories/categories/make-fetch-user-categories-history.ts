@@ -1,7 +1,7 @@
 import { PrismaCategoriesRepository } from '@/repositories/prisma/prisma-categories.repository'
 import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-repository'
 
-import { FetchUserCategoriesHistoryUseCase } from '../fetch-user-categories-history'
+import { FetchUserCategoriesHistoryUseCase } from '../../fetch-user-categories-history'
 
 export function makeFetchUserCategoriesHistory() {
   const categoriesRepository = new PrismaCategoriesRepository()

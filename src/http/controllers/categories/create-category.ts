@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 import { CategoryAlreadyExistError } from '@/use-cases/error/category-already-exist-error'
 import { ResourceNotFound } from '@/use-cases/error/resource-not-found-error'
-import { makeCreateCategory } from '@/use-cases/factories/make-create-category'
+import { makeCreateCategory } from '@/use-cases/factories/categories/make-create-category'
 
 export async function createCategory(
   request: FastifyRequest,

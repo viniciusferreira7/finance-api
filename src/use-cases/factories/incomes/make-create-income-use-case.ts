@@ -3,7 +3,7 @@ import { PrismaIncomeHistoriesRepository } from '@/repositories/prisma/prisma-in
 import { PrismaIncomesRepository } from '@/repositories/prisma/prisma-incomes.repository'
 import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-repository'
 
-import { CreateIncomeUseCase } from '../create-income'
+import { CreateIncomeUseCase } from '../../create-income'
 
 export function makeCreateIncomeUseCase() {
   const incomesRepository = new PrismaIncomesRepository()

@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 import { ResourceNotFound } from '@/use-cases/error/resource-not-found-error'
-import { makeFetchUserIncomesHistory } from '@/use-cases/factories/make-fetch-user-incomes-history'
+import { makeFetchUserIncomesHistory } from '@/use-cases/factories/incomes/make-fetch-user-incomes-history'
 
 export async function fetchIncomesHistory(
   request: FastifyRequest,
