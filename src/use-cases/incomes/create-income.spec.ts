@@ -1,38 +1,40 @@
+import { describe } from 'node:test'
+
 import { hash } from 'bcryptjs'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, expect, it } from 'vitest'
 
 import { InMemoryCategoriesRepository } from '@/repositories/in-memory/categories/in-memory-categories-repository'
-import { InMemoryExpenseHistoriesRepository } from '@/repositories/in-memory/expenses/in-memory-expense-histories-repository'
-import { InMemoryExpensesRepository } from '@/repositories/in-memory/expenses/in-memory-expenses-repository'
+import { InMemoryIncomeHistoriesRepository } from '@/repositories/in-memory/incomes/in-memory-income-histories-repository'
+import { InMemoryIncomesRepository } from '@/repositories/in-memory/incomes/in-memory-incomes-repository'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/users/in-memory-users-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
-import { CreateExpenseUseCase } from './create-expense'
-import { ResourceNotFound } from './error/resource-not-found-error'
+import { ResourceNotFound } from '../error/resource-not-found-error'
+import { CreateIncomeUseCase } from './create-income'
 
-let expensesRepository: InMemoryExpensesRepository
-let expenseHistoriesRepository: InMemoryExpenseHistoriesRepository
+let incomesRepository: InMemoryIncomesRepository
+let incomeHistoriesRepository: InMemoryIncomeHistoriesRepository
 let categoriesRepository: InMemoryCategoriesRepository
 let usersRepository: UsersRepository
 
-let sut: CreateExpenseUseCase
+let sut: CreateIncomeUseCase
 
 describe('Create income use case', () => {
   beforeEach(() => {
-    expensesRepository = new InMemoryExpensesRepository()
-    expenseHistoriesRepository = new InMemoryExpenseHistoriesRepository()
+    incomesRepository = new InMemoryIncomesRepository()
+    incomeHistoriesRepository = new InMemoryIncomeHistoriesRepository()
     categoriesRepository = new InMemoryCategoriesRepository()
     usersRepository = new InMemoryUsersRepository()
 
-    sut = new CreateExpenseUseCase(
-      expensesRepository,
-      expenseHistoriesRepository,
+    sut = new CreateIncomeUseCase(
+      incomesRepository,
+      incomeHistoriesRepository,
       categoriesRepository,
       usersRepository,
     )
   })
 
-  it('should be to create a expense', async () => {
+  it('should be able to create an income', async () => {
     const user = await usersRepository.create({
       name: 'John',
       email: 'john@example.com',
@@ -45,18 +47,18 @@ describe('Create income use case', () => {
       user_id: user.id,
     })
 
-    const { expense } = await sut.execute({
-      name: 'video game',
+    const { income } = await sut.execute({
+      name: 'job',
       value: 1000,
       description: 'Salary',
       category_id: category.id,
       user_id: user.id,
     })
 
-    expect(expense.id).toEqual(expect.any(String))
+    expect(income.id).toEqual(expect.any(String))
   })
 
-  it('should not be able to create an expense without a category', async () => {
+  it('should not be able to create an income without a category', async () => {
     const user = await usersRepository.create({
       name: 'John',
       email: 'john@example.com',
@@ -65,7 +67,7 @@ describe('Create income use case', () => {
 
     await expect(() =>
       sut.execute({
-        name: 'video game',
+        name: 'job',
         value: 1000,
         description: 'Salary',
         category_id: 'non-existing-category-id',
@@ -74,7 +76,7 @@ describe('Create income use case', () => {
     ).rejects.toBeInstanceOf(ResourceNotFound)
   })
 
-  it('should not be able to create an expense without a user', async () => {
+  it('should not be able to create an income without a user', async () => {
     const user = await usersRepository.create({
       name: 'John',
       email: 'john@example.com',
@@ -89,7 +91,7 @@ describe('Create income use case', () => {
 
     await expect(() =>
       sut.execute({
-        name: 'video game',
+        name: 'job',
         value: 1000,
         description: 'Salary',
         category_id: category.id,

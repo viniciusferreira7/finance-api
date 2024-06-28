@@ -5,8 +5,8 @@ import { InMemoryIncomeHistoriesRepository } from '@/repositories/in-memory/inco
 import { InMemoryIncomesRepository } from '@/repositories/in-memory/incomes/in-memory-incomes-repository'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/users/in-memory-users-repository'
 
+import { ResourceNotFound } from '../error/resource-not-found-error'
 import { DeleteUserIncome } from './delete-user-income'
-import { ResourceNotFound } from './error/resource-not-found-error'
 
 let incomesRepository: InMemoryIncomesRepository
 let incomeHistoriesRepository: InMemoryIncomeHistoriesRepository

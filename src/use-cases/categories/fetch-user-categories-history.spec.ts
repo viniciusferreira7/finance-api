@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { InMemoryCategoriesRepository } from '@/repositories/in-memory/categories/in-memory-categories-repository'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/users/in-memory-users-repository'
 
-import { ResourceNotFound } from './error/resource-not-found-error'
+import { ResourceNotFound } from '../error/resource-not-found-error'
 import { FetchUserCategoriesHistoryUseCase } from './fetch-user-categories-history'
 
 let categoriesRepository: InMemoryCategoriesRepository

@@ -4,7 +4,7 @@ import { IncomeHistoriesRepository } from '@/repositories/income-histories-repos
 import { IncomesRepository } from '@/repositories/incomes-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
-import { ResourceNotFound } from './error/resource-not-found-error'
+import { ResourceNotFound } from '../error/resource-not-found-error'
 
 interface DeleteUserIncomeRequest {
   userId: string

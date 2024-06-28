@@ -1,21 +1,24 @@
 import { hash } from 'bcryptjs'
 import { beforeEach, describe, expect, it } from 'vitest'
 
-import { InMemoryIncomesRepository } from '@/repositories/in-memory/incomes/in-memory-incomes-repository'
+import { InMemoryExpensesRepository } from '@/repositories/in-memory/expenses/in-memory-expenses-repository'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/users/in-memory-users-repository'
 
-import { ResourceNotFound } from './error/resource-not-found-error'
-import { FetchUserIncomesHistoryUseCase } from './fetch-user-incomes-history'
+import { ResourceNotFound } from '../error/resource-not-found-error'
+import { FetchUserExpensesHistoryUseCase } from './fetch-user-expenses-history'
 
-let incomesRepository: InMemoryIncomesRepository
+let expensesRepository: InMemoryExpensesRepository
 let usersRepository: InMemoryUsersRepository
-let sut: FetchUserIncomesHistoryUseCase
+let sut: FetchUserExpensesHistoryUseCase
 
-describe('Fetch user incomes history use case', () => {
+describe('Fetch user expenses history use case', () => {
   beforeEach(() => {
-    incomesRepository = new InMemoryIncomesRepository()
+    expensesRepository = new InMemoryExpensesRepository()
     usersRepository = new InMemoryUsersRepository()
-    sut = new FetchUserIncomesHistoryUseCase(incomesRepository, usersRepository)
+    sut = new FetchUserExpensesHistoryUseCase(
+      expensesRepository,
+      usersRepository,
+    )
   })
 
   it('should be able to fetch user history', async () => {
@@ -26,10 +29,10 @@ describe('Fetch user incomes history use case', () => {
     })
 
     for (let i = 1; i <= 2; i++) {
-      await incomesRepository.create({
-        name: 'job',
-        value: 1000 + i * 10,
-        description: 'Salary',
+      await expensesRepository.create({
+        name: 'video game',
+        value: 500 + i * 10,
+        description: 'Course',
         category_id: `category-${i}`,
         user_id: user.id,
       })
@@ -50,10 +53,10 @@ describe('Fetch user incomes history use case', () => {
 
   it('should not be able to fetch history without a user', async () => {
     for (let i = 1; i <= 22; i++) {
-      await incomesRepository.create({
-        name: 'job',
-        value: 1000 + i * 10,
-        description: 'Salary',
+      await expensesRepository.create({
+        name: 'video game',
+        value: 500 + i * 10,
+        description: 'Course',
         category_id: `category-${i}`,
         user_id: 'non-existing-id',
       })
@@ -76,10 +79,10 @@ describe('Fetch user incomes history use case', () => {
     })
 
     for (let i = 1; i <= 22; i++) {
-      await incomesRepository.create({
-        name: 'job',
-        value: 1000 + i * 10,
-        description: 'Salary',
+      await expensesRepository.create({
+        name: 'video game',
+        value: 500 + i * 10,
+        description: 'Course',
         category_id: `category-${i}`,
         user_id: user.id,
       })
@@ -106,10 +109,10 @@ describe('Fetch user incomes history use case', () => {
     })
 
     for (let i = 1; i <= 22; i++) {
-      await incomesRepository.create({
-        name: 'job',
-        value: 1000 + i * 10,
-        description: 'Salary',
+      await expensesRepository.create({
+        name: 'video game',
+        value: 500 + i * 10,
+        description: 'Course',
         category_id: `category-${i}`,
         user_id: user.id,
       })

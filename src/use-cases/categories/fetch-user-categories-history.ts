@@ -4,7 +4,7 @@ import { PaginationRequest, PaginationResponse } from '@/@types/pagination'
 import { CategoriesRepository } from '@/repositories/categories-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
-import { ResourceNotFound } from './error/resource-not-found-error'
+import { ResourceNotFound } from '../error/resource-not-found-error'
 
 interface FetchUserCategoriesUseCaseRequest extends PaginationRequest {
   userId: string

@@ -6,9 +6,9 @@ import { InMemoryCategoriesRepository } from '@/repositories/in-memory/categorie
 import { InMemoryUsersRepository } from '@/repositories/in-memory/users/in-memory-users-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
+import { CategoryAlreadyExistError } from '../error/category-already-exist-error'
+import { ResourceNotFound } from '../error/resource-not-found-error'
 import { CreateCategoryUseCase } from './create-category'
-import { CategoryAlreadyExistError } from './error/category-already-exist-error'
-import { ResourceNotFound } from './error/resource-not-found-error'
 
 let categoriesRepository: CategoriesRepository
 let usersRepository: UsersRepository

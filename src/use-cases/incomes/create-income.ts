@@ -6,7 +6,7 @@ import { IncomesRepository } from '@/repositories/incomes-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 import { convertToCents } from '@/utils/convert-to-cents'
 
-import { ResourceNotFound } from './error/resource-not-found-error'
+import { ResourceNotFound } from '../error/resource-not-found-error'
 
 interface CreateIncomeRequest {
   name: string

@@ -3,8 +3,8 @@ import { Category } from '@prisma/client'
 import { CategoriesRepository } from '@/repositories/categories-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
-import { CategoryAlreadyExistError } from './error/category-already-exist-error'
-import { ResourceNotFound } from './error/resource-not-found-error'
+import { CategoryAlreadyExistError } from '../error/category-already-exist-error'
+import { ResourceNotFound } from '../error/resource-not-found-error'
 
 interface CreateCategoryUseCaseRequest {
   name: string

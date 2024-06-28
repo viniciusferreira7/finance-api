@@ -4,8 +4,8 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { InMemoryCategoriesRepository } from '@/repositories/in-memory/categories/in-memory-categories-repository'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/users/in-memory-users-repository'
 
+import { ResourceNotFound } from '../error/resource-not-found-error'
 import { DeleteUserCategory } from './delete-user-category'
-import { ResourceNotFound } from './error/resource-not-found-error'
 
 let categoriesRepository: InMemoryCategoriesRepository
 let usersRepository: InMemoryUsersRepository

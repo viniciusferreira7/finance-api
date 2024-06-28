@@ -4,7 +4,7 @@ import { ExpenseHistoriesRepository } from '@/repositories/expense-histories-rep
 import { ExpensesRepository } from '@/repositories/expenses-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
-import { ResourceNotFound } from './error/resource-not-found-error'
+import { ResourceNotFound } from '../error/resource-not-found-error'
 
 interface DeleteUserExpenseRequest {
   userId: string

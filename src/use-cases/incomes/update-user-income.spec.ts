@@ -2,38 +2,38 @@ import { hash } from 'bcryptjs'
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import { InMemoryCategoriesRepository } from '@/repositories/in-memory/categories/in-memory-categories-repository'
-import { InMemoryExpenseHistoriesRepository } from '@/repositories/in-memory/expenses/in-memory-expense-histories-repository'
-import { InMemoryExpensesRepository } from '@/repositories/in-memory/expenses/in-memory-expenses-repository'
+import { InMemoryIncomeHistoriesRepository } from '@/repositories/in-memory/incomes/in-memory-income-histories-repository'
+import { InMemoryIncomesRepository } from '@/repositories/in-memory/incomes/in-memory-incomes-repository'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/users/in-memory-users-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 import { convertToCents } from '@/utils/convert-to-cents'
 
-import { ResourceNotFound } from './error/resource-not-found-error'
-import { UpdateUserExpenseUseCase } from './update-user-expense'
+import { ResourceNotFound } from '../error/resource-not-found-error'
+import { UpdateUserIncomeUseCase } from './update-user-income'
 
-let expenseRepository: InMemoryExpensesRepository
-let expenseHistoriesRepository: InMemoryExpenseHistoriesRepository
+let incomesRepository: InMemoryIncomesRepository
+let incomeHistoriesRepository: InMemoryIncomeHistoriesRepository
 let categoriesRepository: InMemoryCategoriesRepository
 let usersRepository: UsersRepository
 
-let sut: UpdateUserExpenseUseCase
+let sut: UpdateUserIncomeUseCase
 
-describe('Update user expense use case', () => {
+describe('Update user income use case', () => {
   beforeEach(() => {
-    expenseRepository = new InMemoryExpensesRepository()
-    expenseHistoriesRepository = new InMemoryExpenseHistoriesRepository()
+    incomesRepository = new InMemoryIncomesRepository()
+    incomeHistoriesRepository = new InMemoryIncomeHistoriesRepository()
     categoriesRepository = new InMemoryCategoriesRepository()
     usersRepository = new InMemoryUsersRepository()
 
-    sut = new UpdateUserExpenseUseCase(
-      expenseRepository,
-      expenseHistoriesRepository,
+    sut = new UpdateUserIncomeUseCase(
+      incomesRepository,
+      incomeHistoriesRepository,
       categoriesRepository,
       usersRepository,
     )
   })
 
-  it('should be able to update an expense', async () => {
+  it('should be able to update an income', async () => {
     const user = await usersRepository.create({
       name: 'John Doe',
       email: 'john.doe@example.com',
@@ -47,34 +47,34 @@ describe('Update user expense use case', () => {
       user_id: user.id,
     })
 
-    const expense = await expenseRepository.create({
-      name: 'groceries',
+    const income = await incomesRepository.create({
+      name: 'job',
       value: 1000,
       user_id: user.id,
       category_id: category.id,
     })
 
-    const { expense: updatedExpense } = await sut.execute({
+    const { income: updatedIncome } = await sut.execute({
       userId: user.id,
-      updateExpense: {
-        id: expense.id,
+      updateIncome: {
+        id: income.id,
         value: 5000,
-        name: 'updated-expense',
+        name: 'updated-income',
         description: null,
         categoryId: category.id,
       },
     })
 
-    expect(updatedExpense).toEqual(
+    expect(updatedIncome).toEqual(
       expect.objectContaining({
         value: convertToCents(5000),
-        name: 'updated-expense',
+        name: 'updated-income',
         description: null,
       }),
     )
   })
 
-  it('should not be able to update an expense without a user', async () => {
+  it('should not be able to update an income without a user', async () => {
     const user = await usersRepository.create({
       name: 'John Doe',
       email: 'john.doe@example.com',
@@ -88,8 +88,8 @@ describe('Update user expense use case', () => {
       user_id: user.id,
     })
 
-    const expense = await expenseRepository.create({
-      name: 'groceries',
+    const income = await incomesRepository.create({
+      name: 'job',
       value: 1000,
       user_id: user.id,
       category_id: category.id,
@@ -98,10 +98,10 @@ describe('Update user expense use case', () => {
     await expect(() =>
       sut.execute({
         userId: 'non-existing-user-id',
-        updateExpense: {
-          id: expense.id,
+        updateIncome: {
+          id: income.id,
           value: 5000,
-          name: 'updated-expense',
+          name: 'updated-income',
           description: null,
           categoryId: category.id,
         },
@@ -109,7 +109,7 @@ describe('Update user expense use case', () => {
     ).rejects.toBeInstanceOf(ResourceNotFound)
   })
 
-  it('should not be able to update a non-existent expense', async () => {
+  it('should not be able to update a non-existent income', async () => {
     const user = await usersRepository.create({
       name: 'John Doe',
       email: 'john.doe@example.com',
@@ -119,10 +119,10 @@ describe('Update user expense use case', () => {
     await expect(() =>
       sut.execute({
         userId: user.id,
-        updateExpense: {
-          id: 'non-existing-expense-id',
+        updateIncome: {
+          id: 'non-existing-income-id',
           value: 5000,
-          name: 'updated-expense',
+          name: 'updated-income',
           description: null,
           categoryId: 'non-existing-category-id',
         },
@@ -130,7 +130,7 @@ describe('Update user expense use case', () => {
     ).rejects.toBeInstanceOf(ResourceNotFound)
   })
 
-  it('should not be able to update an expense without category', async () => {
+  it('should not be able to update an income without category', async () => {
     const user = await usersRepository.create({
       name: 'John Doe',
       email: 'john.doe@example.com',
@@ -144,8 +144,8 @@ describe('Update user expense use case', () => {
       user_id: user.id,
     })
 
-    const expense = await expenseRepository.create({
-      name: 'groceries',
+    const income = await incomesRepository.create({
+      name: 'job',
       value: 1000,
       user_id: user.id,
       category_id: category.id,
@@ -154,10 +154,10 @@ describe('Update user expense use case', () => {
     await expect(() =>
       sut.execute({
         userId: user.id,
-        updateExpense: {
-          id: expense.id,
+        updateIncome: {
+          id: income.id,
           value: 5000,
-          name: 'updated-expense',
+          name: 'updated-income',
           description: null,
           categoryId: 'non-existing-category-id',
         },
@@ -165,5 +165,5 @@ describe('Update user expense use case', () => {
     ).rejects.toBeInstanceOf(ResourceNotFound)
   })
 
-  // TODO: creates another test to update expense
+  // TODO: creates another test to update income
 })

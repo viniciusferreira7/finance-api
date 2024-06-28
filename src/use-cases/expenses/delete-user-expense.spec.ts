@@ -5,8 +5,8 @@ import { InMemoryExpenseHistoriesRepository } from '@/repositories/in-memory/exp
 import { InMemoryExpensesRepository } from '@/repositories/in-memory/expenses/in-memory-expenses-repository'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/users/in-memory-users-repository'
 
+import { ResourceNotFound } from '../error/resource-not-found-error'
 import { DeleteUserExpense } from './delete-user-expense'
-import { ResourceNotFound } from './error/resource-not-found-error'
 
 let expensesRepository: InMemoryExpensesRepository
 let expenseHistoriesRepository: InMemoryExpenseHistoriesRepository

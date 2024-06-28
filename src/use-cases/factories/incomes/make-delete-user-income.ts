@@ -2,7 +2,7 @@ import { PrismaIncomeHistoriesRepository } from '@/repositories/prisma/incomes/p
 import { PrismaIncomesRepository } from '@/repositories/prisma/incomes/prisma-incomes.repository'
 import { PrismaUsersRepository } from '@/repositories/prisma/users/prisma-users-repository'
 
-import { DeleteUserIncome } from '../../delete-user-income'
+import { DeleteUserIncome } from '../../incomes/delete-user-income'
 
 export function makeDeleteUserIncome() {
   const incomesRepository = new PrismaIncomesRepository()

@@ -1,6 +1,6 @@
 import { PrismaExpensesRepository } from '@/repositories/prisma/expenses/prisma-expenses-repository'
 import { PrismaUsersRepository } from '@/repositories/prisma/users/prisma-users-repository'
-import { DeleteUserExpense } from '@/use-cases/delete-user-expense'
+import { DeleteUserExpense } from '@/use-cases/expenses/delete-user-expense'
 
 export function makeDeleteUserExpense() {
   const expensesRepository = new PrismaExpensesRepository()
