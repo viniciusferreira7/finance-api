@@ -1,4 +1,4 @@
-import { Income } from '@prisma/client'
+import { Expense } from '@prisma/client'
 
 import { CategoriesRepository } from '@/repositories/categories-repository'
 import { ExpenseHistoriesRepository } from '@/repositories/expense-histories-repository'
@@ -22,7 +22,7 @@ interface UpdateUserExpenseUseCaseRequest {
 }
 
 interface UpdateUserExpenseUseCaseResponse {
-  income: Income | null
+  expense: Expense | null
 }
 
 export class UpdateUserExpenseUseCase {
@@ -31,8 +31,7 @@ export class UpdateUserExpenseUseCase {
     private expenseHistoriesRepository: ExpenseHistoriesRepository,
     private categoriesRepository: CategoriesRepository,
     private usersRepository: UsersRepository,
-    // eslint-disable-next-line prettier/prettier
-  ) { }
+  ) {}
 
   async execute({
     userId,
@@ -77,6 +76,6 @@ export class UpdateUserExpenseUseCase {
       categoryId: updateExpense.categoryId,
     })
 
-    return { income: updatedExpense }
+    return { expense: updatedExpense }
   }
 }

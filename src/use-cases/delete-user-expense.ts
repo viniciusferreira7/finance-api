@@ -20,8 +20,7 @@ export class DeleteUserExpense {
     private expensesRepository: ExpensesRepository,
     private expenseHistoriesRepository: ExpenseHistoriesRepository,
     private usersRepository: UsersRepository,
-    // eslint-disable-next-line prettier/prettier
-  ) { }
+  ) {}
 
   async execute({
     userId,

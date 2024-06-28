@@ -18,8 +18,10 @@ interface CreateCategoryUseCaseResponse {
 }
 
 export class CreateCategoryUseCase {
-  // eslint-disable-next-line prettier/prettier
-  constructor(private categoriesRepository: CategoriesRepository, private usersRepository: UsersRepository) { }
+  constructor(
+    private categoriesRepository: CategoriesRepository,
+    private usersRepository: UsersRepository,
+  ) {}
 
   async execute({
     name,

@@ -16,8 +16,7 @@ export class FetchUserCategoriesHistoryUseCase {
   constructor(
     private categoriesRepository: CategoriesRepository,
     private usersRepository: UsersRepository,
-    // eslint-disable-next-line prettier/prettier
-  ) { }
+  ) {}
 
   async execute({
     userId,

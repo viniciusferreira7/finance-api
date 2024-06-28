@@ -26,8 +26,7 @@ export class CreateIncomeUseCase {
     private incomeHistoriesRepository: IncomeHistoriesRepository,
     private categoriesRepositores: CategoriesRepository,
     private usersRepositores: UsersRepository,
-    // eslint-disable-next-line prettier/prettier
-  ) { }
+  ) {}
 
   async execute({
     name,

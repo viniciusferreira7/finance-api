@@ -16,8 +16,7 @@ export class FetchUserExpensesHistoryUseCase {
   constructor(
     private expensesRepository: ExpensesRepository,
     private usersRepository: UsersRepository,
-    // eslint-disable-next-line prettier/prettier
-  ) { }
+  ) {}
 
   async execute({
     userId,

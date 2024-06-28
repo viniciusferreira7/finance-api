@@ -15,8 +15,7 @@ interface AuthenticateResponse {
 }
 
 export class AuthenticateUseCase {
-  // eslint-disable-next-line prettier/prettier
-  constructor(private usersRepository: UsersRepository) { }
+  constructor(private usersRepository: UsersRepository) {}
 
   async execute({
     email,

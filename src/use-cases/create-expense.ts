@@ -26,8 +26,7 @@ export class CreateExpenseUseCase {
     private expenseHistoriesRepository: ExpenseHistoriesRepository,
     private categoriesRepository: CategoriesRepository,
     private usersRepository: UsersRepository,
-    // eslint-disable-next-line prettier/prettier
-  ) { }
+  ) {}
 
   async execute({
     name,

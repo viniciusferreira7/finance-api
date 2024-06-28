@@ -4,8 +4,8 @@ import { randomUUID } from 'crypto'
 import { IncomeHistoriesRepository } from '../income-histories-repository'
 
 export class InMemoryIncomeHistoriesRepository
-  // eslint-disable-next-line prettier/prettier
-  implements IncomeHistoriesRepository {
+  implements IncomeHistoriesRepository
+{
   public incomeHistoriesRepository: IncomeHistory[] = []
 
   async deleteMany(incomeId: string, userId: string) {

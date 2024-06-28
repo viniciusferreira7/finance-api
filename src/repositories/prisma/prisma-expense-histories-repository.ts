@@ -5,8 +5,8 @@ import { prisma } from '@/lib/prisma'
 import { ExpenseHistoriesRepository } from '../expense-histories-repository'
 
 export class PrismaExpenseHistoriesRepository
-  // eslint-disable-next-line prettier/prettier
-  implements ExpenseHistoriesRepository {
+  implements ExpenseHistoriesRepository
+{
   async deleteMany(expenseId: string, userId: string) {
     const { count } = await prisma.expenseHistory.deleteMany({
       where: {
