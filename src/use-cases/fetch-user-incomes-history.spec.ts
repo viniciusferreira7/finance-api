@@ -1,16 +1,14 @@
 import { hash } from 'bcryptjs'
 import { beforeEach, describe, expect, it } from 'vitest'
 
-import { InMemoryIncomesRepository } from '@/repositories/in-memory/in-memory-incomes-repository'
-import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { IncomesRepository } from '@/repositories/incomes-repository'
-import { UsersRepository } from '@/repositories/users-repository'
+import { InMemoryIncomesRepository } from '@/repositories/in-memory/incomes/in-memory-incomes-repository'
+import { InMemoryUsersRepository } from '@/repositories/in-memory/users/in-memory-users-repository'
 
 import { ResourceNotFound } from './error/resource-not-found-error'
 import { FetchUserIncomesHistoryUseCase } from './fetch-user-incomes-history'
 
-let incomesRepository: IncomesRepository
-let usersRepository: UsersRepository
+let incomesRepository: InMemoryIncomesRepository
+let usersRepository: InMemoryUsersRepository
 let sut: FetchUserIncomesHistoryUseCase
 
 describe('Fetch user incomes history use case', () => {
@@ -29,6 +27,7 @@ describe('Fetch user incomes history use case', () => {
 
     for (let i = 1; i <= 2; i++) {
       await incomesRepository.create({
+        name: 'job',
         value: 1000 + i * 10,
         description: 'Salary',
         category_id: `category-${i}`,
@@ -52,6 +51,7 @@ describe('Fetch user incomes history use case', () => {
   it('should not be able to fetch history without a user', async () => {
     for (let i = 1; i <= 22; i++) {
       await incomesRepository.create({
+        name: 'job',
         value: 1000 + i * 10,
         description: 'Salary',
         category_id: `category-${i}`,
@@ -77,6 +77,7 @@ describe('Fetch user incomes history use case', () => {
 
     for (let i = 1; i <= 22; i++) {
       await incomesRepository.create({
+        name: 'job',
         value: 1000 + i * 10,
         description: 'Salary',
         category_id: `category-${i}`,
@@ -106,6 +107,7 @@ describe('Fetch user incomes history use case', () => {
 
     for (let i = 1; i <= 22; i++) {
       await incomesRepository.create({
+        name: 'job',
         value: 1000 + i * 10,
         description: 'Salary',
         category_id: `category-${i}`,

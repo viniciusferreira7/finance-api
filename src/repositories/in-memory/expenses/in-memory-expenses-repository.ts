@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto'
 
 import { PaginationRequest } from '@/@types/pagination'
 
-import { ExpensesRepository } from '../expenses-repository'
+import { ExpensesRepository } from '../../expenses-repository'
 
 interface UpdateExpense {
   id: string

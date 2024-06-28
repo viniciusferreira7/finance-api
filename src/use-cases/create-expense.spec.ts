@@ -1,10 +1,10 @@
 import { hash } from 'bcryptjs'
 import { beforeEach, describe, expect, it } from 'vitest'
 
-import { InMemoryCategoriesRepository } from '@/repositories/in-memory/in-memory-categories-repository'
-import { InMemoryExpenseHistoriesRepository } from '@/repositories/in-memory/in-memory-expense-histories-repository'
-import { InMemoryExpensesRepository } from '@/repositories/in-memory/in-memory-expenses-repository'
-import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
+import { InMemoryCategoriesRepository } from '@/repositories/in-memory/categories/in-memory-categories-repository'
+import { InMemoryExpenseHistoriesRepository } from '@/repositories/in-memory/expenses/in-memory-expense-histories-repository'
+import { InMemoryExpensesRepository } from '@/repositories/in-memory/expenses/in-memory-expenses-repository'
+import { InMemoryUsersRepository } from '@/repositories/in-memory/users/in-memory-users-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
 import { CreateExpenseUseCase } from './create-expense'

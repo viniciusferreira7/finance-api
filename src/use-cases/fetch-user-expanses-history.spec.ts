@@ -1,16 +1,14 @@
 import { hash } from 'bcryptjs'
 import { beforeEach, describe, expect, it } from 'vitest'
 
-import { ExpensesRepository } from '@/repositories/expenses-repository'
-import { InMemoryExpensesRepository } from '@/repositories/in-memory/in-memory-expenses-repository'
-import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { UsersRepository } from '@/repositories/users-repository'
+import { InMemoryExpensesRepository } from '@/repositories/in-memory/expenses/in-memory-expenses-repository'
+import { InMemoryUsersRepository } from '@/repositories/in-memory/users/in-memory-users-repository'
 
 import { ResourceNotFound } from './error/resource-not-found-error'
 import { FetchUserExpensesHistoryUseCase } from './fetch-user-expenses-history'
 
-let expensesRepository: ExpensesRepository
-let usersRepository: UsersRepository
+let expensesRepository: InMemoryExpensesRepository
+let usersRepository: InMemoryUsersRepository
 let sut: FetchUserExpensesHistoryUseCase
 
 describe('Fetch user expenses history use case', () => {
@@ -32,6 +30,7 @@ describe('Fetch user expenses history use case', () => {
 
     for (let i = 1; i <= 2; i++) {
       await expensesRepository.create({
+        name: 'video game',
         value: 500 + i * 10,
         description: 'Course',
         category_id: `category-${i}`,
@@ -55,6 +54,7 @@ describe('Fetch user expenses history use case', () => {
   it('should not be able to fetch history without a user', async () => {
     for (let i = 1; i <= 22; i++) {
       await expensesRepository.create({
+        name: 'video game',
         value: 500 + i * 10,
         description: 'Course',
         category_id: `category-${i}`,
@@ -80,6 +80,7 @@ describe('Fetch user expenses history use case', () => {
 
     for (let i = 1; i <= 22; i++) {
       await expensesRepository.create({
+        name: 'video game',
         value: 500 + i * 10,
         description: 'Course',
         category_id: `category-${i}`,
@@ -109,6 +110,7 @@ describe('Fetch user expenses history use case', () => {
 
     for (let i = 1; i <= 22; i++) {
       await expensesRepository.create({
+        name: 'video game',
         value: 500 + i * 10,
         description: 'Course',
         category_id: `category-${i}`,

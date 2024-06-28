@@ -3,20 +3,31 @@ import { Prisma } from '@prisma/client'
 import { PaginationRequest } from '@/@types/pagination'
 import { prisma } from '@/lib/prisma'
 
-import { CategoriesRepository } from '../categories-repository'
+import { ExpensesRepository } from '../../expenses-repository'
 
-export class PrismaCategoriesRepository implements CategoriesRepository {
+interface UpdateExpense {
+  id: string
+  name?: string
+  value?: number
+  description?: string | null
+  categoryId?: string
+}
+
+export class PrismaExpensesRepository implements ExpensesRepository {
   async findManyByUserId(userId: string, pagination: PaginationRequest) {
-    const count = await prisma.category.count({
+    const count = await prisma.expense.count({
       where: {
         user_id: userId,
       },
     })
 
     if (pagination.pagination_disabled) {
-      const categories = await prisma.category.findMany({
+      const expenses = await prisma.expense.findMany({
         where: {
           user_id: userId,
+        },
+        include: {
+          category: true,
         },
       })
 
@@ -28,7 +39,7 @@ export class PrismaCategoriesRepository implements CategoriesRepository {
         total_pages: 1,
         per_page: count,
         pagination_disabled: !!pagination.pagination_disabled,
-        results: categories,
+        results: expenses,
       }
     }
 
@@ -37,7 +48,7 @@ export class PrismaCategoriesRepository implements CategoriesRepository {
 
     const totalPages = Math.ceil(count / perPage)
 
-    const categoriesPaginated = await prisma.category.findMany({
+    const expensesPaginated = await prisma.expense.findMany({
       where: {
         user_id: userId,
       },
@@ -56,48 +67,51 @@ export class PrismaCategoriesRepository implements CategoriesRepository {
       total_pages: totalPages,
       per_page: perPage,
       pagination_disabled: !!pagination.pagination_disabled,
-      results: categoriesPaginated,
+      results: expensesPaginated,
     }
   }
 
-  async findByUserIdAndName(userId: string, name: string) {
-    const category = await prisma.category.findFirst({
-      where: {
-        user_id: userId,
-        name: {
-          equals: name,
-        },
-      },
-    })
-
-    return category
-  }
-
   async findById(id: string) {
-    const category = await prisma.category.findUnique({
+    const expense = await prisma.expense.findUnique({
       where: {
         id,
       },
     })
 
-    return category
+    return expense
   }
 
   async delete(id: string) {
-    const category = await prisma.category.delete({
+    const expense = await prisma.expense.delete({
       where: {
         id,
       },
     })
 
-    return category
+    return expense
   }
 
-  async create(data: Prisma.CategoryUncheckedCreateInput) {
-    const category = await prisma.category.create({
-      data,
+  async update(updateExpense: UpdateExpense) {
+    const prismaExpense = await prisma.expense.update({
+      where: {
+        id: updateExpense.id,
+      },
+      data: {
+        name: updateExpense.name,
+        value: updateExpense.value,
+        description: updateExpense.description,
+        update_at: new Date(),
+        category_id: updateExpense.categoryId,
+      },
     })
 
-    return category
+    return prismaExpense
+  }
+
+  async create(data: Prisma.ExpenseUncheckedCreateInput) {
+    const expense = await prisma.expense.create({
+      data,
+    })
+    return expense
   }
 }

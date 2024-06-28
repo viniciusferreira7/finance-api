@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto'
 
 import { PaginationRequest } from '@/@types/pagination'
 
-import { IncomesRepository } from '../incomes-repository'
+import { IncomesRepository } from '../../incomes-repository'
 
 interface UpdateIncome {
   id: string

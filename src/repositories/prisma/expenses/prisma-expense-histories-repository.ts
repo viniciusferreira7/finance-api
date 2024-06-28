@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client'
 
 import { prisma } from '@/lib/prisma'
 
-import { ExpenseHistoriesRepository } from '../expense-histories-repository'
+import { ExpenseHistoriesRepository } from '../../expense-histories-repository'
 
 export class PrismaExpenseHistoriesRepository
   implements ExpenseHistoriesRepository

@@ -1,30 +1,36 @@
-import { Prisma } from '@prisma/client'
+import { Income, Prisma } from '@prisma/client'
 
-import { PaginationRequest } from '@/@types/pagination'
+import { PaginationRequest, PaginationResponse } from '@/@types/pagination'
 import { prisma } from '@/lib/prisma'
 
-import { ExpensesRepository } from '../expenses-repository'
+import { IncomesRepository } from '../../incomes-repository'
 
-interface UpdateExpense {
+interface UpdateIncome {
   id: string
   name?: string
   value?: number
-  description?: string | null
+  description?: string
   categoryId?: string
 }
 
-export class PrismaExpensesRepository implements ExpensesRepository {
-  async findManyByUserId(userId: string, pagination: PaginationRequest) {
-    const count = await prisma.expense.count({
+export class PrismaIncomesRepository implements IncomesRepository {
+  async findManyByUserId(
+    userId: string,
+    pagination: PaginationRequest,
+  ): Promise<PaginationResponse<Income>> {
+    const count = await prisma.income.count({
       where: {
         user_id: userId,
       },
     })
 
     if (pagination.pagination_disabled) {
-      const expenses = await prisma.expense.findMany({
+      const incomes = await prisma.income.findMany({
         where: {
           user_id: userId,
+        },
+        orderBy: {
+          created_at: 'asc',
         },
         include: {
           category: true,
@@ -36,10 +42,10 @@ export class PrismaExpensesRepository implements ExpensesRepository {
         next: 0,
         previous: 0,
         page: 1,
-        total_pages: 1,
         per_page: count,
         pagination_disabled: !!pagination.pagination_disabled,
-        results: expenses,
+        total_pages: 1,
+        results: incomes,
       }
     }
 
@@ -48,9 +54,12 @@ export class PrismaExpensesRepository implements ExpensesRepository {
 
     const totalPages = Math.ceil(count / perPage)
 
-    const expensesPaginated = await prisma.expense.findMany({
+    const incomesPaginated = await prisma.income.findMany({
       where: {
         user_id: userId,
+      },
+      orderBy: {
+        created_at: 'asc',
       },
       take: perPage,
       skip: (currentPage - 1) * perPage,
@@ -64,54 +73,54 @@ export class PrismaExpensesRepository implements ExpensesRepository {
       next: nextPage,
       previous: previousPage,
       page: currentPage,
-      total_pages: totalPages,
       per_page: perPage,
+      total_pages: totalPages,
       pagination_disabled: !!pagination.pagination_disabled,
-      results: expensesPaginated,
+      results: incomesPaginated,
     }
   }
 
   async findById(id: string) {
-    const expense = await prisma.expense.findUnique({
+    const income = await prisma.income.findUnique({
       where: {
         id,
       },
     })
 
-    return expense
+    return income
   }
 
   async delete(id: string) {
-    const expense = await prisma.expense.delete({
+    const income = await prisma.income.delete({
       where: {
         id,
       },
     })
 
-    return expense
+    return income
   }
 
-  async update(updateExpense: UpdateExpense) {
-    const prismaExpense = await prisma.expense.update({
+  async update(updateIncome: UpdateIncome) {
+    const prismaIncome = await prisma.income.update({
       where: {
-        id: updateExpense.id,
+        id: updateIncome.id,
       },
       data: {
-        name: updateExpense.name,
-        value: updateExpense.value,
-        description: updateExpense.description,
+        name: updateIncome.name,
+        value: updateIncome.value,
+        description: updateIncome.description,
         update_at: new Date(),
-        category_id: updateExpense.categoryId,
+        category_id: updateIncome.categoryId,
       },
     })
 
-    return prismaExpense
+    return prismaIncome
   }
 
-  async create(data: Prisma.ExpenseUncheckedCreateInput) {
-    const expense = await prisma.expense.create({
+  async create(data: Prisma.IncomeUncheckedCreateInput) {
+    const income = await prisma.income.create({
       data,
     })
-    return expense
+    return income
   }
 }

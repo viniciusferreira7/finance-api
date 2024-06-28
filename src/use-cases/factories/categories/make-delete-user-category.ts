@@ -1,5 +1,5 @@
-import { PrismaCategoriesRepository } from '@/repositories/prisma/prisma-categories.repository'
-import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-repository'
+import { PrismaCategoriesRepository } from '@/repositories/prisma/categories/prisma-categories.repository'
+import { PrismaUsersRepository } from '@/repositories/prisma/users/prisma-users-repository'
 
 import { DeleteUserCategory } from '../../delete-user-category'
 

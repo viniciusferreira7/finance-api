@@ -1,5 +1,5 @@
-import { PrismaExpensesRepository } from '@/repositories/prisma/prisma-expenses-repository'
-import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-repository'
+import { PrismaExpensesRepository } from '@/repositories/prisma/expenses/prisma-expenses-repository'
+import { PrismaUsersRepository } from '@/repositories/prisma/users/prisma-users-repository'
 
 import { FetchUserExpensesHistoryUseCase } from '../../fetch-user-expenses-history'
 

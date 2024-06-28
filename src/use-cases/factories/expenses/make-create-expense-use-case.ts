@@ -1,7 +1,7 @@
-import { PrismaCategoriesRepository } from '@/repositories/prisma/prisma-categories.repository'
-import { PrismaExpenseHistoriesRepository } from '@/repositories/prisma/prisma-expense-histories-repository'
-import { PrismaExpensesRepository } from '@/repositories/prisma/prisma-expenses-repository'
-import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-repository'
+import { PrismaCategoriesRepository } from '@/repositories/prisma/categories/prisma-categories.repository'
+import { PrismaExpenseHistoriesRepository } from '@/repositories/prisma/expenses/prisma-expense-histories-repository'
+import { PrismaExpensesRepository } from '@/repositories/prisma/expenses/prisma-expenses-repository'
+import { PrismaUsersRepository } from '@/repositories/prisma/users/prisma-users-repository'
 
 import { CreateExpenseUseCase } from '../../create-expense'
 

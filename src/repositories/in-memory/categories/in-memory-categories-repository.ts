@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto'
 
 import { PaginationRequest } from '@/@types/pagination'
 
-import { CategoriesRepository } from '../categories-repository'
+import { CategoriesRepository } from '../../categories-repository'
 
 export class InMemoryCategoriesRepository implements CategoriesRepository {
   public categories: Category[] = []

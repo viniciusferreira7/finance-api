@@ -1,6 +1,6 @@
-import { PrismaIncomeHistoriesRepository } from '@/repositories/prisma/prisma-income-histories-repository'
-import { PrismaIncomesRepository } from '@/repositories/prisma/prisma-incomes.repository'
-import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-repository'
+import { PrismaIncomeHistoriesRepository } from '@/repositories/prisma/incomes/prisma-income-histories-repository'
+import { PrismaIncomesRepository } from '@/repositories/prisma/incomes/prisma-incomes.repository'
+import { PrismaUsersRepository } from '@/repositories/prisma/users/prisma-users-repository'
 
 import { DeleteUserIncome } from '../../delete-user-income'
 

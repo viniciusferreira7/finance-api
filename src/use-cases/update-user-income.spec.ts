@@ -1,10 +1,10 @@
 import { hash } from 'bcryptjs'
 import { beforeEach, describe, expect, it } from 'vitest'
 
-import { InMemoryCategoriesRepository } from '@/repositories/in-memory/in-memory-categories-repository'
-import { InMemoryIncomeHistoriesRepository } from '@/repositories/in-memory/in-memory-income-histories-repository'
-import { InMemoryIncomesRepository } from '@/repositories/in-memory/in-memory-incomes-repository'
-import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
+import { InMemoryCategoriesRepository } from '@/repositories/in-memory/categories/in-memory-categories-repository'
+import { InMemoryIncomeHistoriesRepository } from '@/repositories/in-memory/incomes/in-memory-income-histories-repository'
+import { InMemoryIncomesRepository } from '@/repositories/in-memory/incomes/in-memory-incomes-repository'
+import { InMemoryUsersRepository } from '@/repositories/in-memory/users/in-memory-users-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 import { convertToCents } from '@/utils/convert-to-cents'
 

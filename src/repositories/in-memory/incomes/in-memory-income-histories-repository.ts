@@ -1,7 +1,7 @@
 import { IncomeHistory, Prisma } from '@prisma/client'
 import { randomUUID } from 'crypto'
 
-import { IncomeHistoriesRepository } from '../income-histories-repository'
+import { IncomeHistoriesRepository } from '../../income-histories-repository'
 
 export class InMemoryIncomeHistoriesRepository
   implements IncomeHistoriesRepository

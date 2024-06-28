@@ -1,16 +1,14 @@
 import { hash } from 'bcryptjs'
 import { beforeEach, describe, expect, it } from 'vitest'
 
-import { CategoriesRepository } from '@/repositories/categories-repository'
-import { InMemoryCategoriesRepository } from '@/repositories/in-memory/in-memory-categories-repository'
-import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { UsersRepository } from '@/repositories/users-repository'
+import { InMemoryCategoriesRepository } from '@/repositories/in-memory/categories/in-memory-categories-repository'
+import { InMemoryUsersRepository } from '@/repositories/in-memory/users/in-memory-users-repository'
 
 import { ResourceNotFound } from './error/resource-not-found-error'
 import { FetchUserCategoriesHistoryUseCase } from './fetch-user-categories-history'
 
-let categoriesRepository: CategoriesRepository
-let usersRepository: UsersRepository
+let categoriesRepository: InMemoryCategoriesRepository
+let usersRepository: InMemoryUsersRepository
 let sut: FetchUserCategoriesHistoryUseCase
 
 describe('Fetch user categories history use case', () => {

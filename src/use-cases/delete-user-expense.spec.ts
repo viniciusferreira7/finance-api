@@ -1,9 +1,9 @@
 import { hash } from 'bcryptjs'
 import { beforeEach, describe, expect, it } from 'vitest'
 
-import { InMemoryExpenseHistoriesRepository } from '@/repositories/in-memory/in-memory-expense-histories-repository'
-import { InMemoryExpensesRepository } from '@/repositories/in-memory/in-memory-expenses-repository'
-import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
+import { InMemoryExpenseHistoriesRepository } from '@/repositories/in-memory/expenses/in-memory-expense-histories-repository'
+import { InMemoryExpensesRepository } from '@/repositories/in-memory/expenses/in-memory-expenses-repository'
+import { InMemoryUsersRepository } from '@/repositories/in-memory/users/in-memory-users-repository'
 
 import { DeleteUserExpense } from './delete-user-expense'
 import { ResourceNotFound } from './error/resource-not-found-error'
