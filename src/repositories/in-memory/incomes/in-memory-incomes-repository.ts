@@ -83,6 +83,25 @@ export class InMemoryIncomesRepository implements IncomesRepository {
     return null
   }
 
+  async updateManyByCategoryId(categoryId: string) {
+    const sameCategoryId = this.incomes
+      .filter((income) => income.category_id === categoryId)
+      .map((income) => {
+        return { ...income, category_id: '' }
+      })
+
+    const differentCategoryId = this.incomes.filter(
+      (income) => income.category_id !== categoryId,
+    )
+
+    this.incomes = []
+
+    this.incomes.push(...differentCategoryId)
+    this.incomes.push(...sameCategoryId)
+
+    return sameCategoryId.length
+  }
+
   async update(updateIncome: UpdateIncome) {
     const incomeIndex = this.incomes.findIndex(
       (item) => item.id === updateIncome.id,

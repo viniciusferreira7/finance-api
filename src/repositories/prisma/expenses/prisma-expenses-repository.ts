@@ -91,6 +91,19 @@ export class PrismaExpensesRepository implements ExpensesRepository {
     return expense
   }
 
+  async updateManyByCategoryId(categoryId: string) {
+    const { count } = await prisma.expense.updateMany({
+      where: {
+        category_id: categoryId,
+      },
+      data: {
+        category_id: undefined,
+      },
+    })
+
+    return count
+  }
+
   async update(updateExpense: UpdateExpense) {
     const prismaExpense = await prisma.expense.update({
       where: {

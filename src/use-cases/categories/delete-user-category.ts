@@ -1,6 +1,8 @@
 import { Category } from '@prisma/client'
 
 import { CategoriesRepository } from '@/repositories/categories-repository'
+import { ExpensesRepository } from '@/repositories/expenses-repository'
+import { IncomesRepository } from '@/repositories/incomes-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
 import { ResourceNotFound } from '../error/resource-not-found-error'
@@ -17,6 +19,8 @@ interface DeleteUserCategoryResponse {
 export class DeleteUserCategory {
   constructor(
     private categoriesRepository: CategoriesRepository,
+    private incomesRepository: IncomesRepository,
+    private expensesRepository: ExpensesRepository,
     private usersRepository: UsersRepository,
   ) {}
 
@@ -37,6 +41,9 @@ export class DeleteUserCategory {
     }
 
     const deletedCategory = await this.categoriesRepository.delete(categoryId)
+
+    await this.expensesRepository.updateManyByCategoryId(categoryId)
+    await this.incomesRepository.updateManyByCategoryId(categoryId)
 
     return { category: deletedCategory }
   }

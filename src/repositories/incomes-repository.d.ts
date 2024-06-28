@@ -17,6 +17,7 @@ export interface IncomesRepository {
   ): Promise<PaginationResponse<Income>>
   findById(id: string): Promise<Income | null>
   delete(id: string): Promise<Income | null>
+  updateManyByCategoryId(categoryId: string): Promise<number>
   update(updateIncome: UpdateIncome): Promise<Income | null>
   create(data: Prisma.IncomeUncheckedCreateInput): Promise<Income>
 }

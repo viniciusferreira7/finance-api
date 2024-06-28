@@ -82,6 +82,25 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
     return null
   }
 
+  async updateManyByCategoryId(categoryId: string) {
+    const sameCategoryId = this.expenses
+      .filter((expense) => expense.category_id === categoryId)
+      .map((expense) => {
+        return { ...expense, category_id: '' }
+      })
+
+    const differentCategoryId = this.expenses.filter(
+      (expense) => expense.category_id !== categoryId,
+    )
+
+    this.expenses = []
+
+    this.expenses.push(...differentCategoryId)
+    this.expenses.push(...sameCategoryId)
+
+    return sameCategoryId.length
+  }
+
   async update(updateExpense: UpdateExpense) {
     const expenseIndex = this.expenses.findIndex(
       (item) => item.id === updateExpense.id,

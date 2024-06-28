@@ -100,6 +100,19 @@ export class PrismaIncomesRepository implements IncomesRepository {
     return income
   }
 
+  async updateManyByCategoryId(categoryId: string) {
+    const { count } = await prisma.income.updateMany({
+      where: {
+        category_id: categoryId,
+      },
+      data: {
+        category_id: undefined,
+      },
+    })
+
+    return count
+  }
+
   async update(updateIncome: UpdateIncome) {
     const prismaIncome = await prisma.income.update({
       where: {
