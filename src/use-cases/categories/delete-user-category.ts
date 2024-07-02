@@ -1,7 +1,9 @@
 import { Category } from '@prisma/client'
 
 import { CategoriesRepository } from '@/repositories/categories-repository'
+import { ExpenseHistoriesRepository } from '@/repositories/expense-histories-repository'
 import { ExpensesRepository } from '@/repositories/expenses-repository'
+import { IncomeHistoriesRepository } from '@/repositories/income-histories-repository'
 import { IncomesRepository } from '@/repositories/incomes-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
@@ -20,7 +22,9 @@ export class DeleteUserCategory {
   constructor(
     private categoriesRepository: CategoriesRepository,
     private incomesRepository: IncomesRepository,
+    private incomeHistoriesRepository: IncomeHistoriesRepository,
     private expensesRepository: ExpensesRepository,
+    private expenseHistoriesRepository: ExpenseHistoriesRepository,
     private usersRepository: UsersRepository,
   ) {}
 
@@ -44,6 +48,9 @@ export class DeleteUserCategory {
 
     await this.expensesRepository.updateManyByCategoryId(categoryId)
     await this.incomesRepository.updateManyByCategoryId(categoryId)
+
+    await this.incomeHistoriesRepository.updateManyByCategoryId(categoryId)
+    await this.expenseHistoriesRepository.updateManyByCategoryId(categoryId)
 
     return { category: deletedCategory }
   }

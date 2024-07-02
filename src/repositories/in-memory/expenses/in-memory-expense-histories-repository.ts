@@ -1,12 +1,31 @@
 import { ExpenseHistory, Prisma } from '@prisma/client'
 import { randomUUID } from 'crypto'
 
-import { ExpenseHistoriesRepository } from '../expense-histories-repository'
+import { ExpenseHistoriesRepository } from '@/repositories/expense-histories-repository'
 
 export class InMemoryExpenseHistoriesRepository
   implements ExpenseHistoriesRepository
 {
   public expenseHistoriesRepository: ExpenseHistory[] = []
+
+  async updateManyByCategoryId(categoryId: string) {
+    const sameCategoryId = this.expenseHistoriesRepository
+      .filter((expense) => expense.category_id === categoryId)
+      .map((expense) => {
+        return { ...expense, category_id: '' }
+      })
+
+    const differentCategoryId = this.expenseHistoriesRepository.filter(
+      (expense) => expense.category_id !== categoryId,
+    )
+
+    this.expenseHistoriesRepository = []
+
+    this.expenseHistoriesRepository.push(...differentCategoryId)
+    this.expenseHistoriesRepository.push(...sameCategoryId)
+
+    return sameCategoryId.length
+  }
 
   async deleteMany(expenseId: string, userId: string) {
     const deletedExpense = this.expenseHistoriesRepository.filter((expense) => {

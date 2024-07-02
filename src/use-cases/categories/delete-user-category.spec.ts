@@ -2,7 +2,9 @@ import { hash } from 'bcryptjs'
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import { InMemoryCategoriesRepository } from '@/repositories/in-memory/categories/in-memory-categories-repository'
+import { InMemoryExpenseHistoriesRepository } from '@/repositories/in-memory/expenses/in-memory-expense-histories-repository'
 import { InMemoryExpensesRepository } from '@/repositories/in-memory/expenses/in-memory-expenses-repository'
+import { InMemoryIncomeHistoriesRepository } from '@/repositories/in-memory/incomes/in-memory-income-histories-repository'
 import { InMemoryIncomesRepository } from '@/repositories/in-memory/incomes/in-memory-incomes-repository'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/users/in-memory-users-repository'
 
@@ -11,7 +13,9 @@ import { DeleteUserCategory } from './delete-user-category'
 
 let categoriesRepository: InMemoryCategoriesRepository
 let incomesRepository: InMemoryIncomesRepository
+let incomeHistoriesRepository: InMemoryIncomeHistoriesRepository
 let expensesRepository: InMemoryExpensesRepository
+let expenseHistoriesRepository: InMemoryExpenseHistoriesRepository
 let usersRepository: InMemoryUsersRepository
 let sut: DeleteUserCategory
 
@@ -19,13 +23,17 @@ describe('Delete user category use case', () => {
   beforeEach(() => {
     categoriesRepository = new InMemoryCategoriesRepository()
     incomesRepository = new InMemoryIncomesRepository()
+    incomeHistoriesRepository = new InMemoryIncomeHistoriesRepository()
     expensesRepository = new InMemoryExpensesRepository()
+    expenseHistoriesRepository = new InMemoryExpenseHistoriesRepository()
     usersRepository = new InMemoryUsersRepository()
 
     sut = new DeleteUserCategory(
       categoriesRepository,
       incomesRepository,
+      incomeHistoriesRepository,
       expensesRepository,
+      expenseHistoriesRepository,
       usersRepository,
     )
   })

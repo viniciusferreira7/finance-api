@@ -7,6 +7,19 @@ import { ExpenseHistoriesRepository } from '../../expense-histories-repository'
 export class PrismaExpenseHistoriesRepository
   implements ExpenseHistoriesRepository
 {
+  async updateManyByCategoryId(categoryId: string) {
+    const { count } = await prisma.expense.updateMany({
+      where: {
+        category_id: categoryId,
+      },
+      data: {
+        category_id: undefined,
+      },
+    })
+
+    return count
+  }
+
   async deleteMany(expenseId: string, userId: string) {
     const { count } = await prisma.expenseHistory.deleteMany({
       where: {

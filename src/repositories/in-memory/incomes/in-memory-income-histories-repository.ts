@@ -8,6 +8,25 @@ export class InMemoryIncomeHistoriesRepository
 {
   public incomeHistoriesRepository: IncomeHistory[] = []
 
+  async updateManyByCategoryId(categoryId: string) {
+    const sameCategoryId = this.incomeHistoriesRepository
+      .filter((income) => income.category_id === categoryId)
+      .map((income) => {
+        return { ...income, category_id: '' }
+      })
+
+    const differentCategoryId = this.incomeHistoriesRepository.filter(
+      (income) => income.category_id !== categoryId,
+    )
+
+    this.incomeHistoriesRepository = []
+
+    this.incomeHistoriesRepository.push(...differentCategoryId)
+    this.incomeHistoriesRepository.push(...sameCategoryId)
+
+    return sameCategoryId.length
+  }
+
   async deleteMany(incomeId: string, userId: string) {
     const deletedIncomes = this.incomeHistoriesRepository.filter((income) => {
       return income.income_id === incomeId && income.user_id === userId
