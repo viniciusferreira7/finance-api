@@ -9,6 +9,8 @@ import { deleteIncome } from './delete-income'
 export async function incomesRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJWT)
 
+  app.post('/incomes', createExpense)
+
   app.get(
     '/incomes',
     {
@@ -24,6 +26,4 @@ export async function incomesRoutes(app: FastifyInstance) {
   )
 
   app.delete('/incomes/:id', deleteIncome)
-
-  app.post('/expenses', createExpense)
 }
