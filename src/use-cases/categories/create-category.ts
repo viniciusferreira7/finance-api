@@ -9,7 +9,6 @@ import { ResourceNotFound } from '../error/resource-not-found-error'
 interface CreateCategoryUseCaseRequest {
   name: string
   description: string | null
-  iconName: string | null
   userId: string
 }
 
@@ -26,7 +25,6 @@ export class CreateCategoryUseCase {
   async execute({
     name,
     description,
-    iconName,
     userId,
   }: CreateCategoryUseCaseRequest): Promise<CreateCategoryUseCaseResponse> {
     const user = await this.usersRepository.findById(userId)
@@ -45,7 +43,6 @@ export class CreateCategoryUseCase {
     const category = await this.categoriesRepository.create({
       name,
       description,
-      icon_name: iconName,
       user_id: userId,
     })
 

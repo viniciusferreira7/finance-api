@@ -32,7 +32,7 @@ describe('Fetch user categories history use case', () => {
       await categoriesRepository.create({
         name: `category-${i}`,
         description: 'lorem ipsum dolor sit amet consectetur adipiscing elit',
-        icon_name: 'arrow-right',
+
         user_id: user.id,
       })
     }
@@ -55,7 +55,7 @@ describe('Fetch user categories history use case', () => {
       await categoriesRepository.create({
         name: `category-${i}`,
         description: 'lorem ipsum dolor sit amet consectetur adipiscing elit',
-        icon_name: 'arrow-right',
+
         user_id: 'non-existing-id',
       })
     }
@@ -80,7 +80,7 @@ describe('Fetch user categories history use case', () => {
       await categoriesRepository.create({
         name: `category-${i}`,
         description: 'lorem ipsum dolor sit amet consectetur adipiscing elit',
-        icon_name: 'arrow-right',
+
         user_id: user.id,
       })
     }
@@ -109,7 +109,7 @@ describe('Fetch user categories history use case', () => {
       await categoriesRepository.create({
         name: `category-${i}`,
         description: 'lorem ipsum dolor sit amet consectetur adipiscing elit',
-        icon_name: 'arrow-right',
+
         user_id: user.id,
       })
     }

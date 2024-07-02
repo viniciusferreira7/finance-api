@@ -15,10 +15,9 @@ export async function createCategory(
       .min(1, 'Mut be at least 1 character')
       .max(40, 'Must be 40 characters.'),
     description: z.string().max(220, 'Must be 220 characters.').optional(),
-    iconName: z.string().optional(),
   })
 
-  const { name, description, iconName } = categorySchemaBody.parse(request.body)
+  const { name, description } = categorySchemaBody.parse(request.body)
 
   try {
     const createCategoryUseCase = makeCreateCategory()
@@ -26,7 +25,6 @@ export async function createCategory(
     await createCategoryUseCase.execute({
       name,
       description: description ?? null,
-      iconName: iconName ?? null,
       userId: request.user.sub,
     })
   } catch (err) {

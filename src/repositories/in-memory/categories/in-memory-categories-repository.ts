@@ -92,7 +92,6 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
       id: randomUUID(),
       name: data.name,
       description: data.description ?? null,
-      icon_name: data.icon_name ?? null,
       created_at: new Date(),
       update_at: new Date(),
       user_id: data.user_id,

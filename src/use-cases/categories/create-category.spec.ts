@@ -31,7 +31,6 @@ describe('Create category use case', () => {
     const { category } = await sut.execute({
       name: 'category-01',
       description: 'lorem ipsum dolor sit amet consectetur adipiscing elit',
-      iconName: 'arrow-right',
       userId: user.id,
     })
 
@@ -43,7 +42,6 @@ describe('Create category use case', () => {
       sut.execute({
         name: 'category-01',
         description: 'lorem ipsum dolor sit amet consectetur adipiscing elit',
-        iconName: 'arrow-right',
         userId: 'non-existing-id',
       }),
     ).rejects.toBeInstanceOf(ResourceNotFound)
@@ -59,7 +57,6 @@ describe('Create category use case', () => {
     await sut.execute({
       name: 'category-01',
       description: 'lorem ipsum dolor sit amet consectetur adipiscing elit',
-      iconName: 'arrow-right',
       userId: user.id,
     })
 
@@ -67,7 +64,6 @@ describe('Create category use case', () => {
       sut.execute({
         name: 'category-01',
         description: 'lorem ipsum dolor sit amet consectetur adipiscing elit',
-        iconName: 'arrow-right',
         userId: user.id,
       }),
     ).rejects.toBeInstanceOf(CategoryAlreadyExistError)

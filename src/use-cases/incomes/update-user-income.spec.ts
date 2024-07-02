@@ -43,7 +43,7 @@ describe('Update user income use case', () => {
     const category = await categoriesRepository.create({
       name: 'category-01',
       description: 'lorem ipsum dolor sit amet consectetur adipiscing elit',
-      icon_name: 'arrow-right',
+
       user_id: user.id,
     })
 
@@ -84,7 +84,7 @@ describe('Update user income use case', () => {
     const category = await categoriesRepository.create({
       name: 'category-01',
       description: 'lorem ipsum dolor sit amet consectetur adipiscing elit',
-      icon_name: 'arrow-right',
+
       user_id: user.id,
     })
 
@@ -140,7 +140,7 @@ describe('Update user income use case', () => {
     const category = await categoriesRepository.create({
       name: 'category-01',
       description: 'lorem ipsum dolor sit amet consectetur adipiscing elit',
-      icon_name: 'arrow-right',
+
       user_id: user.id,
     })
 
