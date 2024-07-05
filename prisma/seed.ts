@@ -39,7 +39,7 @@ async function seed() {
 
   // Create categories
 
-  function generateCategory() {
+  function generateCategories() {
     const categories = Array.from({ length: 30 }).map(() => {
       return {
         name: faker.lorem.words({ min: 1, max: 5 }),
@@ -53,7 +53,7 @@ async function seed() {
   }
 
   await prisma.category.createMany({
-    data: generateCategory(),
+    data: generateCategories(),
   })
 
   console.log(chalk.yellowBright('Created categories ✔️'))
@@ -69,11 +69,15 @@ async function seed() {
     },
   })
 
-  const categoryId = faker.helpers.arrayElement([
-    ...categories.map((category) => category.id),
-    ...categories.map((category) => category.id),
-    null,
-  ])
+  function getCategoriesAndGenerateCategoryId() {
+    const categoryId = faker.helpers.arrayElement([
+      ...categories.map((category) => category.id),
+      ...categories.map((category) => category.id),
+      null,
+    ])
+
+    return categoryId
+  }
 
   const incomes: Income[] = []
   const incomeHistories: IncomeHistory[] = []
@@ -102,7 +106,7 @@ async function seed() {
       ),
       description,
       user_id: newUser.id,
-      category_id: categoryId,
+      category_id: getCategoriesAndGenerateCategoryId(),
       created_at: createdAt,
       updated_at: updatedAt,
     }
@@ -126,7 +130,7 @@ async function seed() {
         ),
         description: updateDescription,
         user_id: newUser.id,
-        category_id: categoryId,
+        category_id: getCategoriesAndGenerateCategoryId(),
         income_id: income.id,
         created_at: income.updated_at,
       }
@@ -188,7 +192,7 @@ async function seed() {
       ),
       description,
       user_id: newUser.id,
-      category_id: categoryId,
+      category_id: getCategoriesAndGenerateCategoryId(),
       created_at: createdAt,
       updated_at: updatedAt,
     }
@@ -212,7 +216,7 @@ async function seed() {
         ),
         description: updateDescription,
         user_id: newUser.id,
-        category_id: categoryId,
+        category_id: getCategoriesAndGenerateCategoryId(),
         expense_id: expense.id,
         created_at: expense.updated_at,
       }
