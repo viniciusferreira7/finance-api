@@ -1,6 +1,7 @@
 import fastifyJwt from '@fastify/jwt'
 import fastifySwagger from '@fastify/swagger'
-import fastifySwaggerUi from '@fastify/swagger-ui'
+import fastifySwaggerUI from '@fastify/swagger-ui'
+import fastifyScalar from '@scalar/fastify-api-reference'
 import fastify from 'fastify'
 import { ZodError } from 'zod'
 
@@ -14,7 +15,7 @@ export const app = fastify()
 
 app.register(fastifySwagger)
 
-app.register(fastifySwaggerUi, {
+app.register(fastifySwaggerUI, {
   routePrefix: '/documentation',
   uiConfig: {
     docExpansion: 'list',
@@ -37,6 +38,10 @@ app.register(fastifySwaggerUi, {
   theme: {
     title: 'Finance API',
   },
+})
+
+app.register(fastifyScalar, {
+  routePrefix: '/reference',
 })
 
 app.register(fastifyJwt, {
