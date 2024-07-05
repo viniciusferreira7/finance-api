@@ -21,10 +21,9 @@ export async function categoriesRoutes(app: FastifyInstance) {
           pagination_disabled: { type: 'string' },
         },
       },
-      onRequest: [verifyJWT],
     },
     fetchCategoriesHistory,
   )
 
-  app.delete('/categories/:id', { onRequest: [verifyJWT] }, deleteExpense)
+  app.delete('/categories/:id', deleteExpense)
 }

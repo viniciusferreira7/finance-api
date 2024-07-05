@@ -25,7 +25,7 @@ export async function createExpense(
   try {
     const createExpenseUseCase = makeCreateExpenseUseCase()
 
-    createExpenseUseCase.execute({
+    await createExpenseUseCase.execute({
       name,
       value,
       description: description ?? null,

@@ -19,7 +19,14 @@ export async function fetchIncomesHistory(
       .positive({ message: 'Must be the positive number.' })
       .default(1)
       .optional(),
-    pagination_disabled: z.coerce.boolean().default(false).optional(),
+    pagination_disabled: z
+      .union([z.string(), z.boolean()])
+      .transform((val) => {
+        if (typeof val === 'boolean') return val
+        return val === 'true'
+      })
+      .default(false)
+      .optional(),
   })
 
   const { page, per_page, pagination_disabled } = fetchIncomesSchema.parse(

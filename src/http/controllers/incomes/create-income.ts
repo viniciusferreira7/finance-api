@@ -25,7 +25,7 @@ export async function createIncome(
   try {
     const createIncomeUseCase = makeCreateIncomeUseCase()
 
-    createIncomeUseCase.execute({
+    await createIncomeUseCase.execute({
       name,
       value,
       description: description ?? null,
