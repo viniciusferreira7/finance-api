@@ -93,7 +93,7 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
       name: data.name,
       description: data.description ?? null,
       created_at: new Date(),
-      update_at: new Date(),
+      updated_at: new Date(),
       user_id: data.user_id,
     }
 

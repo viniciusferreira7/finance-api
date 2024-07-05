@@ -115,7 +115,7 @@ export class InMemoryIncomesRepository implements IncomesRepository {
         name: updateIncome.name ?? income.name,
         value: updateIncome?.value ?? income.value,
         description: updateIncome?.description ?? income.description,
-        update_at: new Date(),
+        updated_at: new Date(),
         category_id: updateIncome?.categoryId ?? income.category_id,
       }
 
@@ -134,7 +134,7 @@ export class InMemoryIncomesRepository implements IncomesRepository {
       value: data.value,
       description: data.description ?? null,
       created_at: new Date(),
-      update_at: new Date(),
+      updated_at: new Date(),
       user_id: data.user_id,
       category_id: data.category_id,
     }

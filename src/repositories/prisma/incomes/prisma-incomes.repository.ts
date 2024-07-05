@@ -125,7 +125,7 @@ export class PrismaIncomesRepository implements IncomesRepository {
         name: updateIncome.name,
         value: updateIncome.value,
         description: updateIncome.description,
-        update_at: new Date(),
+        updated_at: new Date(),
         category_id: updateIncome.categoryId,
       },
     })

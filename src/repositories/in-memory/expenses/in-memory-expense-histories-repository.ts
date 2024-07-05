@@ -50,7 +50,7 @@ export class InMemoryExpenseHistoriesRepository
       value: data.value,
       description: data.description ?? null,
       created_at: new Date(),
-      update_at: new Date(),
+      updated_at: new Date(),
       user_id: data.user_id,
       category_id: data.category_id,
       expense_id: data.expense_id,

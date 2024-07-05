@@ -36,13 +36,13 @@ model Income {
   value       Int
   description String?
   created_at  DateTime @default(now())
-  update_at   DateTime @default(now())
+  updated_at  DateTime @default(now())
 
-  user    User   @relation(fields: [user_id], references: [id])
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String
 
-  category      Category        @relation(fields: [category_id], references: [id])
-  category_id   String
+  category      Category?       @relation(fields: [category_id], references: [id])
+  category_id   String?
   IncomeHistory IncomeHistory[]
 
   @@map("incomes")
@@ -54,13 +54,12 @@ model IncomeHistory {
   value       Int
   description String?
   created_at  DateTime @default(now())
-  update_at   DateTime @default(now())
 
-  user    User   @relation(fields: [user_id], references: [id])
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String
 
-  category    Category @relation(fields: [category_id], references: [id])
-  category_id String
+  category    Category? @relation(fields: [category_id], references: [id])
+  category_id String?
 
   income    Income @relation(fields: [income_id], references: [id])
   income_id String
@@ -74,13 +73,13 @@ model Expense {
   value       Int
   description String?
   created_at  DateTime @default(now())
-  update_at   DateTime @default(now())
+  updated_at  DateTime @default(now())
 
-  user    User   @relation(fields: [user_id], references: [id])
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String
 
-  category       Category         @relation(fields: [category_id], references: [id])
-  category_id    String
+  category       Category?        @relation(fields: [category_id], references: [id])
+  category_id    String?
   ExpenseHistory ExpenseHistory[]
 
   @@map("expenses")
@@ -92,13 +91,12 @@ model ExpenseHistory {
   value       Int
   description String?
   created_at  DateTime @default(now())
-  update_at   DateTime @default(now())
 
-  user    User   @relation(fields: [user_id], references: [id])
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String
 
-  category    Category @relation(fields: [category_id], references: [id])
-  category_id String
+  category    Category? @relation(fields: [category_id], references: [id])
+  category_id String?
 
   expense    Expense @relation(fields: [expense_id], references: [id])
   expense_id String
@@ -111,9 +109,9 @@ model Category {
   name        String
   description String?
   created_at  DateTime @default(now())
-  update_at   DateTime @default(now())
+  updated_at  DateTime @default(now())
 
-  user           User             @relation(fields: [user_id], references: [id])
+  user           User             @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id        String
   Expense        Expense[]
   Income         Income[]
@@ -129,9 +127,9 @@ model MonthlyBudget {
   budget     Int
   deadline   DateTime
   created_at DateTime @default(now())
-  update_at  DateTime @default(now())
+  updated_at DateTime @default(now())
 
-  user    User   @relation(fields: [user_id], references: [id])
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String
 
   @@map("monthly_budgets")
@@ -142,9 +140,9 @@ model Balance {
   name       String
   amount     Int
   created_at DateTime @default(now())
-  update_at  DateTime @default(now())
+  updated_at DateTime @default(now())
 
-  user    User   @relation(fields: [user_id], references: [id])
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id String
 
   @@map("balances")

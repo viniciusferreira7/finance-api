@@ -113,7 +113,7 @@ export class PrismaExpensesRepository implements ExpensesRepository {
         name: updateExpense.name,
         value: updateExpense.value,
         description: updateExpense.description,
-        update_at: new Date(),
+        updated_at: new Date(),
         category_id: updateExpense.categoryId,
       },
     })

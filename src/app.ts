@@ -32,7 +32,7 @@ app.setErrorHandler((error, _, reply) => {
 // TODO: Create another methods of GET, DELETE, PUT for the incomes, categories and expanse
 // Rest: PUT, GET (specific category, expense and income)
 
-// TODO: create filters to fetch categories, expenses and incomes: created_at, update_at, value, name, category
+// TODO: create filters to fetch categories, expenses and incomes: created_at, updated_at, value, name, category
 // TODO: Implements history from category, expense and income-
 // TODO: Finally create use case from monthly budget and balance
 // TODO: Create E2E test

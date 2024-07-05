@@ -114,7 +114,7 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
         name: updateExpense.name ?? expense.name,
         value: updateExpense?.value ?? expense.value,
         description: updateExpense?.description ?? expense.description,
-        update_at: new Date(),
+        updated_at: new Date(),
         category_id: updateExpense?.categoryId ?? expense.category_id,
       }
 
@@ -133,7 +133,7 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
       value: data.value,
       description: data.description ?? null,
       created_at: new Date(),
-      update_at: new Date(),
+      updated_at: new Date(),
       user_id: data.user_id,
       category_id: data.category_id,
     }
