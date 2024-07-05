@@ -1,4 +1,6 @@
 import fastifyJwt from '@fastify/jwt'
+import fastifySwagger from '@fastify/swagger'
+import fastifySwaggerUi from '@fastify/swagger-ui'
 import fastify from 'fastify'
 import { ZodError } from 'zod'
 
@@ -9,6 +11,30 @@ import { incomesRoutes } from './http/controllers/incomes/routes'
 import { usersRoutes } from './http/controllers/users/routes'
 
 export const app = fastify()
+
+app.register(fastifySwagger)
+
+app.register(fastifySwaggerUi, {
+  routePrefix: '/documentation',
+  uiConfig: {
+    docExpansion: 'full',
+    deepLinking: false,
+  },
+  uiHooks: {
+    onRequest: function (request, reply, next) {
+      next()
+    },
+    preHandler: function (request, reply, next) {
+      next()
+    },
+  },
+  staticCSP: true,
+  transformStaticCSP: (header) => header,
+  transformSpecification: (swaggerObject) => {
+    return swaggerObject
+  },
+  transformSpecificationClone: true,
+})
 
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
