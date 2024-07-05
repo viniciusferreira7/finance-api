@@ -17,8 +17,8 @@ app.register(fastifySwagger)
 app.register(fastifySwaggerUi, {
   routePrefix: '/documentation',
   uiConfig: {
-    docExpansion: 'full',
-    deepLinking: false,
+    docExpansion: 'list',
+    deepLinking: true,
   },
   uiHooks: {
     onRequest: function (request, reply, next) {
@@ -34,6 +34,9 @@ app.register(fastifySwaggerUi, {
     return swaggerObject
   },
   transformSpecificationClone: true,
+  theme: {
+    title: 'Finance API',
+  },
 })
 
 app.register(fastifyJwt, {
