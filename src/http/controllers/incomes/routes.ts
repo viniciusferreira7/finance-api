@@ -5,6 +5,7 @@ import { verifyJWT } from '@/http/middleware/verify-jwt'
 import { createIncome } from './create-income'
 import { deleteIncome } from './delete-income'
 import { fetchIncomesHistory } from './fetch-incomes-history'
+import { updateIncome } from './update-income'
 
 export async function incomesRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJWT)
@@ -52,6 +53,51 @@ export async function incomesRoutes(app: FastifyInstance) {
       },
     },
     createIncome,
+  )
+
+  app.put(
+    '/incomes/:incomeId',
+    {
+      schema: {
+        summary: 'Update an income',
+        description: 'Update a income for user',
+        tags: ['Income'],
+        security: [{ jwt: [] }],
+        body: {
+          type: 'object',
+          properties: {
+            name: { type: 'string', description: 'name of income' },
+            value: { type: 'number', description: 'value of income' },
+            description: {
+              type: 'string',
+              description: 'description of income (optional)',
+            },
+            category_id: {
+              type: 'string',
+              description: 'the category id associated with this income',
+            },
+          },
+        },
+        response: {
+          204: {
+            description: 'Income has been successfully updated',
+            type: 'null',
+          },
+          404: {
+            description: 'Resource not found',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                description: 'Resource not found',
+                default: 'Resource not found',
+              },
+            },
+          },
+        },
+      },
+    },
+    updateIncome,
   )
 
   app.get(
