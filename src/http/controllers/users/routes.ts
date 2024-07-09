@@ -43,6 +43,7 @@ export async function usersRoutes(app: FastifyInstance) {
     },
     register,
   )
+
   app.post(
     '/sessions',
     {
