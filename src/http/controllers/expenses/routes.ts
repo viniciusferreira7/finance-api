@@ -187,15 +187,19 @@ export async function expensesRoutes(app: FastifyInstance) {
         body: {
           type: 'object',
           properties: {
-            name: { type: 'string', description: 'name of expense' },
-            value: { type: 'number', description: 'value of expense' },
+            name: { type: 'string', description: 'name of expense (optional)' },
+            value: {
+              type: 'number',
+              description: 'value of expense (optional)',
+            },
             description: {
               type: 'string',
               description: 'description of expense (optional)',
             },
             category_id: {
               type: 'string',
-              description: 'the category id associated with this expense',
+              description:
+                'the category id associated with this expense (optional)',
             },
           },
         },

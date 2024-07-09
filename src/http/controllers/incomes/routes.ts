@@ -75,15 +75,19 @@ export async function incomesRoutes(app: FastifyInstance) {
         body: {
           type: 'object',
           properties: {
-            name: { type: 'string', description: 'name of income' },
-            value: { type: 'number', description: 'value of income' },
+            name: { type: 'string', description: 'name of income (optional)' },
+            value: {
+              type: 'number',
+              description: 'value of income (optional)',
+            },
             description: {
               type: 'string',
               description: 'description of income (optional)',
             },
             category_id: {
               type: 'string',
-              description: 'the category id associated with this income',
+              description:
+                'the category id associated with this income (optional)',
             },
           },
         },

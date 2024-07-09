@@ -5,6 +5,7 @@ import { verifyJWT } from '@/http/middleware/verify-jwt'
 import { createCategory } from './create-category'
 import { deleteCategory } from './delete-category'
 import { fetchCategoriesHistory } from './fetch-categories-history'
+import { updateCategory } from './update-category'
 
 export async function categoriesRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJWT)
@@ -12,7 +13,6 @@ export async function categoriesRoutes(app: FastifyInstance) {
   app.post(
     '/categories',
     {
-      onRequest: [verifyJWT],
       schema: {
         summary: 'Create a category',
         description: 'Create a new category for user',
@@ -157,6 +157,54 @@ export async function categoriesRoutes(app: FastifyInstance) {
       },
     },
     fetchCategoriesHistory,
+  )
+
+  app.put(
+    '/categories/:id',
+    {
+      schema: {
+        summary: 'Update a category',
+        description: 'Update a category for user',
+        tags: ['Category'],
+        security: [{ jwt: [] }],
+        params: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              description: 'category id',
+            },
+          },
+        },
+        body: {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            description: {
+              type: 'string',
+            },
+          },
+        },
+        response: {
+          204: {
+            description: 'Category has been successfully updated',
+            type: 'null',
+          },
+          404: {
+            description: 'Resource not found',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                description: 'Resource not found',
+                default: 'Resource not found',
+              },
+            },
+          },
+        },
+      },
+    },
+    updateCategory,
   )
 
   app.delete(
