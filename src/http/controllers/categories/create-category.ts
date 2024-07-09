@@ -33,7 +33,7 @@ export async function createCategory(
     }
 
     if (err instanceof CategoryAlreadyExistError) {
-      return reply.status(404).send({ message: err.message })
+      return reply.status(400).send({ message: err.message })
     }
   }
 

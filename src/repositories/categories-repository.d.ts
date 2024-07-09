@@ -3,12 +3,9 @@ import { Category, Prisma } from '@prisma/client'
 import { PaginationRequest, PaginationResponse } from '@/@types/pagination'
 
 interface UpdateParams {
-  userId: string
-  category: {
-    id: string
-    name?: string
-    description?: string
-  }
+  id: string
+  name?: string
+  description?: string | null
 }
 
 export interface CategoriesRepository {
@@ -19,6 +16,6 @@ export interface CategoriesRepository {
   ): Promise<PaginationResponse<Category>>
   findById(id: string): Promise<Category | null>
   delete(id: string): Promise<Category | null>
-  update(params: UpdateParams): Promise<Category>
+  update(params: UpdateParams): Promise<Category | null>
   create(data: Prisma.CategoryUncheckedCreateInput): Promise<Category>
 }

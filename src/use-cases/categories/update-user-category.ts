@@ -10,12 +10,12 @@ interface UpdateUserCategoryRequest {
   category: {
     id: string
     name?: string
-    description?: string
+    description?: string | null
   }
 }
 
 interface UpdateUserCategoryResponse {
-  category: Category
+  category: Category | null
 }
 
 export class UpdateUserCategoryUseCase {
@@ -46,6 +46,6 @@ export class UpdateUserCategoryUseCase {
       description: category.description,
     })
 
-    return { updatedCategory }
+    return { category: updatedCategory }
   }
 }

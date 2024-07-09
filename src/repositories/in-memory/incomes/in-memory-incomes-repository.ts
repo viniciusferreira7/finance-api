@@ -136,7 +136,7 @@ export class InMemoryIncomesRepository implements IncomesRepository {
       created_at: new Date(),
       updated_at: new Date(),
       user_id: data.user_id,
-      category_id: data.category_id,
+      category_id: data.category_id ?? null,
     }
 
     this.incomes.push(income)

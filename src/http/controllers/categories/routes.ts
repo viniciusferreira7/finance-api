@@ -43,6 +43,17 @@ export async function categoriesRoutes(app: FastifyInstance) {
               },
             },
           },
+          400: {
+            description: 'Category already exist',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                description: 'Category already exist',
+                default: 'Category already exist',
+              },
+            },
+          },
         },
       },
     },

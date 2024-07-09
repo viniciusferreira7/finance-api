@@ -5,6 +5,12 @@ import { PaginationRequest } from '@/@types/pagination'
 
 import { CategoriesRepository } from '../../categories-repository'
 
+interface UpdateParams {
+  id: string
+  name?: string
+  description?: string | null
+}
+
 export class InMemoryCategoriesRepository implements CategoriesRepository {
   public categories: Category[] = []
 
@@ -80,6 +86,32 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
       const category = this.categories[categoryIndex]
 
       this.categories.splice(categoryIndex, 1)
+
+      return category
+    }
+
+    return null
+  }
+
+  async update(updateCategory: UpdateParams) {
+    const categoryIndex = this.categories.findIndex(
+      (item) => item.id === updateCategory.id,
+    )
+
+    if (categoryIndex >= 0) {
+      let category = this.categories[categoryIndex]
+
+      category = {
+        ...category,
+        name: updateCategory.name ?? category.name,
+        description:
+          updateCategory?.description === null
+            ? ''
+            : updateCategory.description ?? category.description,
+        updated_at: new Date(),
+      }
+
+      this.categories.splice(categoryIndex, 1, category)
 
       return category
     }

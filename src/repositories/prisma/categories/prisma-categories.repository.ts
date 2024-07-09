@@ -6,12 +6,9 @@ import { prisma } from '@/lib/prisma'
 import { CategoriesRepository } from '../../categories-repository'
 
 interface UpdateParams {
-  userId: string
-  category: {
-    id: string
-    name?: string
-    description?: string
-  }
+  id: string
+  name?: string
+  description?: string
 }
 
 export class PrismaCategoriesRepository implements CategoriesRepository {
@@ -102,11 +99,10 @@ export class PrismaCategoriesRepository implements CategoriesRepository {
     return category
   }
 
-  async update({ userId, category }: UpdateParams) {
+  async update(category: UpdateParams) {
     const updatedCategory = await prisma.category.update({
       where: {
         id: category.id,
-        user_id: userId,
       },
       data: {
         name: category.name,
