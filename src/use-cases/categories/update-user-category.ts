@@ -5,7 +5,7 @@ import { UsersRepository } from '@/repositories/users-repository'
 
 import { ResourceNotFound } from '../error/resource-not-found-error'
 
-interface UpdateUserCategoryRequest {
+interface UpdateUserCategoryUseCaseRequest {
   userId: string
   category: {
     id: string
@@ -14,7 +14,7 @@ interface UpdateUserCategoryRequest {
   }
 }
 
-interface UpdateUserCategoryResponse {
+interface UpdateUserCategoryUseCaseResponse {
   category: Category | null
 }
 
@@ -27,7 +27,7 @@ export class UpdateUserCategoryUseCase {
   async execute({
     userId,
     category,
-  }: UpdateUserCategoryRequest): Promise<UpdateUserCategoryResponse> {
+  }: UpdateUserCategoryUseCaseRequest): Promise<UpdateUserCategoryUseCaseResponse> {
     const user = await this.usersRepository.findById(userId)
 
     if (!user) {
