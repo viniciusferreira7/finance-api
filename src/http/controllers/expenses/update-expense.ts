@@ -2,17 +2,17 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 import { ResourceNotFound } from '@/use-cases/error/resource-not-found-error'
-import { makeUpdateUserIncomeUseCase } from '@/use-cases/factories/incomes/make-update-user-income-use-case'
+import { makeUpdateUserExpenseUseCase } from '@/use-cases/factories/expenses/make-update-user-expense-use-case'
 
-export async function updateIncome(
+export async function updateExpense(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const incomeSchemaParams = z.object({
+  const expenseSchemaParams = z.object({
     id: z.string(),
   })
 
-  const incomeSchemaBody = z.object({
+  const expenseSchemaBody = z.object({
     name: z
       .string()
       .min(1, 'Mut be at least 1 character')
@@ -26,18 +26,18 @@ export async function updateIncome(
     category_id: z.string().optional(),
   })
 
-  const { id } = incomeSchemaParams.parse(request.params)
+  const { id } = expenseSchemaParams.parse(request.params)
 
-  const { name, value, description, category_id } = incomeSchemaBody.parse(
+  const { name, value, description, category_id } = expenseSchemaBody.parse(
     request.body,
   )
 
   try {
-    const updateUserIncomeUseCase = makeUpdateUserIncomeUseCase()
+    const updateUserExpenseUseCase = makeUpdateUserExpenseUseCase()
 
-    await updateUserIncomeUseCase.execute({
+    await updateUserExpenseUseCase.execute({
       userId: request.user.sub,
-      updateIncome: {
+      updateExpense: {
         id,
         name,
         value,

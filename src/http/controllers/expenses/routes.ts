@@ -5,6 +5,7 @@ import { verifyJWT } from '@/http/middleware/verify-jwt'
 import { createExpense } from './create-expense'
 import { deleteExpense } from './delete-expense'
 import { fetchExpensesHistory } from './fetch-expenses-history'
+import { updateExpense } from './update-expense'
 
 export async function expensesRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJWT)
@@ -164,6 +165,60 @@ export async function expensesRoutes(app: FastifyInstance) {
       },
     },
     fetchExpensesHistory,
+  )
+
+  app.put(
+    '/expenses/:id',
+    {
+      schema: {
+        summary: 'Update an expense',
+        description: 'Update an expense for user',
+        tags: ['Expense'],
+        security: [{ jwt: [] }],
+        params: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              description: 'expense id',
+            },
+          },
+        },
+        body: {
+          type: 'object',
+          properties: {
+            name: { type: 'string', description: 'name of expense' },
+            value: { type: 'number', description: 'value of expense' },
+            description: {
+              type: 'string',
+              description: 'description of expense (optional)',
+            },
+            category_id: {
+              type: 'string',
+              description: 'the category id associated with this expense',
+            },
+          },
+        },
+        response: {
+          204: {
+            description: 'Expense has been successfully updated',
+            type: 'null',
+          },
+          404: {
+            description: 'Resource not found',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                description: 'Resource not found',
+                default: 'Resource not found',
+              },
+            },
+          },
+        },
+      },
+    },
+    updateExpense,
   )
 
   app.delete(

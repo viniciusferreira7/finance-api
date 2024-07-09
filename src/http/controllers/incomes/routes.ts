@@ -56,13 +56,22 @@ export async function incomesRoutes(app: FastifyInstance) {
   )
 
   app.put(
-    '/incomes/:incomeId',
+    '/incomes/:id',
     {
       schema: {
         summary: 'Update an income',
         description: 'Update a income for user',
         tags: ['Income'],
         security: [{ jwt: [] }],
+        params: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              description: 'income id',
+            },
+          },
+        },
         body: {
           type: 'object',
           properties: {
