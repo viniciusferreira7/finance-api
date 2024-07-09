@@ -87,6 +87,7 @@ export async function usersRoutes(app: FastifyInstance) {
       schema: {
         summary: 'Get profile',
         description: 'Get profile of user',
+        security: [{ jwt: [] }],
         tags: ['User'],
         response: {
           200: {

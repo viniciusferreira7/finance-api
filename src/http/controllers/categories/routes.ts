@@ -17,6 +17,7 @@ export async function categoriesRoutes(app: FastifyInstance) {
         summary: 'Create a category',
         description: 'Create a new category for user',
         tags: ['Category'],
+        security: [{ jwt: [] }],
         body: {
           type: 'object',
           properties: {
@@ -55,6 +56,7 @@ export async function categoriesRoutes(app: FastifyInstance) {
         summary: 'Fetch categories',
         description: 'Returns all categories of user',
         tags: ['Category'],
+        security: [{ jwt: [] }],
         querystring: {
           page: { type: 'number', default: 1, description: 'current page' },
           per_page: {
@@ -153,6 +155,7 @@ export async function categoriesRoutes(app: FastifyInstance) {
         summary: 'Delete category',
         description: 'Delete a category by id',
         tags: ['Category'],
+        security: [{ jwt: [] }],
         params: {
           type: 'object',
           properties: {

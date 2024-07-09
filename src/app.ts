@@ -13,7 +13,19 @@ import { usersRoutes } from './http/controllers/users/routes'
 
 export const app = fastify()
 
-app.register(fastifySwagger)
+app.register(fastifySwagger, {
+  openapi: {
+    components: {
+      securitySchemes: {
+        jwt: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+  },
+})
 
 app.register(fastifySwaggerUI, {
   routePrefix: '/documentation',

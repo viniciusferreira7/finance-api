@@ -16,6 +16,7 @@ export async function expensesRoutes(app: FastifyInstance) {
         summary: 'Create an expense',
         description: 'Create a new expense for user',
         tags: ['Expense'],
+        security: [{ jwt: [] }],
         body: {
           type: 'object',
           properties: {
@@ -60,6 +61,7 @@ export async function expensesRoutes(app: FastifyInstance) {
         summary: 'Fetch expenses',
         description: 'Returns all expenses of user',
         tags: ['Expense'],
+        security: [{ jwt: [] }],
         querystring: {
           page: { type: 'number', default: 1, description: 'current page' },
           per_page: {
@@ -171,6 +173,7 @@ export async function expensesRoutes(app: FastifyInstance) {
         summary: 'Delete an expense',
         description: 'Delete an expense by id',
         tags: ['Expense'],
+        security: [{ jwt: [] }],
         params: {
           type: 'object',
           properties: {

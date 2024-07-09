@@ -16,6 +16,7 @@ export async function incomesRoutes(app: FastifyInstance) {
         summary: 'Create an income',
         description: 'Create a new income for user',
         tags: ['Income'],
+        security: [{ jwt: [] }],
         body: {
           type: 'object',
           properties: {
@@ -60,6 +61,7 @@ export async function incomesRoutes(app: FastifyInstance) {
         summary: 'Fetch incomes',
         description: 'Returns all incomes of user',
         tags: ['Income'],
+        security: [{ jwt: [] }],
         querystring: {
           page: { type: 'number', default: 1, description: 'current page' },
           per_page: {
@@ -171,6 +173,7 @@ export async function incomesRoutes(app: FastifyInstance) {
         summary: 'Delete an income',
         description: 'Delete an income by id',
         tags: ['Income'],
+        security: [{ jwt: [] }],
         params: {
           type: 'object',
           properties: {
