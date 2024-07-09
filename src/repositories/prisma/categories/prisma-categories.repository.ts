@@ -5,6 +5,15 @@ import { prisma } from '@/lib/prisma'
 
 import { CategoriesRepository } from '../../categories-repository'
 
+interface UpdateParams {
+  userId: string
+  category: {
+    id: string
+    name?: string
+    description?: string
+  }
+}
+
 export class PrismaCategoriesRepository implements CategoriesRepository {
   async findManyByUserId(userId: string, pagination: PaginationRequest) {
     const count = await prisma.category.count({
@@ -91,6 +100,21 @@ export class PrismaCategoriesRepository implements CategoriesRepository {
     })
 
     return category
+  }
+
+  async update({ userId, category }: UpdateParams) {
+    const updatedCategory = await prisma.category.update({
+      where: {
+        id: category.id,
+        user_id: userId,
+      },
+      data: {
+        name: category.name,
+        description: category.description,
+      },
+    })
+
+    return updatedCategory
   }
 
   async create(data: Prisma.CategoryUncheckedCreateInput) {
