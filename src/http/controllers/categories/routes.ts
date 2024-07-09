@@ -2,8 +2,8 @@ import { FastifyInstance } from 'fastify'
 
 import { verifyJWT } from '@/http/middleware/verify-jwt'
 
-import { deleteExpense } from '../expenses/delete-expense'
 import { createCategory } from './create-category'
+import { deleteCategory } from './delete-category'
 import { fetchCategoriesHistory } from './fetch-categories-history'
 
 export async function categoriesRoutes(app: FastifyInstance) {
@@ -33,7 +33,14 @@ export async function categoriesRoutes(app: FastifyInstance) {
           },
           404: {
             description: 'Resource not found',
-            type: 'null',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                description: 'Resource not found',
+                default: 'Resource not found',
+              },
+            },
           },
         },
       },
@@ -46,7 +53,7 @@ export async function categoriesRoutes(app: FastifyInstance) {
     {
       schema: {
         summary: 'Fetch categories',
-        description: 'returns all categories of user',
+        description: 'Returns all categories of user',
         tags: ['Category'],
         querystring: {
           page: { type: 'number', default: 1, description: 'current page' },
@@ -124,7 +131,14 @@ export async function categoriesRoutes(app: FastifyInstance) {
           },
           404: {
             description: 'Resource not found',
-            type: 'null',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                description: 'Resource not found',
+                default: 'Resource not found',
+              },
+            },
           },
         },
       },
@@ -155,11 +169,18 @@ export async function categoriesRoutes(app: FastifyInstance) {
           },
           404: {
             description: 'Resource not found',
-            type: 'null',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                description: 'Resource not found',
+                default: 'Resource not found',
+              },
+            },
           },
         },
       },
     },
-    deleteExpense,
+    deleteCategory,
   )
 }
