@@ -5,6 +5,7 @@ import { verifyJWT } from '@/http/middleware/verify-jwt'
 import { createCategory } from './create-category'
 import { deleteCategory } from './delete-category'
 import { fetchCategoriesHistory } from './fetch-categories-history'
+import { getCategory } from './get-category'
 import { updateCategory } from './update-category'
 
 export async function categoriesRoutes(app: FastifyInstance) {
@@ -158,6 +159,8 @@ export async function categoriesRoutes(app: FastifyInstance) {
     },
     fetchCategoriesHistory,
   )
+
+  app.get('/categories/:id', getCategory)
 
   app.put(
     '/categories/:id',

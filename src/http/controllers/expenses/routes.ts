@@ -5,6 +5,7 @@ import { verifyJWT } from '@/http/middleware/verify-jwt'
 import { createExpense } from './create-expense'
 import { deleteExpense } from './delete-expense'
 import { fetchExpensesHistory } from './fetch-expenses-history'
+import { getExpense } from './get-expense'
 import { updateExpense } from './update-expense'
 
 export async function expensesRoutes(app: FastifyInstance) {
@@ -166,6 +167,8 @@ export async function expensesRoutes(app: FastifyInstance) {
     },
     fetchExpensesHistory,
   )
+
+  app.get('/expenses/:id', getExpense)
 
   app.put(
     '/expenses/:id',
