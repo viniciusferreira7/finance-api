@@ -168,7 +168,51 @@ export async function expensesRoutes(app: FastifyInstance) {
     fetchExpensesHistory,
   )
 
-  app.get('/expenses/:id', getExpense)
+  app.get(
+    '/expenses/:id',
+    {
+      schema: {
+        summary: 'Get expense',
+        description: 'Returns a specific expense by id',
+        tags: ['Expense'],
+        security: [{ jwt: [] }],
+        params: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              description: 'expense id',
+            },
+          },
+        },
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              name: { type: 'string' },
+              description: { type: 'string' },
+              created_at: { type: 'string', format: 'date-time' },
+              updated_at: { type: 'string', format: 'date-time' },
+              user_id: { type: 'string' },
+            },
+          },
+          404: {
+            description: 'Resource not found',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                description: 'Resource not found',
+                default: 'Resource not found',
+              },
+            },
+          },
+        },
+      },
+    },
+    getExpense,
+  )
 
   app.put(
     '/expenses/:id',

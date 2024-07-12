@@ -168,7 +168,51 @@ export async function incomesRoutes(app: FastifyInstance) {
     fetchIncomesHistory,
   )
 
-  app.get('/incomes/:id', getIncome)
+  app.get(
+    '/incomes/:id',
+    {
+      schema: {
+        summary: 'Get income',
+        description: 'Returns a specific income by id',
+        tags: ['Income'],
+        security: [{ jwt: [] }],
+        params: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              description: 'income id',
+            },
+          },
+        },
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              name: { type: 'string' },
+              description: { type: 'string' },
+              created_at: { type: 'string', format: 'date-time' },
+              updated_at: { type: 'string', format: 'date-time' },
+              user_id: { type: 'string' },
+            },
+          },
+          404: {
+            description: 'Resource not found',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                description: 'Resource not found',
+                default: 'Resource not found',
+              },
+            },
+          },
+        },
+      },
+    },
+    getIncome,
+  )
 
   app.put(
     '/incomes/:id',

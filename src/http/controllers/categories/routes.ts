@@ -160,7 +160,51 @@ export async function categoriesRoutes(app: FastifyInstance) {
     fetchCategoriesHistory,
   )
 
-  app.get('/categories/:id', getCategory)
+  app.get(
+    '/categories/:id',
+    {
+      schema: {
+        summary: 'Get category',
+        description: 'Returns a specific category by id',
+        tags: ['Category'],
+        security: [{ jwt: [] }],
+        params: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              description: 'category id',
+            },
+          },
+        },
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              name: { type: 'string' },
+              description: { type: 'string' },
+              created_at: { type: 'string', format: 'date-time' },
+              updated_at: { type: 'string', format: 'date-time' },
+              user_id: { type: 'string' },
+            },
+          },
+          404: {
+            description: 'Resource not found',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                description: 'Resource not found',
+                default: 'Resource not found',
+              },
+            },
+          },
+        },
+      },
+    },
+    getCategory,
+  )
 
   app.put(
     '/categories/:id',

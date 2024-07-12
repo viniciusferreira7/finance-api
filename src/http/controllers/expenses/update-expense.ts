@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 import { ResourceNotFound } from '@/use-cases/error/resource-not-found-error'
-import { makeUpdateUserExpenseUseCase } from '@/use-cases/factories/expenses/make-update-user-expense-use-case'
+import { makeUpdateUserExpenseUseCase } from '@/use-cases/factories/expenses/make-update-user-expense'
 
 export async function updateExpense(
   request: FastifyRequest,
