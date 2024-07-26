@@ -1,6 +1,7 @@
 import { Income, Prisma } from '@prisma/client'
 
-import { PaginationRequest, PaginationResponse } from '@/@types/pagination'
+import { PaginationResponse } from '@/@types/pagination'
+import { SearchParams } from '@/@types/search-params'
 
 interface UpdateIncome {
   id: string
@@ -13,7 +14,7 @@ interface UpdateIncome {
 export interface IncomesRepository {
   findManyByUserId(
     userId: string,
-    pagination: PaginationRequest,
+    searchParams: Partial<SearchParams>,
   ): Promise<PaginationResponse<Income>>
   findById(id: string): Promise<Income | null>
   delete(id: string): Promise<Income | null>

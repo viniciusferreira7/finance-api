@@ -14,12 +14,12 @@ export async function getExpense(request: FastifyRequest, reply: FastifyReply) {
   try {
     const getUserExpense = makeGetUserExpense()
 
-    const expense = await getUserExpense.execute({
+    const { expense } = await getUserExpense.execute({
       userId: request.user.sub,
       expenseId: id,
     })
 
-    return reply.status(200).send({ expense })
+    return reply.status(200).send(expense)
   } catch (err) {
     if (err instanceof ResourceNotFound) {
       return reply.status(404).send({ message: err.message })

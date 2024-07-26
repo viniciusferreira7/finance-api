@@ -14,12 +14,12 @@ export async function getIncome(request: FastifyRequest, reply: FastifyReply) {
   try {
     const getUserIncome = makeGetUserIncome()
 
-    const income = await getUserIncome.execute({
+    const { income } = await getUserIncome.execute({
       userId: request.user.sub,
       incomeId: id,
     })
 
-    return reply.status(200).send({ income })
+    return reply.status(200).send(income)
   } catch (err) {
     if (err instanceof ResourceNotFound) {
       return reply.status(404).send({ message: err.message })

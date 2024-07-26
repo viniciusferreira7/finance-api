@@ -1,8 +1,9 @@
 import { Income, Prisma } from '@prisma/client'
 import { randomUUID } from 'crypto'
 
-import { PaginationRequest } from '@/@types/pagination'
+import { SearchParams } from '@/@types/search-params'
 
+import { compareDates } from '../../../utils/compare-dates'
 import { IncomesRepository } from '../../incomes-repository'
 
 interface UpdateIncome {
@@ -16,14 +17,14 @@ interface UpdateIncome {
 export class InMemoryIncomesRepository implements IncomesRepository {
   public incomes: Income[] = []
 
-  async findManyByUserId(userId: string, pagination: PaginationRequest) {
+  async findManyByUserId(userId: string, searchParams: Partial<SearchParams>) {
     const count = this.incomes.filter(
       (income) => income.user_id === userId,
     ).length
 
     const incomes = this.incomes.filter((income) => income.user_id === userId)
 
-    if (pagination.pagination_disabled) {
+    if (searchParams.pagination_disabled) {
       return {
         count,
         next: null,
@@ -31,30 +32,68 @@ export class InMemoryIncomesRepository implements IncomesRepository {
         page: 1,
         total_pages: 1,
         per_page: count,
-        pagination_disabled: !!pagination.pagination_disabled,
+        pagination_disabled: !!searchParams.pagination_disabled,
         results: incomes,
       }
     }
-    const perPage = pagination?.per_page ?? 10
-    const currentPage = pagination?.page ?? 1
 
-    const totalPages = Math.ceil(count / perPage)
+    const incomesFiltered = incomes.filter((income) => {
+      const createdAt = compareDates({
+        date: income.created_at,
+        from: searchParams?.createdAt?.from,
+        to: searchParams?.createdAt?.to,
+      })
+
+      const updatedAt = compareDates({
+        date: income.updated_at,
+        from: searchParams?.updatedAt?.from,
+        to: searchParams?.updatedAt?.to,
+      })
+
+      const name = searchParams.name
+        ? income.name.includes(searchParams?.name)
+        : true
+
+      const value = searchParams.value
+        ? income.value === searchParams?.value
+        : true
+
+      const categoryId = searchParams.categoryId
+        ? searchParams?.categoryId === income.category_id
+        : true
+
+      return createdAt && updatedAt && name && categoryId && value
+    })
+
+    const perPage = searchParams?.per_page ?? 10
+    const currentPage = searchParams?.page ?? 1
+
+    const totalPages = Math.ceil(incomesFiltered.length / perPage)
 
     const nextPage = totalPages === currentPage ? null : currentPage + 1
     const previousPage = currentPage === 1 ? null : currentPage - 1
 
-    const incomesPaginated = this.incomes
-      .filter((income) => income.user_id === userId)
+    const incomesPaginated = incomesFiltered
+      .sort((a, b) => {
+        if (searchParams.sort === 'asc') {
+          return (
+            new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+          )
+        }
+        return (
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        )
+      })
       .slice((currentPage - 1) * perPage, currentPage * perPage)
 
     return {
-      count,
+      count: incomesFiltered.length,
       next: nextPage,
       previous: previousPage,
       page: currentPage,
       total_pages: totalPages,
       per_page: perPage,
-      pagination_disabled: !!pagination.pagination_disabled,
+      pagination_disabled: !!searchParams.pagination_disabled,
       results: incomesPaginated,
     }
   }
@@ -112,7 +151,7 @@ export class InMemoryIncomesRepository implements IncomesRepository {
 
       income = {
         ...income,
-        name: updateIncome.name ?? income.name,
+        name: updateIncome?.name ?? income.name,
         value: updateIncome?.value ?? income.value,
         description: updateIncome?.description ?? income.description,
         updated_at: new Date(),

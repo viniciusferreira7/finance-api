@@ -191,6 +191,7 @@ export async function expensesRoutes(app: FastifyInstance) {
             properties: {
               id: { type: 'string' },
               name: { type: 'string' },
+              value: { type: 'number' },
               description: { type: 'string' },
               created_at: { type: 'string', format: 'date-time' },
               updated_at: { type: 'string', format: 'date-time' },

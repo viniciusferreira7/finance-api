@@ -61,7 +61,7 @@ model IncomeHistory {
   category    Category? @relation(fields: [category_id], references: [id])
   category_id String?
 
-  income    Income @relation(fields: [income_id], references: [id])
+  income    Income @relation(fields: [income_id], references: [id], onDelete: Cascade)
   income_id String
 
   @@map("income_histories")
@@ -98,7 +98,7 @@ model ExpenseHistory {
   category    Category? @relation(fields: [category_id], references: [id])
   category_id String?
 
-  expense    Expense @relation(fields: [expense_id], references: [id])
+  expense    Expense @relation(fields: [expense_id], references: [id], onDelete: Cascade)
   expense_id String
 
   @@map("expense_histories")

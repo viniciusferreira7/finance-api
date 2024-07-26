@@ -1,10 +1,11 @@
 import { Income, Prisma } from '@prisma/client'
+import dayjs from 'dayjs'
 
-import { PaginationRequest, PaginationResponse } from '@/@types/pagination'
+import { PaginationResponse } from '@/@types/pagination'
+import { SearchParams } from '@/@types/search-params'
 import { prisma } from '@/lib/prisma'
 
 import { IncomesRepository } from '../../incomes-repository'
-
 interface UpdateIncome {
   id: string
   name?: string
@@ -16,7 +17,7 @@ interface UpdateIncome {
 export class PrismaIncomesRepository implements IncomesRepository {
   async findManyByUserId(
     userId: string,
-    pagination: PaginationRequest,
+    searchParams: Partial<SearchParams>,
   ): Promise<PaginationResponse<Income>> {
     const count = await prisma.income.count({
       where: {
@@ -24,10 +25,24 @@ export class PrismaIncomesRepository implements IncomesRepository {
       },
     })
 
-    if (pagination.pagination_disabled) {
+    if (searchParams.pagination_disabled) {
       const incomes = await prisma.income.findMany({
         where: {
           user_id: userId,
+          name: {
+            equals: searchParams.name,
+          },
+          value: {
+            equals: searchParams.value,
+          },
+          created_at: {
+            gte: dayjs(searchParams.createdAt?.from).toDate(),
+            lte: dayjs(searchParams.createdAt?.to).toDate(),
+          },
+          updated_at: {
+            gte: dayjs(searchParams.updatedAt?.from).toDate(),
+            lte: dayjs(searchParams.updatedAt?.to).toDate(),
+          },
         },
         orderBy: {
           created_at: 'asc',
@@ -43,23 +58,40 @@ export class PrismaIncomesRepository implements IncomesRepository {
         previous: 0,
         page: 1,
         per_page: count,
-        pagination_disabled: !!pagination.pagination_disabled,
+        pagination_disabled: !!searchParams.pagination_disabled,
         total_pages: 1,
         results: incomes,
       }
     }
 
-    const perPage = pagination?.per_page ?? 10
-    const currentPage = pagination?.page ?? 1
+    const perPage = searchParams?.per_page ?? 10
+    const currentPage = searchParams?.page ?? 1
 
     const totalPages = Math.ceil(count / perPage)
 
     const incomesPaginated = await prisma.income.findMany({
       where: {
         user_id: userId,
+        name: {
+          contains: searchParams.name,
+        },
+        value: {
+          equals: searchParams.value,
+        },
+        created_at: {
+          gte: dayjs(searchParams.createdAt?.from).startOf('date').toDate(),
+          lte: dayjs(searchParams.createdAt?.to).endOf('date').toDate(),
+        },
+        updated_at: {
+          gte: dayjs(searchParams.updatedAt?.from).startOf('date').toDate(),
+          lte: dayjs(searchParams.updatedAt?.to).endOf('date').toDate(),
+        },
+        category_id: {
+          equals: searchParams.categoryId,
+        },
       },
       orderBy: {
-        created_at: 'asc',
+        created_at: searchParams.sort ?? 'desc',
       },
       take: perPage,
       skip: (currentPage - 1) * perPage,
@@ -78,7 +110,7 @@ export class PrismaIncomesRepository implements IncomesRepository {
       page: currentPage,
       per_page: perPage,
       total_pages: totalPages,
-      pagination_disabled: !!pagination.pagination_disabled,
+      pagination_disabled: !!searchParams.pagination_disabled,
       results: incomesPaginated,
     }
   }
@@ -87,6 +119,9 @@ export class PrismaIncomesRepository implements IncomesRepository {
     const income = await prisma.income.findUnique({
       where: {
         id,
+      },
+      include: {
+        category: true,
       },
     })
 
