@@ -24,19 +24,6 @@ export class InMemoryIncomesRepository implements IncomesRepository {
 
     const incomes = this.incomes.filter((income) => income.user_id === userId)
 
-    if (searchParams.pagination_disabled) {
-      return {
-        count,
-        next: null,
-        previous: null,
-        page: 1,
-        total_pages: 1,
-        per_page: count,
-        pagination_disabled: !!searchParams.pagination_disabled,
-        results: incomes,
-      }
-    }
-
     const incomesFiltered = incomes.filter((income) => {
       const createdAt = compareDates({
         date: income.created_at,
@@ -64,6 +51,19 @@ export class InMemoryIncomesRepository implements IncomesRepository {
 
       return createdAt && updatedAt && name && categoryId && value
     })
+
+    if (searchParams.pagination_disabled) {
+      return {
+        count,
+        next: null,
+        previous: null,
+        page: 1,
+        total_pages: 1,
+        per_page: count,
+        pagination_disabled: !!searchParams.pagination_disabled,
+        results: incomesFiltered,
+      }
+    }
 
     const perPage = searchParams?.per_page ?? 10
     const currentPage = searchParams?.page ?? 1

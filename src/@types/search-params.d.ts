@@ -5,12 +5,12 @@ export interface SearchParams extends PaginationRequest {
   name: string
   value: number
   sort: 'asc' | 'desc'
-  createdAt: {
-    from: string
+  createdAt?: {
+    from?: string
     to?: string
   }
-  updatedAt: {
-    from: string
+  updatedAt?: {
+    from?: string
     to?: string
   }
 }
