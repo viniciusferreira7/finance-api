@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "incomes" ALTER COLUMN "value" SET DATA TYPE BIGINT;

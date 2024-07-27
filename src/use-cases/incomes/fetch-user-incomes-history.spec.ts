@@ -194,7 +194,7 @@ describe('Fetch user incomes history use case', () => {
     expect(createdAtIncome).toBe('2000-04')
   })
 
-  it('should be able to fetch incomes using value and sort from most be able to search for gains using the in and value category and sort from the oldest', async () => {
+  it('should be able to fetch incomes using value and sort from most be able to search for incomes using the in and value category and sort from the oldest', async () => {
     vi.setSystemTime(new Date(2000, 1, 1, 1, 13, 40))
 
     const user = await usersRepository.create({
@@ -252,12 +252,12 @@ describe('Fetch user incomes history use case', () => {
 
     const lastDate = dayjs().format('YYYY-MM')
 
-    const { results } = await sut.execute({
+    const { results, ...rest } = await sut.execute({
       userId: user.id,
       searchParams: {
         page: 1,
         per_page: 20,
-        pagination_disabled: true,
+        pagination_disabled: false,
         name: 'New',
         updatedAt: {
           from: lastDate,
@@ -267,6 +267,8 @@ describe('Fetch user incomes history use case', () => {
     })
 
     const income = results[0]
+
+    console.log(income, rest) // TODO: descobrir porque o teste esta falhando
     const updatedAtIncome = dayjs(income.updated_at).format('YYYY-MM')
 
     expect(income.name).toBe('New')

@@ -22,6 +22,31 @@ export class PrismaIncomesRepository implements IncomesRepository {
     const count = await prisma.income.count({
       where: {
         user_id: userId,
+        name: {
+          equals: searchParams.name,
+        },
+        value: {
+          equals: searchParams.value,
+        },
+        created_at: {
+          gte: searchParams.createdAt?.from
+            ? dayjs(searchParams.createdAt?.from).startOf('date').toDate()
+            : undefined,
+          lte: searchParams.createdAt?.to
+            ? dayjs(searchParams.createdAt?.to).endOf('date').toDate()
+            : undefined,
+        },
+        updated_at: {
+          gte: searchParams.updatedAt?.from
+            ? dayjs(searchParams.updatedAt?.from).startOf('date').toDate()
+            : undefined,
+          lte: searchParams.updatedAt?.to
+            ? dayjs(searchParams.updatedAt?.to).endOf('date').toDate()
+            : undefined,
+        },
+        category_id: {
+          equals: searchParams.categoryId,
+        },
       },
     })
 
@@ -36,12 +61,20 @@ export class PrismaIncomesRepository implements IncomesRepository {
             equals: searchParams.value,
           },
           created_at: {
-            gte: dayjs(searchParams.createdAt?.from).toDate(),
-            lte: dayjs(searchParams.createdAt?.to).toDate(),
+            gte: searchParams.createdAt?.from
+              ? dayjs(searchParams.createdAt?.from).startOf('date').toDate()
+              : undefined,
+            lte: searchParams.createdAt?.to
+              ? dayjs(searchParams.createdAt?.to).endOf('date').toDate()
+              : undefined,
           },
           updated_at: {
-            gte: dayjs(searchParams.updatedAt?.from).toDate(),
-            lte: dayjs(searchParams.updatedAt?.to).toDate(),
+            gte: searchParams.updatedAt?.from
+              ? dayjs(searchParams.updatedAt?.from).startOf('date').toDate()
+              : undefined,
+            lte: searchParams.updatedAt?.to
+              ? dayjs(searchParams.updatedAt?.to).endOf('date').toDate()
+              : undefined,
           },
         },
         orderBy: {
@@ -110,8 +143,6 @@ export class PrismaIncomesRepository implements IncomesRepository {
 
     const nextPage = totalPages === currentPage ? null : currentPage + 1
     const previousPage = currentPage === 1 ? null : currentPage - 1
-
-    console.log({ incomesPaginated })
 
     return {
       count,

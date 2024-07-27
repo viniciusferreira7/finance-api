@@ -55,8 +55,6 @@ export async function fetchIncomesHistory(
       }
     })
 
-  console.log(request.query)
-
   const {
     name,
     value,
