@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -16,10 +17,22 @@ export async function fetchIncomesHistory(
         .positive({ message: 'Must be the positive number.' })
         .optional(),
       sort: z.enum(['asc', 'desc']).optional(),
-      created_at_from: z.string().datetime().optional(),
-      created_at_to: z.string().datetime().optional(),
-      updated_at_from: z.string().datetime().optional(),
-      updated_at_to: z.string().datetime().optional(),
+      created_at_from: z
+        .string()
+        .refine((value) => dayjs(value).isValid(), 'Invalid date')
+        .optional(),
+      created_at_to: z
+        .string()
+        .refine((value) => dayjs(value).isValid(), 'Invalid date')
+        .optional(),
+      updated_at_from: z
+        .string()
+        .refine((value) => dayjs(value).isValid(), 'Invalid date')
+        .optional(),
+      updated_at_to: z
+        .string()
+        .refine((value) => dayjs(value).isValid(), 'Invalid date')
+        .optional(),
       category_id: z.string().optional(),
       page: z.coerce
         .number()
@@ -66,6 +79,7 @@ export async function fetchIncomesHistory(
     page,
     per_page,
     pagination_disabled,
+    sort,
   } = fetchIncomesSchema.parse(request.query)
 
   try {
@@ -88,6 +102,7 @@ export async function fetchIncomesHistory(
         page,
         per_page,
         pagination_disabled,
+        sort,
       },
     })
 

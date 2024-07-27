@@ -19,6 +19,12 @@ export class PrismaIncomesRepository implements IncomesRepository {
     userId: string,
     searchParams: Partial<SearchParams>,
   ): Promise<PaginationResponse<Income>> {
+    const isToGetCreatedAtOneDate =
+      searchParams.createdAt?.from && !searchParams.createdAt?.to
+
+    const isToGetUpdatedAtOneDate =
+      searchParams.updatedAt?.from && !searchParams.updatedAt?.to
+
     const count = await prisma.income.count({
       where: {
         user_id: userId,
@@ -28,25 +34,34 @@ export class PrismaIncomesRepository implements IncomesRepository {
         value: {
           equals: searchParams.value,
         },
-        created_at: {
-          gte: searchParams.createdAt?.from
-            ? dayjs(searchParams.createdAt?.from).startOf('date').toDate()
-            : undefined,
-          lte: searchParams.createdAt?.to
-            ? dayjs(searchParams.createdAt?.to).endOf('date').toDate()
-            : undefined,
-        },
-        updated_at: {
-          gte: searchParams.updatedAt?.from
-            ? dayjs(searchParams.updatedAt?.from).startOf('date').toDate()
-            : undefined,
-          lte: searchParams.updatedAt?.to
-            ? dayjs(searchParams.updatedAt?.to).endOf('date').toDate()
-            : undefined,
-        },
-        category_id: {
-          equals: searchParams.categoryId,
-        },
+        created_at: isToGetCreatedAtOneDate
+          ? {
+              gte: dayjs(searchParams.createdAt?.from).startOf('date').toDate(),
+              lte: dayjs(searchParams.createdAt?.from).endOf('date').toDate(),
+            }
+          : {
+              gte:
+                searchParams.createdAt?.from && searchParams.createdAt?.to
+                  ? dayjs(searchParams.createdAt?.from).startOf('date').toDate()
+                  : undefined,
+              lte: searchParams.createdAt?.to
+                ? dayjs(searchParams.createdAt?.to).endOf('date').toDate()
+                : undefined,
+            },
+        updated_at: isToGetUpdatedAtOneDate
+          ? {
+              gte: dayjs(searchParams.updatedAt?.from).startOf('date').toDate(),
+              lte: dayjs(searchParams.updatedAt?.from).endOf('date').toDate(),
+            }
+          : {
+              gte:
+                searchParams.updatedAt?.from && searchParams.updatedAt?.to
+                  ? dayjs(searchParams.updatedAt?.from).startOf('date').toDate()
+                  : undefined,
+              lte: searchParams.updatedAt?.to
+                ? dayjs(searchParams.updatedAt?.to).endOf('date').toDate()
+                : undefined,
+            },
       },
     })
 
@@ -60,22 +75,42 @@ export class PrismaIncomesRepository implements IncomesRepository {
           value: {
             equals: searchParams.value,
           },
-          created_at: {
-            gte: searchParams.createdAt?.from
-              ? dayjs(searchParams.createdAt?.from).startOf('date').toDate()
-              : undefined,
-            lte: searchParams.createdAt?.to
-              ? dayjs(searchParams.createdAt?.to).endOf('date').toDate()
-              : undefined,
-          },
-          updated_at: {
-            gte: searchParams.updatedAt?.from
-              ? dayjs(searchParams.updatedAt?.from).startOf('date').toDate()
-              : undefined,
-            lte: searchParams.updatedAt?.to
-              ? dayjs(searchParams.updatedAt?.to).endOf('date').toDate()
-              : undefined,
-          },
+          created_at: isToGetCreatedAtOneDate
+            ? {
+                gte: dayjs(searchParams.createdAt?.from)
+                  .startOf('date')
+                  .toDate(),
+                lte: dayjs(searchParams.createdAt?.from).endOf('date').toDate(),
+              }
+            : {
+                gte:
+                  searchParams.createdAt?.from && searchParams.createdAt?.to
+                    ? dayjs(searchParams.createdAt?.from)
+                        .startOf('date')
+                        .toDate()
+                    : undefined,
+                lte: searchParams.createdAt?.to
+                  ? dayjs(searchParams.createdAt?.to).endOf('date').toDate()
+                  : undefined,
+              },
+          updated_at: isToGetUpdatedAtOneDate
+            ? {
+                gte: dayjs(searchParams.updatedAt?.from)
+                  .startOf('date')
+                  .toDate(),
+                lte: dayjs(searchParams.updatedAt?.from).endOf('date').toDate(),
+              }
+            : {
+                gte:
+                  searchParams.updatedAt?.from && searchParams.updatedAt?.to
+                    ? dayjs(searchParams.updatedAt?.from)
+                        .startOf('date')
+                        .toDate()
+                    : undefined,
+                lte: searchParams.updatedAt?.to
+                  ? dayjs(searchParams.updatedAt?.to).endOf('date').toDate()
+                  : undefined,
+              },
         },
         orderBy: {
           created_at: 'asc',
@@ -106,30 +141,39 @@ export class PrismaIncomesRepository implements IncomesRepository {
       where: {
         user_id: userId,
         name: {
-          contains: searchParams.name,
+          equals: searchParams.name,
         },
         value: {
           equals: searchParams.value,
         },
-        created_at: {
-          gte: searchParams.createdAt?.from
-            ? dayjs(searchParams.createdAt?.from).startOf('date').toDate()
-            : undefined,
-          lte: searchParams.createdAt?.to
-            ? dayjs(searchParams.createdAt?.to).endOf('date').toDate()
-            : undefined,
-        },
-        updated_at: {
-          gte: searchParams.updatedAt?.from
-            ? dayjs(searchParams.updatedAt?.from).startOf('date').toDate()
-            : undefined,
-          lte: searchParams.updatedAt?.to
-            ? dayjs(searchParams.updatedAt?.to).endOf('date').toDate()
-            : undefined,
-        },
-        category_id: {
-          equals: searchParams.categoryId,
-        },
+        created_at: isToGetCreatedAtOneDate
+          ? {
+              gte: dayjs(searchParams.createdAt?.from).startOf('date').toDate(),
+              lte: dayjs(searchParams.createdAt?.from).endOf('date').toDate(),
+            }
+          : {
+              gte:
+                searchParams.createdAt?.from && searchParams.createdAt?.to
+                  ? dayjs(searchParams.createdAt?.from).startOf('date').toDate()
+                  : undefined,
+              lte: searchParams.createdAt?.to
+                ? dayjs(searchParams.createdAt?.to).endOf('date').toDate()
+                : undefined,
+            },
+        updated_at: isToGetUpdatedAtOneDate
+          ? {
+              gte: dayjs(searchParams.updatedAt?.from).startOf('date').toDate(),
+              lte: dayjs(searchParams.updatedAt?.from).endOf('date').toDate(),
+            }
+          : {
+              gte:
+                searchParams.updatedAt?.from && searchParams.updatedAt?.to
+                  ? dayjs(searchParams.updatedAt?.from).startOf('date').toDate()
+                  : undefined,
+              lte: searchParams.updatedAt?.to
+                ? dayjs(searchParams.updatedAt?.to).endOf('date').toDate()
+                : undefined,
+            },
       },
       orderBy: {
         created_at: searchParams.sort ?? 'desc',
