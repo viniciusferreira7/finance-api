@@ -13,7 +13,8 @@ export async function fetchIncomesHistory(
       name: z.string().optional(),
       value: z.coerce
         .number()
-        .positive({ message: 'Must be the positive number.' }),
+        .positive({ message: 'Must be the positive number.' })
+        .optional(),
       sort: z.enum(['asc', 'desc']).optional(),
       created_at_from: z.string().datetime().optional(),
       created_at_to: z.string().datetime().optional(),
@@ -53,6 +54,8 @@ export async function fetchIncomesHistory(
         })
       }
     })
+
+  console.log(request.query)
 
   const {
     name,
