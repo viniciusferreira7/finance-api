@@ -54,6 +54,9 @@ export class PrismaExpensesRepository implements ExpensesRepository {
       },
       take: perPage,
       skip: (currentPage - 1) * perPage,
+      include: {
+        category: true,
+      },
     })
 
     const nextPage = totalPages === currentPage ? null : currentPage + 1

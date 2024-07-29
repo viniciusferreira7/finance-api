@@ -43,9 +43,9 @@ export class UpdateUserExpenseUseCase {
       throw new ResourceNotFound()
     }
 
-    const income = await this.expensesRepository.findById(updateExpense.id)
+    const expense = await this.expensesRepository.findById(updateExpense.id)
 
-    if (!income) {
+    if (!expense) {
       throw new ResourceNotFound()
     }
 
@@ -60,11 +60,11 @@ export class UpdateUserExpenseUseCase {
     }
 
     await this.expenseHistoriesRepository.create({
-      name: updateExpense.name ?? income.name,
+      name: updateExpense.name ?? expense.name,
       value: convertToCents(updateExpense?.value),
       description: updateExpense.description,
-      category_id: updateExpense.categoryId ?? income.category_id,
-      income_id: income.id,
+      category_id: updateExpense.categoryId ?? expense.category_id,
+      expense_id: expense.id,
       user_id: user.id,
     })
 

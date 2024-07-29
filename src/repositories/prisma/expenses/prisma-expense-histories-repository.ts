@@ -32,10 +32,10 @@ export class PrismaExpenseHistoriesRepository
   }
 
   async create(data: Prisma.ExpenseHistoryUncheckedCreateInput) {
-    const Expense = await prisma.expenseHistory.create({
+    const expense = await prisma.expenseHistory.create({
       data,
     })
 
-    return Expense
+    return expense
   }
 }
