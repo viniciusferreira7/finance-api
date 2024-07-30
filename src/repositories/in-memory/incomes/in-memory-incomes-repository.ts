@@ -18,10 +18,6 @@ export class InMemoryIncomesRepository implements IncomesRepository {
   public incomes: Income[] = []
 
   async findManyByUserId(userId: string, searchParams: Partial<SearchParams>) {
-    const count = this.incomes.filter(
-      (income) => income.user_id === userId,
-    ).length
-
     const incomes = this.incomes.filter((income) => income.user_id === userId)
 
     const incomesFiltered = incomes.filter((income) => {
@@ -49,8 +45,17 @@ export class InMemoryIncomesRepository implements IncomesRepository {
         ? searchParams?.categoryId === income.category_id
         : true
 
-      return createdAt && updatedAt && name && categoryId && value
+      return (
+        income.user_id === userId &&
+        createdAt &&
+        updatedAt &&
+        name &&
+        categoryId &&
+        value
+      )
     })
+
+    const count = incomesFiltered.length
 
     if (searchParams.pagination_disabled) {
       return {

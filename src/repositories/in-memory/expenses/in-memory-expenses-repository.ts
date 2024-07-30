@@ -18,10 +18,6 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
   public expenses: Expense[] = []
 
   async findManyByUserId(userId: string, searchParams: Partial<SearchParams>) {
-    const count = this.expenses.filter(
-      (expense) => expense.user_id === userId,
-    ).length
-
     const expenses = this.expenses.filter(
       (expense) => expense.user_id === userId,
     )
@@ -53,6 +49,8 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
 
       return createdAt && updatedAt && name && categoryId && value
     })
+
+    const count = expensesFiltered.length
 
     if (searchParams.pagination_disabled) {
       return {
