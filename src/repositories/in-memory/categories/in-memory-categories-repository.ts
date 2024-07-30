@@ -1,7 +1,8 @@
 import { Category, Prisma } from '@prisma/client'
 import { randomUUID } from 'crypto'
 
-import { PaginationRequest } from '@/@types/pagination'
+import { CategorySearchParams } from '@/@types/search-params'
+import { compareDates } from '@/utils/compare-dates'
 
 import { CategoriesRepository } from '../../categories-repository'
 
@@ -26,12 +27,48 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
     return category
   }
 
-  async findManyByUserId(userId: string, pagination: PaginationRequest) {
-    const count = this.categories.length
+  async findManyByUserId(
+    userId: string,
+    searchParams: Partial<CategorySearchParams>,
+  ) {
+    const categories = this.categories
+      .filter((income) => {
+        const createdAt = compareDates({
+          date: income.created_at,
+          from: searchParams?.createdAt?.from,
+          to: searchParams?.createdAt?.to,
+        })
 
-    const categories = this.categories.filter((item) => item.user_id === userId)
+        const updatedAt = compareDates({
+          date: income.updated_at,
+          from: searchParams?.updatedAt?.from,
+          to: searchParams?.updatedAt?.to,
+        })
 
-    if (pagination.pagination_disabled) {
+        const name = searchParams.name
+          ? income.name.includes(searchParams?.name)
+          : true
+
+        const description = searchParams.description
+          ? income.description === searchParams?.description
+          : true
+
+        return createdAt && updatedAt && name && description
+      })
+      .sort((a, b) => {
+        if (searchParams.sort === 'asc') {
+          return (
+            new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+          )
+        }
+        return (
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        )
+      })
+
+    const count = categories.length
+
+    if (searchParams.pagination_disabled) {
       return {
         count,
         next: null,
@@ -39,13 +76,13 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
         page: 1,
         total_pages: 1,
         per_page: count,
-        pagination_disabled: !!pagination.pagination_disabled,
+        pagination_disabled: !!searchParams.pagination_disabled,
         results: categories,
       }
     }
 
-    const perPage = pagination?.per_page ?? 10
-    const currentPage = pagination?.page ?? 1
+    const perPage = searchParams?.per_page ?? 10
+    const currentPage = searchParams?.page ?? 1
 
     const totalPages = Math.ceil(count / perPage)
 
@@ -64,7 +101,7 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
       page: currentPage,
       total_pages: totalPages,
       per_page: perPage,
-      pagination_disabled: !!pagination.pagination_disabled,
+      pagination_disabled: !!searchParams.pagination_disabled,
       results: categoriesPaginated,
     }
   }
