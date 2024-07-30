@@ -1,6 +1,7 @@
 import { Category, Prisma } from '@prisma/client'
 
-import { PaginationRequest, PaginationResponse } from '@/@types/pagination'
+import { PaginationResponse } from '@/@types/pagination'
+import { CategorySearchParams } from '@/@types/search-params'
 
 interface UpdateParams {
   id: string
@@ -12,7 +13,7 @@ export interface CategoriesRepository {
   findByUserIdAndName(userId: string, name: string): Promise<Category | null>
   findManyByUserId(
     userId: string,
-    pagination?: Partial<PaginationRequest>,
+    searchParams: Partial<CategorySearchParams>,
   ): Promise<PaginationResponse<Category>>
   findById(id: string): Promise<Category | null>
   delete(id: string): Promise<Category | null>
