@@ -29,7 +29,7 @@ export class PrismaIncomesRepository implements IncomesRepository {
       where: {
         user_id: userId,
         name: {
-          equals: searchParams.name,
+          contains: searchParams.name,
         },
         value: {
           equals: searchParams.value,
@@ -141,7 +141,7 @@ export class PrismaIncomesRepository implements IncomesRepository {
       where: {
         user_id: userId,
         name: {
-          equals: searchParams.name,
+          contains: searchParams.name,
         },
         value: {
           equals: searchParams.value,

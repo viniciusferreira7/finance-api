@@ -30,7 +30,7 @@ export class PrismaExpensesRepository implements ExpensesRepository {
       where: {
         user_id: userId,
         name: {
-          equals: searchParams.name,
+          contains: searchParams.name,
         },
         value: {
           equals: searchParams.value,
@@ -142,7 +142,7 @@ export class PrismaExpensesRepository implements ExpensesRepository {
       where: {
         user_id: userId,
         name: {
-          equals: searchParams.name,
+          contains: searchParams.name,
         },
         value: {
           equals: searchParams.value,
