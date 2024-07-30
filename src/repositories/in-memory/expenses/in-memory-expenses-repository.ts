@@ -1,7 +1,8 @@
 import { Expense, Prisma } from '@prisma/client'
 import { randomUUID } from 'crypto'
 
-import { PaginationRequest } from '@/@types/pagination'
+import { SearchParams } from '@/@types/search-params'
+import { compareDates } from '@/utils/compare-dates'
 
 import { ExpensesRepository } from '../../expenses-repository'
 
@@ -16,12 +17,44 @@ interface UpdateExpense {
 export class InMemoryExpensesRepository implements ExpensesRepository {
   public expenses: Expense[] = []
 
-  async findManyByUserId(userId: string, pagination: PaginationRequest) {
-    const count = this.expenses.length
+  async findManyByUserId(userId: string, searchParams: Partial<SearchParams>) {
+    const count = this.expenses.filter(
+      (expense) => expense.user_id === userId,
+    ).length
 
-    const expenses = this.expenses.filter((item) => item.user_id === userId)
+    const expenses = this.expenses.filter(
+      (expense) => expense.user_id === userId,
+    )
 
-    if (pagination.pagination_disabled) {
+    const expensesFiltered = expenses.filter((expense) => {
+      const createdAt = compareDates({
+        date: expense.created_at,
+        from: searchParams?.createdAt?.from,
+        to: searchParams?.createdAt?.to,
+      })
+
+      const updatedAt = compareDates({
+        date: expense.updated_at,
+        from: searchParams?.updatedAt?.from,
+        to: searchParams?.updatedAt?.to,
+      })
+
+      const name = searchParams.name
+        ? expense.name.includes(searchParams?.name)
+        : true
+
+      const value = searchParams.value
+        ? Number(expense.value) === searchParams?.value
+        : true
+
+      const categoryId = searchParams.categoryId
+        ? searchParams?.categoryId === expense.category_id
+        : true
+
+      return createdAt && updatedAt && name && categoryId && value
+    })
+
+    if (searchParams.pagination_disabled) {
       return {
         count,
         next: null,
@@ -29,31 +62,40 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
         page: 1,
         total_pages: 1,
         per_page: count,
-        pagination_disabled: !!pagination.pagination_disabled,
-        results: expenses,
+        pagination_disabled: !!searchParams.pagination_disabled,
+        results: expensesFiltered,
       }
     }
 
-    const perPage = pagination?.per_page ?? 10
-    const currentPage = pagination?.page ?? 1
+    const perPage = searchParams?.per_page ?? 10
+    const currentPage = searchParams?.page ?? 1
 
-    const totalPages = Math.ceil(count / perPage)
-
-    const expensesPaginated = this.expenses
-      .filter((item) => item.user_id === userId)
-      .slice((currentPage - 1) * perPage, currentPage * perPage)
+    const totalPages = Math.ceil(expensesFiltered.length / perPage)
 
     const nextPage = totalPages === currentPage ? null : currentPage + 1
     const previousPage = currentPage === 1 ? null : currentPage - 1
 
+    const expensesPaginated = expensesFiltered
+      .sort((a, b) => {
+        if (searchParams.sort === 'asc') {
+          return (
+            new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+          )
+        }
+        return (
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        )
+      })
+      .slice((currentPage - 1) * perPage, currentPage * perPage)
+
     return {
-      count,
+      count: expensesFiltered.length,
       next: nextPage,
       previous: previousPage,
       page: currentPage,
       total_pages: totalPages,
       per_page: perPage,
-      pagination_disabled: !!pagination.pagination_disabled,
+      pagination_disabled: !!searchParams.pagination_disabled,
       results: expensesPaginated,
     }
   }
@@ -135,7 +177,7 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
       created_at: new Date(),
       updated_at: new Date(),
       user_id: data.user_id,
-      category_id: data.category_id,
+      category_id: data.category_id ?? null,
     }
 
     this.expenses.push(expense)

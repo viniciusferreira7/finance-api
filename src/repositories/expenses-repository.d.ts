@@ -1,6 +1,7 @@
 import { Expense, Prisma } from '@prisma/client'
 
-import { PaginationRequest, PaginationResponse } from '@/@types/pagination'
+import { PaginationResponse } from '@/@types/pagination'
+import { SearchParams } from '@/@types/search-params'
 
 interface UpdateExpense {
   id: string
@@ -13,7 +14,7 @@ interface UpdateExpense {
 export interface ExpensesRepository {
   findManyByUserId(
     userId: string,
-    pagination: PaginationRequest,
+    searchParams: Partial<SearchParams>,
   ): Promise<PaginationResponse<Expense>>
   findById(id: string): Promise<Expense | null>
   delete(id: string): Promise<Expense | null>

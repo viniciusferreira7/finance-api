@@ -1,13 +1,15 @@
 import { Expense } from '@prisma/client'
 
-import { PaginationRequest, PaginationResponse } from '@/@types/pagination'
+import { PaginationResponse } from '@/@types/pagination'
+import { SearchParams } from '@/@types/search-params'
 import { ExpensesRepository } from '@/repositories/expenses-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
 import { ResourceNotFound } from '../error/resource-not-found-error'
 
-interface FetchUserExpensesHistoryUseCaseRequest extends PaginationRequest {
+interface FetchUserExpensesHistoryUseCaseRequest {
   userId: string
+  searchParams?: Partial<SearchParams>
 }
 
 type FetchUserExpensesHistoryUseCaseResponse = PaginationResponse<Expense>
@@ -20,9 +22,7 @@ export class FetchUserExpensesHistoryUseCase {
 
   async execute({
     userId,
-    page,
-    per_page,
-    pagination_disabled,
+    searchParams,
   }: FetchUserExpensesHistoryUseCaseRequest): Promise<FetchUserExpensesHistoryUseCaseResponse> {
     const user = await this.usersRepository.findById(userId)
 
@@ -31,9 +31,15 @@ export class FetchUserExpensesHistoryUseCase {
     }
 
     const results = await this.expensesRepository.findManyByUserId(userId, {
-      page,
-      per_page,
-      pagination_disabled,
+      page: searchParams?.page,
+      per_page: searchParams?.per_page,
+      pagination_disabled: searchParams?.pagination_disabled,
+      categoryId: searchParams?.categoryId,
+      name: searchParams?.name,
+      value: searchParams?.value,
+      sort: searchParams?.sort,
+      createdAt: searchParams?.createdAt,
+      updatedAt: searchParams?.updatedAt,
     })
 
     return { ...results }
