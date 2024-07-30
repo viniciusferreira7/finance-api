@@ -1,13 +1,15 @@
 import { Category } from '@prisma/client'
 
-import { PaginationRequest, PaginationResponse } from '@/@types/pagination'
+import { PaginationResponse } from '@/@types/pagination'
+import { CategorySearchParams } from '@/@types/search-params'
 import { CategoriesRepository } from '@/repositories/categories-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
 import { ResourceNotFound } from '../error/resource-not-found-error'
 
-interface FetchUserCategoriesUseCaseRequest extends PaginationRequest {
+interface FetchUserCategoriesUseCaseRequest {
   userId: string
+  searchParams?: Partial<CategorySearchParams>
 }
 
 type FetchUserCategoriesUseCaseResponse = PaginationResponse<Category>
@@ -20,9 +22,7 @@ export class FetchUserCategoriesHistoryUseCase {
 
   async execute({
     userId,
-    page,
-    per_page,
-    pagination_disabled,
+    searchParams,
   }: FetchUserCategoriesUseCaseRequest): Promise<FetchUserCategoriesUseCaseResponse> {
     const user = await this.usersRepository.findById(userId)
 
@@ -31,9 +31,14 @@ export class FetchUserCategoriesHistoryUseCase {
     }
 
     const results = await this.categoriesRepository.findManyByUserId(userId, {
-      page,
-      per_page,
-      pagination_disabled,
+      page: searchParams?.page,
+      per_page: searchParams?.per_page,
+      pagination_disabled: searchParams?.pagination_disabled,
+      name: searchParams?.name,
+      description: searchParams?.description,
+      sort: searchParams?.sort,
+      createdAt: searchParams?.createdAt,
+      updatedAt: searchParams?.updatedAt,
     })
 
     return { ...results }

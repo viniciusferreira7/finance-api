@@ -14,3 +14,17 @@ export interface SearchParams extends PaginationRequest {
     to?: string
   }
 }
+
+export interface CategorySearchParams extends PaginationRequest {
+  name: string
+  description: string
+  sort: 'asc' | 'desc'
+  createdAt?: {
+    from?: string
+    to?: string
+  }
+  updatedAt?: {
+    from?: string
+    to?: string
+  }
+}
