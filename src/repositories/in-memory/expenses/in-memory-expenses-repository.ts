@@ -22,33 +22,44 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
       (expense) => expense.user_id === userId,
     )
 
-    const expensesFiltered = expenses.filter((expense) => {
-      const createdAt = compareDates({
-        date: expense.created_at,
-        from: searchParams?.createdAt?.from,
-        to: searchParams?.createdAt?.to,
+    const expensesFiltered = expenses
+      .filter((expense) => {
+        const createdAt = compareDates({
+          date: expense.created_at,
+          from: searchParams?.createdAt?.from,
+          to: searchParams?.createdAt?.to,
+        })
+
+        const updatedAt = compareDates({
+          date: expense.updated_at,
+          from: searchParams?.updatedAt?.from,
+          to: searchParams?.updatedAt?.to,
+        })
+
+        const name = searchParams.name
+          ? expense.name.includes(searchParams?.name)
+          : true
+
+        const value = searchParams.value
+          ? Number(expense.value) === searchParams?.value
+          : true
+
+        const categoryId = searchParams.categoryId
+          ? searchParams?.categoryId === expense.category_id
+          : true
+
+        return createdAt && updatedAt && name && categoryId && value
       })
-
-      const updatedAt = compareDates({
-        date: expense.updated_at,
-        from: searchParams?.updatedAt?.from,
-        to: searchParams?.updatedAt?.to,
+      .sort((a, b) => {
+        if (searchParams.sort === 'asc') {
+          return (
+            new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+          )
+        }
+        return (
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        )
       })
-
-      const name = searchParams.name
-        ? expense.name.includes(searchParams?.name)
-        : true
-
-      const value = searchParams.value
-        ? Number(expense.value) === searchParams?.value
-        : true
-
-      const categoryId = searchParams.categoryId
-        ? searchParams?.categoryId === expense.category_id
-        : true
-
-      return createdAt && updatedAt && name && categoryId && value
-    })
 
     const count = expensesFiltered.length
 
@@ -73,18 +84,10 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
     const nextPage = totalPages === currentPage ? null : currentPage + 1
     const previousPage = currentPage === 1 ? null : currentPage - 1
 
-    const expensesPaginated = expensesFiltered
-      .sort((a, b) => {
-        if (searchParams.sort === 'asc') {
-          return (
-            new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-          )
-        }
-        return (
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-        )
-      })
-      .slice((currentPage - 1) * perPage, currentPage * perPage)
+    const expensesPaginated = expensesFiltered.slice(
+      (currentPage - 1) * perPage,
+      currentPage * perPage,
+    )
 
     return {
       count: expensesFiltered.length,

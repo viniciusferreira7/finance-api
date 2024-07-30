@@ -20,40 +20,51 @@ export class InMemoryIncomesRepository implements IncomesRepository {
   async findManyByUserId(userId: string, searchParams: Partial<SearchParams>) {
     const incomes = this.incomes.filter((income) => income.user_id === userId)
 
-    const incomesFiltered = incomes.filter((income) => {
-      const createdAt = compareDates({
-        date: income.created_at,
-        from: searchParams?.createdAt?.from,
-        to: searchParams?.createdAt?.to,
+    const incomesFiltered = incomes
+      .filter((income) => {
+        const createdAt = compareDates({
+          date: income.created_at,
+          from: searchParams?.createdAt?.from,
+          to: searchParams?.createdAt?.to,
+        })
+
+        const updatedAt = compareDates({
+          date: income.updated_at,
+          from: searchParams?.updatedAt?.from,
+          to: searchParams?.updatedAt?.to,
+        })
+
+        const name = searchParams.name
+          ? income.name.includes(searchParams?.name)
+          : true
+
+        const value = searchParams.value
+          ? income.value === searchParams?.value
+          : true
+
+        const categoryId = searchParams.categoryId
+          ? searchParams?.categoryId === income.category_id
+          : true
+
+        return (
+          income.user_id === userId &&
+          createdAt &&
+          updatedAt &&
+          name &&
+          categoryId &&
+          value
+        )
       })
-
-      const updatedAt = compareDates({
-        date: income.updated_at,
-        from: searchParams?.updatedAt?.from,
-        to: searchParams?.updatedAt?.to,
+      .sort((a, b) => {
+        if (searchParams.sort === 'asc') {
+          return (
+            new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+          )
+        }
+        return (
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        )
       })
-
-      const name = searchParams.name
-        ? income.name.includes(searchParams?.name)
-        : true
-
-      const value = searchParams.value
-        ? income.value === searchParams?.value
-        : true
-
-      const categoryId = searchParams.categoryId
-        ? searchParams?.categoryId === income.category_id
-        : true
-
-      return (
-        income.user_id === userId &&
-        createdAt &&
-        updatedAt &&
-        name &&
-        categoryId &&
-        value
-      )
-    })
 
     const count = incomesFiltered.length
 
@@ -78,18 +89,10 @@ export class InMemoryIncomesRepository implements IncomesRepository {
     const nextPage = totalPages === currentPage ? null : currentPage + 1
     const previousPage = currentPage === 1 ? null : currentPage - 1
 
-    const incomesPaginated = incomesFiltered
-      .sort((a, b) => {
-        if (searchParams.sort === 'asc') {
-          return (
-            new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-          )
-        }
-        return (
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-        )
-      })
-      .slice((currentPage - 1) * perPage, currentPage * perPage)
+    const incomesPaginated = incomesFiltered.slice(
+      (currentPage - 1) * perPage,
+      currentPage * perPage,
+    )
 
     return {
       count: incomesFiltered.length,
