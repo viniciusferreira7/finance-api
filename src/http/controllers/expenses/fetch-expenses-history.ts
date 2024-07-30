@@ -11,7 +11,7 @@ export async function fetchExpensesHistory(
 ) {
   const fetchExpensesSchema = z
     .object({
-      name: z.string().optional(),
+      name: z.string().max(40, 'Must be 40 characters.').optional(),
       value: z.coerce
         .number()
         .positive({ message: 'Must be the positive number.' })
