@@ -18,11 +18,10 @@ export function compareDates({ date, from, to }: CompareDatesParams) {
   const isItToGetASpecificDate = startDate && !endDate
 
   if (isItToGetASpecificDate) {
-    return compareDate.isSame(startDate, 'milliseconds')
+    return compareDate.format('YYYY-MM') === startDate.format('YYYY-MM')
   }
 
   const isToGetRangeOfDates = startDate && endDate
-
   if (isToGetRangeOfDates) {
     return compareDate.isBetween(startDate, endDate)
   }

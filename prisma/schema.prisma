@@ -33,7 +33,7 @@ model User {
 model Income {
   id          String   @id @default(cuid())
   name        String
-  value       BigInt
+  value       Int
   description String?
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())

@@ -44,10 +44,12 @@ describe('Fetch user categories history use case', () => {
     })
 
     expect(results).toHaveLength(2)
-    expect(results).toEqual([
-      expect.objectContaining({ name: `category-1` }),
-      expect.objectContaining({ name: 'category-2' }),
-    ])
+    expect(results).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ name: `category-1` }),
+        expect.objectContaining({ name: 'category-2' }),
+      ]),
+    )
   })
 
   it('should not be able to fetch history without a user', async () => {

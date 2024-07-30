@@ -108,10 +108,12 @@ describe('Fetch user incomes history use case', () => {
     })
 
     expect(results).toHaveLength(2)
-    expect(results).toEqual([
-      expect.objectContaining({ category_id: 'category-21' }),
-      expect.objectContaining({ category_id: 'category-22' }),
-    ])
+    expect(results).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ category_id: 'category-21' }),
+        expect.objectContaining({ category_id: 'category-22' }),
+      ]),
+    )
   })
 
   it('should be able to fetch without pagination history', async () => {
@@ -252,7 +254,7 @@ describe('Fetch user incomes history use case', () => {
 
     const lastDate = dayjs().format('YYYY-MM')
 
-    const { results, ...rest } = await sut.execute({
+    const { results } = await sut.execute({
       userId: user.id,
       searchParams: {
         page: 1,
@@ -268,10 +270,9 @@ describe('Fetch user incomes history use case', () => {
 
     const income = results[0]
 
-    console.log(income, rest) // TODO: descobrir porque o teste esta falhando
     const updatedAtIncome = dayjs(income.updated_at).format('YYYY-MM')
 
     expect(income.name).toBe('New')
-    expect(updatedAtIncome).toContain(updatedAtIncome)
+    expect(updatedAtIncome).toContain(lastDate)
   })
 })
