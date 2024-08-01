@@ -5,9 +5,9 @@ services:
     ports: 
       - 5432:5432
     environment: 
-      - POSTGRESQL_USERNAME=docker
-      - POSTGRESQL_PASSWORD=docker
-      - POSTGRESQL_DATABASE=financeapi
+      POSTGRESQL_USERNAME: ${DATABASE_USERNAME}
+      POSTGRESQL_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRESQL_DATABASE: ${DATABASE_NAME}
     volumes:
       - finance_api_data:/bitnami/postgresql
 volumes:
