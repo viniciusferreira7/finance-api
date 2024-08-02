@@ -220,19 +220,23 @@ export async function incomesRoutes(app: FastifyInstance) {
   )
 
   app.get(
-    '/income-histories',
+    '/income-histories/:id',
     {
       schema: {
         summary: 'Fetch income histories',
         description: 'Returns all history of income',
         tags: ['Income'],
         security: [{ jwt: [] }],
-        querystring: {
-          incomeId: {
-            type: 'string',
-            format: 'uuid',
-            description: 'Unique identifier for the income',
+        params: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              description: 'income id',
+            },
           },
+        },
+        querystring: {
           name: {
             type: 'string',
             maxLength: 40,
