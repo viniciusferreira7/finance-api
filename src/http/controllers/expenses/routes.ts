@@ -65,16 +65,67 @@ export async function expensesRoutes(app: FastifyInstance) {
         tags: ['Expense'],
         security: [{ jwt: [] }],
         querystring: {
-          page: { type: 'number', default: 1, description: 'current page' },
+          name: {
+            type: 'string',
+            maxLength: 40,
+            description: 'Name of the income, must be 40 characters or less',
+            nullable: true,
+          },
+          value: {
+            type: 'number',
+            description: 'Value of the income, must be a positive number',
+            nullable: true,
+          },
+          sort: {
+            type: 'string',
+            enum: ['asc', 'desc'],
+            description: 'Sort order',
+          },
+          created_at_from: {
+            type: 'string',
+            format: 'date-time',
+            description:
+              'Start date for created_at filter, must be a valid date',
+            nullable: true,
+          },
+          created_at_to: {
+            type: 'string',
+            format: 'date-time',
+            description: 'End date for created_at filter, must be a valid date',
+            nullable: true,
+          },
+          updated_at_from: {
+            type: 'string',
+            format: 'date-time',
+            description:
+              'Start date for updated_at filter, must be a valid date',
+            nullable: true,
+          },
+          updated_at_to: {
+            type: 'string',
+            format: 'date-time',
+            description: 'End date for updated_at filter, must be a valid date',
+            nullable: true,
+          },
+          category_id: {
+            type: 'string',
+            description: 'Category ID of the income',
+            nullable: true,
+          },
+          page: {
+            type: 'number',
+            default: 1,
+            description: 'Current page number',
+          },
           per_page: {
             type: 'number',
             default: 10,
-            description: 'number of items per page',
+            description: 'Number of items per page',
           },
           pagination_disabled: {
             type: 'boolean',
             default: false,
-            description: 'disable pagination',
+            description: 'Disable pagination',
           },
         },
         response: {
