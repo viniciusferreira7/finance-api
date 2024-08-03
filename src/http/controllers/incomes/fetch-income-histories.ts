@@ -9,7 +9,7 @@ const fetchIncomesHistoryBodySchema = z.object({
   id: z.string(),
 })
 
-export async function fetchIncomesHistory(
+export async function fetchIncomeHistories(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {

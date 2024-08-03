@@ -4,6 +4,7 @@ import { verifyJWT } from '@/http/middleware/verify-jwt'
 
 import { createIncome } from './create-income'
 import { deleteIncome } from './delete-income'
+import { fetchIncomeHistories } from './fetch-income-histories'
 import { fetchIncomesHistory } from './fetch-incomes-history'
 import { getIncome } from './get-income'
 import { updateIncome } from './update-income'
@@ -375,7 +376,7 @@ export async function incomesRoutes(app: FastifyInstance) {
         },
       },
     },
-    fetchIncomesHistory,
+    fetchIncomeHistories,
   )
 
   app.get(
