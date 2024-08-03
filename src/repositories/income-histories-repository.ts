@@ -6,6 +6,7 @@ import { SearchParams } from '@/@types/search-params'
 export interface IncomeHistoriesRepository {
   findManyByUserId(
     userId: string,
+    incomeId: string,
     searchParams: Partial<SearchParams>,
   ): Promise<PaginationResponse<IncomeHistory>>
   updateManyByCategoryId(categoryId: string): Promise<number>

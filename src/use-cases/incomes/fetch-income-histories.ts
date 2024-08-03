@@ -43,6 +43,7 @@ export class FetchUserIncomesHistoriesUseCase {
 
     const results = await this.incomeHistoriesRepository.findManyByUserId(
       userId,
+      incomeId,
       {
         page: searchParams?.page,
         per_page: searchParams?.per_page,

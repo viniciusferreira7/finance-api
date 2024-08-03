@@ -12,6 +12,7 @@ export class PrismaIncomeHistoriesRepository
 {
   async findManyByUserId(
     userId: string,
+    incomeId: string,
     searchParams: Partial<SearchParams>,
   ): Promise<PaginationResponse<IncomeHistory>> {
     const isToGetCreatedAtOneDate =
@@ -20,6 +21,7 @@ export class PrismaIncomeHistoriesRepository
     const count = await prisma.incomeHistory.count({
       where: {
         user_id: userId,
+        income_id: incomeId,
         name: {
           contains: searchParams.name,
         },

@@ -336,7 +336,6 @@ export async function incomesRoutes(app: FastifyInstance) {
                     value: { type: 'string' },
                     description: { type: 'string' },
                     created_at: { type: 'string', format: 'date-time' },
-                    updated_at: { type: 'string', format: 'date-time' },
                     user_id: { type: 'string' },
                     category_id: { type: 'string' },
                     category: {
@@ -351,13 +350,7 @@ export async function incomesRoutes(app: FastifyInstance) {
                       },
                     },
                   },
-                  required: [
-                    'id',
-                    'name',
-                    'created_at',
-                    'updated_at',
-                    'user_id',
-                  ],
+                  required: ['id', 'name', 'created_at', 'user_id'],
                 },
               },
             },

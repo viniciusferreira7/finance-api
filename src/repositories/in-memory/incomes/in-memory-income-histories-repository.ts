@@ -11,10 +11,14 @@ export class InMemoryIncomeHistoriesRepository
 {
   public incomeHistories: IncomeHistory[] = []
 
-  async findManyByUserId(userId: string, searchParams: Partial<SearchParams>) {
-    const incomeHistories = this.incomeHistories.filter(
-      (income) => income.user_id === userId,
-    )
+  async findManyByUserId(
+    userId: string,
+    incomeId: string,
+    searchParams: Partial<SearchParams>,
+  ) {
+    const incomeHistories = this.incomeHistories.filter((income) => {
+      return income.user_id === userId && income.income_id === incomeId
+    })
 
     const incomesFiltered = incomeHistories
       .filter((income) => {

@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { ResourceNotFound } from '@/use-cases/error/resource-not-found-error'
 import { makeFetchUserIncomeHistories } from '@/use-cases/factories/incomes/make-fetch-user-income-histories'
 
-const fetchIncomesHistoryBodySchema = z.object({
+const fetchIncomeHistoriesParamSchema = z.object({
   id: z.string(),
 })
 
@@ -13,9 +13,9 @@ export async function fetchIncomeHistories(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const { id } = fetchIncomesHistoryBodySchema.parse(request.params)
+  const { id } = fetchIncomeHistoriesParamSchema.parse(request.params)
 
-  const fetchIncomesSchema = z
+  const fetchIncomeHistorieSearchParamsSchema = z
     .object({
       name: z.string().max(40, 'Must be 40 characters.').optional(),
       value: z.coerce
@@ -70,7 +70,7 @@ export async function fetchIncomeHistories(
     per_page,
     pagination_disabled,
     sort,
-  } = fetchIncomesSchema.parse(request.query)
+  } = fetchIncomeHistorieSearchParamsSchema.parse(request.query)
 
   try {
     const fetchUserIncomeHistoriesUseCase = makeFetchUserIncomeHistories()
