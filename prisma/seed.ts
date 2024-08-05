@@ -8,7 +8,27 @@ import { prisma } from '@/lib/prisma'
 import { convertToCents } from '@/utils/convert-to-cents'
 
 async function seed() {
+  const tableNames = await prisma.$queryRaw<
+    Array<{ tablename: string }>
+  >`SELECT tablename FROM pg_tables WHERE schemaname='public'`
+
   const userId = '9d656623-c105-47f4-8cad-8b8d6fb9293f'
+
+  const tables = tableNames
+    .map(({ tablename }) => tablename)
+    .filter((name) => name !== '_prisma_migrations')
+    .map((name) => `"public"."${name}"`)
+    .join(', ')
+
+  tables.split(',').forEach((tableName) => {
+    console.log(chalk.greenBright(`Delete table: ${tableName}  ✔️`))
+  })
+
+  try {
+    await prisma.$executeRawUnsafe(`TRUNCATE TABLE ${tables} CASCADE;`)
+  } catch (error) {
+    console.log({ error })
+  }
 
   const oldUser = await prisma.user.findUnique({
     where: {
@@ -139,10 +159,10 @@ async function seed() {
     }
 
     const historyRange = faker.helpers.arrayElements(
-      Array.from({ length: 10 }),
+      Array.from({ length: 45 }),
       {
-        min: 1,
-        max: 10,
+        min: 5,
+        max: 35,
       },
     )
 
@@ -225,10 +245,10 @@ async function seed() {
     }
 
     const historyRange = faker.helpers.arrayElements(
-      Array.from({ length: 10 }),
+      Array.from({ length: 45 }),
       {
-        min: 1,
-        max: 10,
+        min: 5,
+        max: 35,
       },
     )
 

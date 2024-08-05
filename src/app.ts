@@ -67,6 +67,7 @@ app.register(categoriesRoutes)
 
 app.setErrorHandler((error, _, reply) => {
   if (error instanceof ZodError) {
+    console.log({ issue: JSON.stringify(error.format()) })
     reply
       .status(400)
       .send({ message: 'Validation error.', issue: error.format() })
