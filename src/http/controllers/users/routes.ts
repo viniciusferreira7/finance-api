@@ -97,7 +97,7 @@ export async function usersRoutes(app: FastifyInstance) {
               id: { type: 'string' },
               name: { type: 'string' },
               email: { type: 'string' },
-              created_at: { type: 'string', format: 'date-time' },
+              created_at: { type: 'string' },
             },
           },
           404: {
