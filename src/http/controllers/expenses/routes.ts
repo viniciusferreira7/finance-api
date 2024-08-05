@@ -140,11 +140,13 @@ export async function expensesRoutes(app: FastifyInstance) {
                 type: 'number',
                 description: 'next page',
                 default: 2,
+                nullable: true,
               },
               previous: {
                 type: 'number',
                 description: 'previous page',
                 default: null,
+                nullable: true,
               },
               page: {
                 type: 'number',
