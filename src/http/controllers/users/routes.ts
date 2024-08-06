@@ -2,9 +2,9 @@ import { FastifyInstance } from 'fastify'
 
 import { verifyJWT } from '@/http/middleware/verify-jwt'
 
-import { authenticate } from './authenticate'
+import { authenticate, authenticateBodySchemaToJson } from './authenticate'
 import { profile } from './profile'
-import { register } from './register'
+import { register, registerBodySchemaToJSON } from './register'
 
 export async function usersRoutes(app: FastifyInstance) {
   app.post(
@@ -14,14 +14,7 @@ export async function usersRoutes(app: FastifyInstance) {
         summary: 'Create a user',
         description: 'Create a new user',
         tags: ['User'],
-        body: {
-          type: 'object',
-          properties: {
-            name: { type: 'string', description: 'name of user' },
-            email: { type: 'string', description: 'email of user' },
-            password: { type: 'string', description: 'password of user' },
-          },
-        },
+        body: registerBodySchemaToJSON,
         response: {
           201: {
             description: 'User has been successfully created',
@@ -51,13 +44,7 @@ export async function usersRoutes(app: FastifyInstance) {
         summary: 'Create a session',
         description: 'Create a new session for user',
         tags: ['User'],
-        body: {
-          type: 'object',
-          properties: {
-            name: { type: 'string', description: 'name of user' },
-            email: { type: 'string', description: 'email of user' },
-          },
-        },
+        body: authenticateBodySchemaToJson,
         response: {
           201: {
             description: 'Session has been successfully created',

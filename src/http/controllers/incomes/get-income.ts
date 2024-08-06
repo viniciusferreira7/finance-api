@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
+import zodToJsonSchema from 'zod-to-json-schema'
 
 import { ResourceNotFound } from '@/use-cases/error/resource-not-found-error'
 import { makeGetUserIncome } from '@/use-cases/factories/incomes/make-get-user-income'
@@ -7,6 +8,8 @@ import { makeGetUserIncome } from '@/use-cases/factories/incomes/make-get-user-i
 const getIncomeBodySchema = z.object({
   id: z.string(),
 })
+
+export const getIncomeBodySchemaToJson = zodToJsonSchema(getIncomeBodySchema)
 
 export async function getIncome(request: FastifyRequest, reply: FastifyReply) {
   const { id } = getIncomeBodySchema.parse(request.params)

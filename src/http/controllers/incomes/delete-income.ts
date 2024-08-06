@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
+import zodToJsonSchema from 'zod-to-json-schema'
 
 import { ResourceNotFound } from '@/use-cases/error/resource-not-found-error'
 import { makeDeleteUserIncome } from '@/use-cases/factories/incomes/make-delete-user-income'
@@ -7,6 +8,10 @@ import { makeDeleteUserIncome } from '@/use-cases/factories/incomes/make-delete-
 const deleteIncomeBodySchema = z.object({
   id: z.string(),
 })
+
+export const deleteIncomeBodySchemaToJson = zodToJsonSchema(
+  deleteIncomeBodySchema,
+)
 
 export async function deleteIncome(
   request: FastifyRequest,

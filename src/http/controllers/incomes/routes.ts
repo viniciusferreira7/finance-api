@@ -2,12 +2,23 @@ import { FastifyInstance } from 'fastify'
 
 import { verifyJWT } from '@/http/middleware/verify-jwt'
 
-import { createIncome } from './create-income'
-import { deleteIncome } from './delete-income'
-import { fetchIncomeHistories } from './fetch-income-histories'
-import { fetchIncomesHistory } from './fetch-incomes-history'
-import { getIncome } from './get-income'
-import { updateIncome } from './update-income'
+import { createIncome, incomeSchemaBodyToJson } from './create-income'
+import { deleteIncome, deleteIncomeBodySchemaToJson } from './delete-income'
+import {
+  fetchIncomeHistories,
+  fetchIncomeHistorieSearchParamsSchemaToJson,
+  fetchIncomeHistoriesParamSchemaToJson,
+} from './fetch-income-histories'
+import {
+  fetchIncomesHistory,
+  fetchIncomesSchemaToJson,
+} from './fetch-incomes-history'
+import { getIncome, getIncomeBodySchemaToJson } from './get-income'
+import {
+  incomeSchemaBodyToZod,
+  incomeSchemaParamsToJson,
+  updateIncome,
+} from './update-income'
 
 export async function incomesRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJWT)
@@ -20,21 +31,7 @@ export async function incomesRoutes(app: FastifyInstance) {
         description: 'Create a new income for user',
         tags: ['Income'],
         security: [{ jwt: [] }],
-        body: {
-          type: 'object',
-          properties: {
-            name: { type: 'string', description: 'name of income' },
-            value: { type: 'number', description: 'value of income' },
-            description: {
-              type: 'string',
-              description: 'description of income (optional)',
-            },
-            category_id: {
-              type: 'string',
-              description: 'the category id associated with this income',
-            },
-          },
-        },
+        body: incomeSchemaBodyToJson,
         response: {
           201: {
             description: 'Income has been successfully created',
@@ -65,66 +62,7 @@ export async function incomesRoutes(app: FastifyInstance) {
         description: 'Returns all incomes of user',
         tags: ['Income'],
         security: [{ jwt: [] }],
-        querystring: {
-          name: {
-            type: 'string',
-            maxLength: 40,
-            description: 'Name of the income, must be 40 characters or less',
-            nullable: true,
-          },
-          value: {
-            type: 'number',
-            description: 'Value of the income, must be a positive number',
-            nullable: true,
-          },
-          sort: {
-            type: 'string',
-            enum: ['asc', 'desc'],
-            description: 'Sort order',
-          },
-          created_at_from: {
-            type: 'string',
-            description:
-              'Start date for created_at filter, must be a valid date',
-            nullable: true,
-          },
-          created_at_to: {
-            type: 'string',
-            description: 'End date for created_at filter, must be a valid date',
-            nullable: true,
-          },
-          updated_at_from: {
-            type: 'string',
-            description:
-              'Start date for updated_at filter, must be a valid date',
-            nullable: true,
-          },
-          updated_at_to: {
-            type: 'string',
-            description: 'End date for updated_at filter, must be a valid date',
-            nullable: true,
-          },
-          category_id: {
-            type: 'string',
-            description: 'Category ID of the income',
-            nullable: true,
-          },
-          page: {
-            type: 'number',
-            default: 1,
-            description: 'Current page number',
-          },
-          per_page: {
-            type: 'number',
-            default: 10,
-            description: 'Number of items per page',
-          },
-          pagination_disabled: {
-            type: 'boolean',
-            default: false,
-            description: 'Disable pagination',
-          },
-        },
+        querystring: fetchIncomesSchemaToJson,
         response: {
           200: {
             type: 'object',
@@ -226,64 +164,8 @@ export async function incomesRoutes(app: FastifyInstance) {
         description: 'Returns all history of income',
         tags: ['Income'],
         security: [{ jwt: [] }],
-        params: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-              description: 'income id',
-            },
-          },
-        },
-        querystring: {
-          name: {
-            type: 'string',
-            maxLength: 40,
-            description: 'Name of the income, must be 40 characters or less',
-            nullable: true,
-          },
-          value: {
-            type: 'number',
-            description: 'Value of the income, must be a positive number',
-            nullable: true,
-          },
-          sort: {
-            type: 'string',
-            enum: ['asc', 'desc'],
-            description: 'Sort order',
-          },
-          created_at_from: {
-            type: 'string',
-            description:
-              'Start date for created_at filter, must be a valid date',
-            nullable: true,
-          },
-          created_at_to: {
-            type: 'string',
-            description: 'End date for created_at filter, must be a valid date',
-            nullable: true,
-          },
-          category_id: {
-            type: 'string',
-            description: 'Category ID of the income',
-            nullable: true,
-          },
-          page: {
-            type: 'number',
-            default: 1,
-            description: 'Current page number',
-          },
-          per_page: {
-            type: 'number',
-            default: 10,
-            description: 'Number of items per page',
-          },
-          pagination_disabled: {
-            type: 'boolean',
-            default: false,
-            description: 'Disable pagination',
-          },
-        },
+        params: fetchIncomeHistoriesParamSchemaToJson,
+        querystring: fetchIncomeHistorieSearchParamsSchemaToJson,
         response: {
           200: {
             type: 'object',
@@ -378,15 +260,7 @@ export async function incomesRoutes(app: FastifyInstance) {
         description: 'Returns a specific income by id',
         tags: ['Income'],
         security: [{ jwt: [] }],
-        params: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-              description: 'income id',
-            },
-          },
-        },
+        params: getIncomeBodySchemaToJson,
         response: {
           200: {
             type: 'object',
@@ -436,34 +310,8 @@ export async function incomesRoutes(app: FastifyInstance) {
         description: 'Update a income for user',
         tags: ['Income'],
         security: [{ jwt: [] }],
-        params: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-              description: 'income id',
-            },
-          },
-        },
-        body: {
-          type: 'object',
-          properties: {
-            name: { type: 'string', description: 'name of income (optional)' },
-            value: {
-              type: 'number',
-              description: 'value of income (optional)',
-            },
-            description: {
-              type: 'string',
-              description: 'description of income (optional)',
-            },
-            category_id: {
-              type: 'string',
-              description:
-                'the category id associated with this income (optional)',
-            },
-          },
-        },
+        params: incomeSchemaParamsToJson,
+        body: incomeSchemaBodyToZod,
         response: {
           204: {
             description: 'Income has been successfully updated',
@@ -494,15 +342,7 @@ export async function incomesRoutes(app: FastifyInstance) {
         description: 'Delete an income by id',
         tags: ['Income'],
         security: [{ jwt: [] }],
-        params: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-              description: 'income id',
-            },
-          },
-        },
+        params: deleteIncomeBodySchemaToJson,
         response: {
           204: {
             description: 'Income has been successfully deleted',
