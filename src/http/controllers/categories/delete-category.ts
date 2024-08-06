@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
+import zodToJsonSchema from 'zod-to-json-schema'
 
 import { ResourceNotFound } from '@/use-cases/error/resource-not-found-error'
 import { makeDeleteUserCategory } from '@/use-cases/factories/categories/make-delete-user-category'
@@ -7,6 +8,10 @@ import { makeDeleteUserCategory } from '@/use-cases/factories/categories/make-de
 const deleteCategoryBodySchema = z.object({
   id: z.string(),
 })
+
+export const deleteCategoryBodySchemaToJson = zodToJsonSchema(
+  deleteCategoryBodySchema,
+)
 
 export async function deleteCategory(
   request: FastifyRequest,

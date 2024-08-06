@@ -2,11 +2,21 @@ import { FastifyInstance } from 'fastify'
 
 import { verifyJWT } from '@/http/middleware/verify-jwt'
 
-import { createCategory } from './create-category'
-import { deleteCategory } from './delete-category'
-import { fetchCategoriesHistory } from './fetch-categories-history'
-import { getCategory } from './get-category'
-import { updateCategory } from './update-category'
+import { categorySchemaBodyToJson, createCategory } from './create-category'
+import {
+  deleteCategory,
+  deleteCategoryBodySchemaToJson,
+} from './delete-category'
+import {
+  fetchCategoriesHistory,
+  fetchCategoriesSchemaToJson,
+} from './fetch-categories-history'
+import { getCategory, getCategoryBodySchemaToJson } from './get-category'
+import {
+  updateCategory,
+  updateCategorySchemaBodyToJson,
+  updateCategorySchemaParamsToJson,
+} from './update-category'
 
 export async function categoriesRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJWT)
@@ -19,15 +29,7 @@ export async function categoriesRoutes(app: FastifyInstance) {
         description: 'Create a new category for user',
         tags: ['Category'],
         security: [{ jwt: [] }],
-        body: {
-          type: 'object',
-          properties: {
-            name: { type: 'string' },
-            description: {
-              type: 'string',
-            },
-          },
-        },
+        body: categorySchemaBodyToJson,
         response: {
           201: {
             description: 'Category has been successfully created',
@@ -69,19 +71,7 @@ export async function categoriesRoutes(app: FastifyInstance) {
         description: 'Returns all categories of user',
         tags: ['Category'],
         security: [{ jwt: [] }],
-        querystring: {
-          page: { type: 'number', default: 1, description: 'current page' },
-          per_page: {
-            type: 'number',
-            default: 10,
-            description: 'number of items per page',
-          },
-          pagination_disabled: {
-            type: 'boolean',
-            default: false,
-            description: 'disable pagination',
-          },
-        },
+        querystring: fetchCategoriesSchemaToJson,
         response: {
           200: {
             type: 'object',
@@ -168,15 +158,7 @@ export async function categoriesRoutes(app: FastifyInstance) {
         description: 'Returns a specific category by id',
         tags: ['Category'],
         security: [{ jwt: [] }],
-        params: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-              description: 'category id',
-            },
-          },
-        },
+        params: getCategoryBodySchemaToJson,
         response: {
           200: {
             type: 'object',
@@ -214,24 +196,8 @@ export async function categoriesRoutes(app: FastifyInstance) {
         description: 'Update a category for user',
         tags: ['Category'],
         security: [{ jwt: [] }],
-        params: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-              description: 'category id',
-            },
-          },
-        },
-        body: {
-          type: 'object',
-          properties: {
-            name: { type: 'string' },
-            description: {
-              type: 'string',
-            },
-          },
-        },
+        params: updateCategorySchemaParamsToJson,
+        body: updateCategorySchemaBodyToJson,
         response: {
           204: {
             description: 'Category has been successfully updated',
@@ -262,15 +228,7 @@ export async function categoriesRoutes(app: FastifyInstance) {
         description: 'Delete a category by id',
         tags: ['Category'],
         security: [{ jwt: [] }],
-        params: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-              description: 'category id',
-            },
-          },
-        },
+        params: deleteCategoryBodySchemaToJson,
         response: {
           204: {
             description: 'Category has been successfully deleted',

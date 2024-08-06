@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
+import zodToJsonSchema from 'zod-to-json-schema'
 
 import { ResourceNotFound } from '@/use-cases/error/resource-not-found-error'
 import { makeGetUserCategory } from '@/use-cases/factories/categories/make-get-use-category'
@@ -7,6 +8,10 @@ import { makeGetUserCategory } from '@/use-cases/factories/categories/make-get-u
 const getCategoryBodySchema = z.object({
   id: z.string(),
 })
+
+export const getCategoryBodySchemaToJson = zodToJsonSchema(
+  getCategoryBodySchema,
+)
 
 export async function getCategory(
   request: FastifyRequest,
