@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
+import zodToJsonSchema from 'zod-to-json-schema'
 
 import { ResourceNotFound } from '@/use-cases/error/resource-not-found-error'
 import { makeDeleteUserExpense } from '@/use-cases/factories/expenses/make-delete-user-expense'
@@ -7,6 +8,10 @@ import { makeDeleteUserExpense } from '@/use-cases/factories/expenses/make-delet
 const deleteExpenseBodySchema = z.object({
   id: z.string(),
 })
+
+export const deleteExpenseBodySchemaToZod = zodToJsonSchema(
+  deleteExpenseBodySchema,
+)
 
 export async function deleteExpense(
   request: FastifyRequest,

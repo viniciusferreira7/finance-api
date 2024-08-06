@@ -2,12 +2,23 @@ import { FastifyInstance } from 'fastify'
 
 import { verifyJWT } from '@/http/middleware/verify-jwt'
 
-import { createExpense } from './create-expense'
-import { deleteExpense } from './delete-expense'
-import { fetchExpenseHistories } from './fetch-expense-histories'
-import { fetchExpensesHistory } from './fetch-expenses-history'
-import { getExpense } from './get-expense'
-import { updateExpense } from './update-expense'
+import { createExpense, expenseSchemaBodyToJson } from './create-expense'
+import { deleteExpense, deleteExpenseBodySchemaToZod } from './delete-expense'
+import {
+  fetchExpenseHistories,
+  fetchExpenseHistorieSearchParamsSchemaToJson,
+  fetchExpenseHistoriesParamSchemaToJson,
+} from './fetch-expense-histories'
+import {
+  fetchExpensesHistory,
+  fetchExpensesSchemaToJson,
+} from './fetch-expenses-history'
+import { getExpense, getExpenseBodySchemaToJson } from './get-expense'
+import {
+  expenseSchemaParamsToJson,
+  updatedExpenseSchemaBodyToJson,
+  updateExpense,
+} from './update-expense'
 
 export async function expensesRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJWT)
@@ -20,21 +31,7 @@ export async function expensesRoutes(app: FastifyInstance) {
         description: 'Create a new expense for user',
         tags: ['Expense'],
         security: [{ jwt: [] }],
-        body: {
-          type: 'object',
-          properties: {
-            name: { type: 'string', description: 'name of expense' },
-            value: { type: 'number', description: 'value of expense' },
-            description: {
-              type: 'string',
-              description: 'description of expense (optional)',
-            },
-            category_id: {
-              type: 'string',
-              description: 'the category id associated with this expense',
-            },
-          },
-        },
+        body: expenseSchemaBodyToJson,
         response: {
           201: {
             description: 'Expense has been successfully created',
@@ -65,70 +62,7 @@ export async function expensesRoutes(app: FastifyInstance) {
         description: 'Returns all expenses of user',
         tags: ['Expense'],
         security: [{ jwt: [] }],
-        querystring: {
-          name: {
-            type: 'string',
-            maxLength: 40,
-            description: 'Name of the expense, must be 40 characters or less',
-            nullable: true,
-          },
-          value: {
-            type: 'number',
-            description: 'Value of the expense, must be a positive number',
-            nullable: true,
-          },
-          sort: {
-            type: 'string',
-            enum: ['asc', 'desc'],
-            description: 'Sort order',
-          },
-          created_at_from: {
-            type: 'string',
-            format: 'date-time',
-            description:
-              'Start date for created_at filter, must be a valid date',
-            nullable: true,
-          },
-          created_at_to: {
-            type: 'string',
-            format: 'date-time',
-            description: 'End date for created_at filter, must be a valid date',
-            nullable: true,
-          },
-          updated_at_from: {
-            type: 'string',
-            format: 'date-time',
-            description:
-              'Start date for updated_at filter, must be a valid date',
-            nullable: true,
-          },
-          updated_at_to: {
-            type: 'string',
-            format: 'date-time',
-            description: 'End date for updated_at filter, must be a valid date',
-            nullable: true,
-          },
-          category_id: {
-            type: 'string',
-            description: 'Category ID of the expense',
-            nullable: true,
-          },
-          page: {
-            type: 'number',
-            default: 1,
-            description: 'Current page number',
-          },
-          per_page: {
-            type: 'number',
-            default: 10,
-            description: 'Number of items per page',
-          },
-          pagination_disabled: {
-            type: 'boolean',
-            default: false,
-            description: 'Disable pagination',
-          },
-        },
+        querystring: fetchExpensesSchemaToJson,
         response: {
           200: {
             type: 'object',
@@ -230,64 +164,8 @@ export async function expensesRoutes(app: FastifyInstance) {
         description: 'Returns all history of expense',
         tags: ['Expense'],
         security: [{ jwt: [] }],
-        params: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-              description: 'expense id',
-            },
-          },
-        },
-        querystring: {
-          name: {
-            type: 'string',
-            maxLength: 40,
-            description: 'Name of the expense, must be 40 characters or less',
-            nullable: true,
-          },
-          value: {
-            type: 'number',
-            description: 'Value of the expense, must be a positive number',
-            nullable: true,
-          },
-          sort: {
-            type: 'string',
-            enum: ['asc', 'desc'],
-            description: 'Sort order',
-          },
-          created_at_from: {
-            type: 'string',
-            description:
-              'Start date for created_at filter, must be a valid date',
-            nullable: true,
-          },
-          created_at_to: {
-            type: 'string',
-            description: 'End date for created_at filter, must be a valid date',
-            nullable: true,
-          },
-          category_id: {
-            type: 'string',
-            description: 'Category ID of the expense',
-            nullable: true,
-          },
-          page: {
-            type: 'number',
-            default: 1,
-            description: 'Current page number',
-          },
-          per_page: {
-            type: 'number',
-            default: 10,
-            description: 'Number of items per page',
-          },
-          pagination_disabled: {
-            type: 'boolean',
-            default: false,
-            description: 'Disable pagination',
-          },
-        },
+        params: fetchExpenseHistoriesParamSchemaToJson,
+        querystring: fetchExpenseHistorieSearchParamsSchemaToJson,
         response: {
           200: {
             type: 'object',
@@ -382,15 +260,7 @@ export async function expensesRoutes(app: FastifyInstance) {
         description: 'Returns a specific expense by id',
         tags: ['Expense'],
         security: [{ jwt: [] }],
-        params: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-              description: 'expense id',
-            },
-          },
-        },
+        params: getExpenseBodySchemaToJson,
         response: {
           200: {
             type: 'object',
@@ -440,34 +310,8 @@ export async function expensesRoutes(app: FastifyInstance) {
         description: 'Update an expense for user',
         tags: ['Expense'],
         security: [{ jwt: [] }],
-        params: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-              description: 'expense id',
-            },
-          },
-        },
-        body: {
-          type: 'object',
-          properties: {
-            name: { type: 'string', description: 'name of expense (optional)' },
-            value: {
-              type: 'number',
-              description: 'value of expense (optional)',
-            },
-            description: {
-              type: 'string',
-              description: 'description of expense (optional)',
-            },
-            category_id: {
-              type: 'string',
-              description:
-                'the category id associated with this expense (optional)',
-            },
-          },
-        },
+        params: expenseSchemaParamsToJson,
+        body: updatedExpenseSchemaBodyToJson,
         response: {
           204: {
             description: 'Expense has been successfully updated',
@@ -498,15 +342,7 @@ export async function expensesRoutes(app: FastifyInstance) {
         description: 'Delete an expense by id',
         tags: ['Expense'],
         security: [{ jwt: [] }],
-        params: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-              description: 'expense id',
-            },
-          },
-        },
+        params: deleteExpenseBodySchemaToZod,
         response: {
           204: {
             description: 'Expense has been successfully deleted',
