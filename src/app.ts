@@ -1,6 +1,4 @@
 import fastifyJwt from '@fastify/jwt'
-import fastifySwagger from '@fastify/swagger'
-import fastifySwaggerUI from '@fastify/swagger-ui'
 import fastifyScalar from '@scalar/fastify-api-reference'
 import fastify from 'fastify'
 import { ZodError } from 'zod'
@@ -10,47 +8,11 @@ import { categoriesRoutes } from './http/controllers/categories/routes'
 import { expensesRoutes } from './http/controllers/expenses/routes'
 import { incomesRoutes } from './http/controllers/incomes/routes'
 import { usersRoutes } from './http/controllers/users/routes'
+import { swagger } from './lib/swagger'
 
 export const app = fastify()
 
-app.register(fastifySwagger, {
-  openapi: {
-    components: {
-      securitySchemes: {
-        jwt: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
-        },
-      },
-    },
-  },
-})
-
-app.register(fastifySwaggerUI, {
-  routePrefix: '/documentation',
-  uiConfig: {
-    docExpansion: 'list',
-    deepLinking: true,
-  },
-  uiHooks: {
-    onRequest: function (request, reply, next) {
-      next()
-    },
-    preHandler: function (request, reply, next) {
-      next()
-    },
-  },
-  staticCSP: true,
-  transformStaticCSP: (header) => header,
-  transformSpecification: (swaggerObject) => {
-    return swaggerObject
-  },
-  transformSpecificationClone: true,
-  theme: {
-    title: 'Finance API',
-  },
-})
+swagger(app)
 
 app.register(fastifyScalar, {
   routePrefix: '/reference',
