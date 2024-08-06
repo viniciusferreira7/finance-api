@@ -3,13 +3,14 @@ import { Expense } from '@prisma/client'
 import { PaginationResponse } from '@/@types/pagination'
 import { SearchParams } from '@/@types/search-params'
 import { ExpenseHistoriesRepository } from '@/repositories/expense-histories-repository'
+import { ExpensesRepository } from '@/repositories/expenses-repository'
 import { UsersRepository } from '@/repositories/users-repository'
 
 import { ResourceNotFound } from '../error/resource-not-found-error'
 
 interface FetchUserExpenseHistoriesUseCaseRequest {
-  expenseId: string
   userId: string
+  expenseId: string
   searchParams?: Partial<SearchParams>
 }
 
@@ -18,6 +19,7 @@ type FetchUserExpenseHistoriesUseCaseResponse = PaginationResponse<Expense>
 export class FetchUserExpenseHistoriesUseCase {
   constructor(
     private expenseHistoriesRepository: ExpenseHistoriesRepository,
+    private expensesRepository: ExpensesRepository,
     private usersRepository: UsersRepository,
   ) {}
 
@@ -32,9 +34,15 @@ export class FetchUserExpenseHistoriesUseCase {
       throw new ResourceNotFound()
     }
 
+    const expense = await this.expensesRepository.findById(expenseId)
+
+    if (!expense) {
+      throw new ResourceNotFound()
+    }
+
     const results = await this.expenseHistoriesRepository.findManyByUserId(
-      expenseId,
       userId,
+      expenseId,
       {
         page: searchParams?.page,
         per_page: searchParams?.per_page,
