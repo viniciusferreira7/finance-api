@@ -4,6 +4,7 @@ import { verifyJWT } from '@/http/middleware/verify-jwt'
 
 import { createExpense } from './create-expense'
 import { deleteExpense } from './delete-expense'
+import { fetchExpenseHistories } from './fetch-expense-histories'
 import { fetchExpensesHistory } from './fetch-expenses-history'
 import { getExpense } from './get-expense'
 import { updateExpense } from './update-expense'
@@ -68,12 +69,12 @@ export async function expensesRoutes(app: FastifyInstance) {
           name: {
             type: 'string',
             maxLength: 40,
-            description: 'Name of the income, must be 40 characters or less',
+            description: 'Name of the expense, must be 40 characters or less',
             nullable: true,
           },
           value: {
             type: 'number',
-            description: 'Value of the income, must be a positive number',
+            description: 'Value of the expense, must be a positive number',
             nullable: true,
           },
           sort: {
@@ -109,7 +110,7 @@ export async function expensesRoutes(app: FastifyInstance) {
           },
           category_id: {
             type: 'string',
-            description: 'Category ID of the income',
+            description: 'Category ID of the expense',
             nullable: true,
           },
           page: {
@@ -219,6 +220,158 @@ export async function expensesRoutes(app: FastifyInstance) {
       },
     },
     fetchExpensesHistory,
+  )
+
+  app.get(
+    '/expense-histories/:id',
+    {
+      schema: {
+        summary: 'Fetch expense histories',
+        description: 'Returns all history of expense',
+        tags: ['Expense'],
+        security: [{ jwt: [] }],
+        params: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              description: 'expense id',
+            },
+          },
+        },
+        querystring: {
+          name: {
+            type: 'string',
+            maxLength: 40,
+            description: 'Name of the expense, must be 40 characters or less',
+            nullable: true,
+          },
+          value: {
+            type: 'number',
+            description: 'Value of the expense, must be a positive number',
+            nullable: true,
+          },
+          sort: {
+            type: 'string',
+            enum: ['asc', 'desc'],
+            description: 'Sort order',
+          },
+          created_at_from: {
+            type: 'string',
+            description:
+              'Start date for created_at filter, must be a valid date',
+            nullable: true,
+          },
+          created_at_to: {
+            type: 'string',
+            description: 'End date for created_at filter, must be a valid date',
+            nullable: true,
+          },
+          category_id: {
+            type: 'string',
+            description: 'Category ID of the expense',
+            nullable: true,
+          },
+          page: {
+            type: 'number',
+            default: 1,
+            description: 'Current page number',
+          },
+          per_page: {
+            type: 'number',
+            default: 10,
+            description: 'Number of items per page',
+          },
+          pagination_disabled: {
+            type: 'boolean',
+            default: false,
+            description: 'Disable pagination',
+          },
+        },
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              count: {
+                type: 'number',
+                description: 'total number of items on the list',
+              },
+              next: {
+                type: 'number',
+                description: 'next page',
+                default: 2,
+                nullable: true,
+              },
+              previous: {
+                type: 'number',
+                description: 'previous page',
+                default: null,
+                nullable: true,
+              },
+              page: {
+                type: 'number',
+                description: 'current page',
+                default: 1,
+              },
+              total_pages: {
+                type: 'number',
+                description: 'total of pages',
+                default: 5,
+              },
+              per_page: {
+                type: 'number',
+                description: 'number of items per page',
+                default: 10,
+              },
+              pagination_disabled: {
+                type: 'boolean',
+                description: 'number of items per page',
+                default: false,
+              },
+              results: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    id: { type: 'string' },
+                    name: { type: 'string' },
+                    value: { type: 'string' },
+                    description: { type: 'string' },
+                    created_at: { type: 'string' },
+                    user_id: { type: 'string' },
+                    category_id: { type: 'string' },
+                    category: {
+                      type: 'object',
+                      properties: {
+                        id: { type: 'string' },
+                        name: { type: 'string' },
+                        description: { type: 'string' },
+                        created_at: { type: 'string' },
+                        updated_at: { type: 'string' },
+                        user_id: { type: 'string' },
+                      },
+                    },
+                  },
+                  required: ['id', 'name', 'created_at', 'user_id'],
+                },
+              },
+            },
+          },
+          404: {
+            description: 'Resource not found',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                description: 'Resource not found',
+                default: 'Resource not found',
+              },
+            },
+          },
+        },
+      },
+    },
+    fetchExpenseHistories,
   )
 
   app.get(
