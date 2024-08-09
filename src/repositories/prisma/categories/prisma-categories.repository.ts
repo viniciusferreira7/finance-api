@@ -233,10 +233,11 @@ export class PrismaCategoriesRepository implements CategoriesRepository {
       data: {
         name: category.name,
         description: category.description,
+        updated_at: new Date(),
       },
     })
 
-    return updatedCategory
+  return updatedCategory
   }
 
   async create(data: Prisma.CategoryUncheckedCreateInput) {
