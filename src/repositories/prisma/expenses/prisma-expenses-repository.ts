@@ -10,7 +10,7 @@ import { ExpensesRepository } from '../../expenses-repository'
 interface UpdateExpense {
   id: string
   name?: string
-  value?: number
+  value?: string
   description?: string | null
   categoryId?: string
 }

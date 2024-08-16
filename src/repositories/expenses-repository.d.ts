@@ -6,7 +6,7 @@ import { SearchParams } from '@/@types/search-params'
 interface UpdateExpense {
   id: string
   name?: string
-  value?: number
+  value?: string
   description?: string | null
   categoryId?: string
 }

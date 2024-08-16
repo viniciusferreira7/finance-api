@@ -1,9 +1,11 @@
-export function convertToCents(value: number | undefined) {
-  if (value) {
-    const convertsValueToCents = value * 100
+export function convertToCents(value: string | number | undefined) {
+  const valueConvertedToNumber = Number(value)
 
-    return convertsValueToCents
+  if (valueConvertedToNumber) {
+    const convertsValueToCents = valueConvertedToNumber * 100
+
+    return convertsValueToCents.toString()
   }
 
-  return 0
+  return '0'
 }

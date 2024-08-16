@@ -14,7 +14,7 @@ interface getMetricsMonthlyParams {
 interface UpdateIncome {
   id: string
   name?: string
-  value?: number
+  value?: string
   description?: string | null
   categoryId?: string
 }

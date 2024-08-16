@@ -237,7 +237,7 @@ export class PrismaCategoriesRepository implements CategoriesRepository {
       },
     })
 
-  return updatedCategory
+    return updatedCategory
   }
 
   async create(data: Prisma.CategoryUncheckedCreateInput) {

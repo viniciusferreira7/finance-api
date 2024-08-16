@@ -9,7 +9,7 @@ import { IncomesRepository } from '../../incomes-repository'
 interface UpdateIncome {
   id: string
   name?: string
-  value?: number
+  value?: string
   description?: string | null
   categoryId?: string
 }

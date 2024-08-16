@@ -33,7 +33,7 @@ model User {
 model Income {
   id          String   @id @default(cuid())
   name        String
-  value       Int
+  value       String
   description String?
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())
@@ -51,7 +51,7 @@ model Income {
 model IncomeHistory {
   id          String   @id @default(cuid())
   name        String
-  value       Int
+  value       String
   description String?
   created_at  DateTime @default(now())
 
@@ -70,7 +70,7 @@ model IncomeHistory {
 model Expense {
   id          String   @id @default(cuid())
   name        String
-  value       Int
+  value       String
   description String?
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())
@@ -88,7 +88,7 @@ model Expense {
 model ExpenseHistory {
   id          String   @id @default(cuid())
   name        String
-  value       Int
+  value       String
   description String?
   created_at  DateTime @default(now())
 
