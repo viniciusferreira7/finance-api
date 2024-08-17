@@ -21,7 +21,7 @@ async function seed() {
     .join(', ')
 
   tables.split(',').forEach((tableName) => {
-    console.log(chalk.greenBright(`Delete table: ${tableName}  ✔️`))
+    console.log(chalk.greenBright(`Trucante table: ${tableName}  ✔️`))
   })
 
   try {
@@ -206,9 +206,9 @@ async function seed() {
 
     const expense: Expense = {
       id: expenseId,
-      name: faker.finance.accountName(),
+      name: faker.commerce.productName(),
       value: convertToCents(
-        Number(faker.finance.amount({ min: 10, max: 1_000_000 })),
+        Number(faker.commerce.price({ min: 10, max: 1_000_000 })),
       ),
       description,
       user_id: newUser.id,
@@ -230,9 +230,9 @@ async function seed() {
 
       const expenseHistory: ExpenseHistory = {
         id: randomUUID(),
-        name: faker.finance.accountName(),
+        name: faker.commerce.productName(),
         value: convertToCents(
-          Number(faker.finance.amount({ min: 10, max: 1_000_000 })),
+          Number(faker.commerce.price({ min: 10, max: 1_000_000 })),
         ),
         description: updateDescription,
         user_id: newUser.id,
