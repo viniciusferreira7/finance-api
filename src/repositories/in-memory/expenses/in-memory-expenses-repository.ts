@@ -1,10 +1,19 @@
 import { Expense, Prisma } from '@prisma/client'
 import { randomUUID } from 'crypto'
+import dayjs from 'dayjs'
 
 import { SearchParams } from '@/@types/search-params'
 import { compareDates } from '@/utils/compare-dates'
 
 import { ExpensesRepository } from '../../expenses-repository'
+
+interface GetMetricsMonthly {
+  userId: string
+  dates: {
+    lastMonth: string
+    startOfLastMonth: string
+  }
+}
 
 interface UpdateExpense {
   id: string
@@ -16,6 +25,47 @@ interface UpdateExpense {
 
 export class InMemoryExpensesRepository implements ExpensesRepository {
   public expenses: Expense[] = []
+
+  async getMetricsMonthly({ userId, dates }: GetMetricsMonthly) {
+    const expenseFromLastMonth = this.expenses.filter((expense) => {
+      const lastMonth = dayjs(expense.created_at).format('YYYY-MM')
+
+      return expense.user_id === userId && lastMonth === dates.lastMonth
+    })
+
+    const expenseFromCurrentMonth = this.expenses.filter((expense) => {
+      const currentMonth = dayjs().format('YYYY-MM')
+
+      return (
+        expense.user_id === userId &&
+        currentMonth === dayjs(expense.created_at).format('YYYY-MM')
+      )
+    })
+
+    const amountFromLastMonth = expenseFromLastMonth.reduce(
+      (amount, expense) => {
+        return amount + Number(expense.value)
+      },
+      0,
+    )
+
+    const amountFromCurrentMonth = expenseFromCurrentMonth.reduce(
+      (amount, expense) => {
+        return amount + Number(expense.value)
+      },
+      0,
+    )
+
+    const differenceBetweenMonths =
+      amountFromLastMonth > 0
+        ? (amountFromCurrentMonth * 100) / amountFromLastMonth
+        : 0
+
+    return {
+      amount: amountFromLastMonth + amountFromCurrentMonth,
+      diff_from_last_month: differenceBetweenMonths,
+    }
+  }
 
   async findManyByUserId(userId: string, searchParams: Partial<SearchParams>) {
     const expenses = this.expenses.filter(
@@ -41,7 +91,7 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
           : true
 
         const value = searchParams.value
-          ? Number(expense.value) === searchParams?.value
+          ? expense.value === searchParams?.value
           : true
 
         const categoryId = searchParams.categoryId

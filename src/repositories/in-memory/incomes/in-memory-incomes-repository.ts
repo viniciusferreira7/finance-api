@@ -7,7 +7,7 @@ import { SearchParams } from '@/@types/search-params'
 import { compareDates } from '../../../utils/compare-dates'
 import { IncomesRepository } from '../../incomes-repository'
 
-interface FindMetricsMonthly {
+interface GetMetricsMonthly {
   userId: string
   dates: {
     lastMonth: string
@@ -26,7 +26,7 @@ interface UpdateIncome {
 export class InMemoryIncomesRepository implements IncomesRepository {
   public incomes: Income[] = []
 
-  async getMetricsMonthly({ userId, dates }: FindMetricsMonthly) {
+  async getMetricsMonthly({ userId, dates }: GetMetricsMonthly) {
     const incomeFromLastMonth = this.incomes.filter((income) => {
       const lastMonth = dayjs(income.created_at).format('YYYY-MM')
 

@@ -7,6 +7,14 @@ import { prisma } from '@/lib/prisma'
 
 import { ExpensesRepository } from '../../expenses-repository'
 
+interface getMetricsMonthlyParams {
+  userId: string
+  dates: {
+    lastMonth: string
+    startOfLastMonth: string
+  }
+}
+
 interface UpdateExpense {
   id: string
   name?: string
@@ -16,6 +24,43 @@ interface UpdateExpense {
 }
 
 export class PrismaExpensesRepository implements ExpensesRepository {
+  async getMetricsMonthly({
+    userId,
+    dates: { lastMonth, startOfLastMonth },
+  }: getMetricsMonthlyParams): Promise<{
+    amount: number
+    diff_from_last_month: number
+  }> {
+    const [metrics] = await prisma.$queryRaw<
+      { amount: number; diff_from_last_month: number }[]
+    >`
+    WITH current_month AS (
+      SELECT 
+        SUM(value) AS total 
+      FROM expenses 
+      WHERE 
+        user_id = ${userId} AND 
+        created_at >= ${startOfLastMonth}::date AND 
+        created_at < (${startOfLastMonth}::date + interval '1 month')
+    ), last_month AS (
+      SELECT 
+        SUM(value) AS total 
+      FROM expenses 
+      WHERE 
+        user_id = ${userId} AND 
+        created_at >= ${lastMonth}::date AND 
+        created_at < (${lastMonth}::date + interval '1 month')
+    )
+    SELECT 
+      COALESCE(current_month.total, 0) AS amount, 
+      COALESCE(current_month.total, 0) - COALESCE(last_month.total, 0) AS diff_from_last_month 
+    FROM 
+      current_month, last_month;
+  `
+
+    return metrics
+  }
+
   async findManyByUserId(
     userId: string,
     searchParams: Partial<SearchParams>,

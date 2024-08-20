@@ -3,6 +3,14 @@ import { Expense, Prisma } from '@prisma/client'
 import { PaginationResponse } from '@/@types/pagination'
 import { SearchParams } from '@/@types/search-params'
 
+interface getMetricsMonthlyParams {
+  userId: string
+  dates: {
+    lastMonth: string
+    startOfLastMonth: string
+  }
+}
+
 interface UpdateExpense {
   id: string
   name?: string
@@ -12,6 +20,9 @@ interface UpdateExpense {
 }
 
 export interface ExpensesRepository {
+  getMetricsMonthly(
+    params: getMetricsMonthlyParams,
+  ): Promise<{ amount: number; diff_from_last_month: number }>
   findManyByUserId(
     userId: string,
     searchParams: Partial<SearchParams>,
