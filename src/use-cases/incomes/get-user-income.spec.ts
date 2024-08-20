@@ -27,7 +27,7 @@ describe('Get user income use case', () => {
 
     const createdIncome = await incomesRepository.create({
       name: 'job',
-      value: 1000,
+      value: (1000).toString(),
       description: 'Salary',
       category_id: 'category-01',
       user_id: user.id,
@@ -41,7 +41,7 @@ describe('Get user income use case', () => {
     expect(income).toEqual(
       expect.objectContaining({
         name: 'job',
-        value: 1000,
+        value: (1000).toString(),
         description: 'Salary',
         category_id: 'category-01',
         user_id: user.id,
@@ -58,7 +58,7 @@ describe('Get user income use case', () => {
 
     const createdIncome = await incomesRepository.create({
       name: 'job',
-      value: 1000,
+      value: (1000).toString(),
       description: 'Salary',
       category_id: 'category-01',
       user_id: user.id,

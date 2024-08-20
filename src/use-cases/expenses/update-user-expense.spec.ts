@@ -49,7 +49,7 @@ describe('Update user expense use case', () => {
 
     const expense = await expenseRepository.create({
       name: 'groceries',
-      value: 1000,
+      value: (1000).toString(),
       user_id: user.id,
       category_id: category.id,
     })
@@ -58,7 +58,7 @@ describe('Update user expense use case', () => {
       userId: user.id,
       updateExpense: {
         id: expense.id,
-        value: 5000,
+        value: (5000).toString(),
         name: 'updated-expense',
         description: null,
         categoryId: category.id,
@@ -67,7 +67,7 @@ describe('Update user expense use case', () => {
 
     expect(updatedExpense).toEqual(
       expect.objectContaining({
-        value: convertToCents(5000),
+        value: convertToCents(5000).toString(),
         name: 'updated-expense',
         description: null,
       }),
@@ -90,7 +90,7 @@ describe('Update user expense use case', () => {
 
     const expense = await expenseRepository.create({
       name: 'groceries',
-      value: 1000,
+      value: (1000).toString(),
       user_id: user.id,
       category_id: category.id,
     })
@@ -100,7 +100,7 @@ describe('Update user expense use case', () => {
         userId: 'non-existing-user-id',
         updateExpense: {
           id: expense.id,
-          value: 5000,
+          value: (5000).toString(),
           name: 'updated-expense',
           description: null,
           categoryId: category.id,
@@ -121,7 +121,7 @@ describe('Update user expense use case', () => {
         userId: user.id,
         updateExpense: {
           id: 'non-existing-expense-id',
-          value: 5000,
+          value: (5000).toString(),
           name: 'updated-expense',
           description: null,
           categoryId: 'non-existing-category-id',
@@ -146,7 +146,7 @@ describe('Update user expense use case', () => {
 
     const expense = await expenseRepository.create({
       name: 'groceries',
-      value: 1000,
+      value: (1000).toString(),
       user_id: user.id,
       category_id: category.id,
     })
@@ -156,7 +156,7 @@ describe('Update user expense use case', () => {
         userId: user.id,
         updateExpense: {
           id: expense.id,
-          value: 5000,
+          value: (5000).toString(),
           name: 'updated-expense',
           description: null,
           categoryId: 'non-existing-category-id',

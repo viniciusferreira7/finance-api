@@ -27,7 +27,7 @@ describe('Get user expense use case', () => {
 
     const createdExpense = await expensesRepository.create({
       name: 'video game',
-      value: 1000,
+      value: (1000).toString(),
       description: 'elden ring',
       category_id: 'category-01',
       user_id: user.id,
@@ -41,7 +41,7 @@ describe('Get user expense use case', () => {
     expect(expense).toEqual(
       expect.objectContaining({
         name: 'video game',
-        value: 1000,
+        value: (1000).toString(),
         description: 'elden ring',
         category_id: 'category-01',
         user_id: user.id,
@@ -58,7 +58,7 @@ describe('Get user expense use case', () => {
 
     const createdExpense = await expensesRepository.create({
       name: 'video game',
-      value: 1000,
+      value: (1000).toString(),
       description: 'elden ring',
       category_id: 'category-01',
       user_id: user.id,

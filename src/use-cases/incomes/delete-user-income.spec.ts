@@ -36,7 +36,7 @@ describe('Delete user income use case', () => {
 
     const income = await incomesRepository.create({
       name: 'job',
-      value: 1000,
+      value: (1000).toString(),
       user_id: user.id,
       category_id: 'non-existing',
     })
@@ -52,7 +52,7 @@ describe('Delete user income use case', () => {
   it('should not be able to delete an existing income without user', async () => {
     const income = await incomesRepository.create({
       name: 'job',
-      value: 1000,
+      value: (1000).toString(),
       user_id: 'user-1',
       category_id: 'non-existing',
     })

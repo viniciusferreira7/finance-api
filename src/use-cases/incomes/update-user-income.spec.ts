@@ -49,7 +49,7 @@ describe('Update user income use case', () => {
 
     const income = await incomesRepository.create({
       name: 'job',
-      value: 1000,
+      value: (1000).toString(),
       user_id: user.id,
       category_id: category.id,
     })
@@ -58,7 +58,7 @@ describe('Update user income use case', () => {
       userId: user.id,
       updateIncome: {
         id: income.id,
-        value: 5000,
+        value: (5000).toString(),
         name: 'updated-income',
         description: null,
         categoryId: category.id,
@@ -67,7 +67,7 @@ describe('Update user income use case', () => {
 
     expect(updatedIncome).toEqual(
       expect.objectContaining({
-        value: convertToCents(5000),
+        value: convertToCents(5000).toString(),
         name: 'updated-income',
         description: null,
       }),
@@ -90,7 +90,7 @@ describe('Update user income use case', () => {
 
     const income = await incomesRepository.create({
       name: 'job',
-      value: 1000,
+      value: (1000).toString(),
       user_id: user.id,
       category_id: category.id,
     })
@@ -100,7 +100,7 @@ describe('Update user income use case', () => {
         userId: 'non-existing-user-id',
         updateIncome: {
           id: income.id,
-          value: 5000,
+          value: (5000).toString(),
           name: 'updated-income',
           description: null,
           categoryId: category.id,
@@ -121,7 +121,7 @@ describe('Update user income use case', () => {
         userId: user.id,
         updateIncome: {
           id: 'non-existing-income-id',
-          value: 5000,
+          value: (5000).toString(),
           name: 'updated-income',
           description: null,
           categoryId: 'non-existing-category-id',
@@ -146,7 +146,7 @@ describe('Update user income use case', () => {
 
     const income = await incomesRepository.create({
       name: 'job',
-      value: 1000,
+      value: (1000).toString(),
       user_id: user.id,
       category_id: category.id,
     })
@@ -156,7 +156,7 @@ describe('Update user income use case', () => {
         userId: user.id,
         updateIncome: {
           id: income.id,
-          value: 5000,
+          value: (5000).toString(),
           name: 'updated-income',
           description: null,
           categoryId: 'non-existing-category-id',

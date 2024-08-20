@@ -44,7 +44,7 @@ describe('Fetch user expenses history use case', () => {
 
     const expense = await expensesRepository.create({
       name: 'job',
-      value: 1000,
+      value: (1000).toString(),
       description: 'Salary',
       category_id: `category-48`,
       user_id: user.id,
@@ -53,7 +53,7 @@ describe('Fetch user expenses history use case', () => {
     for (let i = 1; i <= 2; i++) {
       await expenseHistoriesRepository.create({
         name: 'job',
-        value: 1000 + i * 10,
+        value: (1000 + i * 10).toString(),
         description: 'Salary',
         category_id: `category-${i}`,
         user_id: user.id,
@@ -86,7 +86,7 @@ describe('Fetch user expenses history use case', () => {
 
     const expense = await expensesRepository.create({
       name: 'job',
-      value: 1000,
+      value: (1000).toString(),
       description: 'Salary',
       category_id: `category-48`,
       user_id: user.id,
@@ -95,7 +95,7 @@ describe('Fetch user expenses history use case', () => {
     for (let i = 1; i <= 22; i++) {
       await expenseHistoriesRepository.create({
         name: 'job',
-        value: 1000 + i * 10,
+        value: (1000 + i * 10).toString(),
         description: 'Salary',
         category_id: `category-${i}`,
         user_id: 'non-existing-id',
@@ -143,7 +143,7 @@ describe('Fetch user expenses history use case', () => {
 
     const expense = await expensesRepository.create({
       name: 'job',
-      value: 1000,
+      value: (1000).toString(),
       description: 'Salary',
       category_id: `category-48`,
       user_id: user.id,
@@ -152,7 +152,7 @@ describe('Fetch user expenses history use case', () => {
     for (let i = 1; i <= 22; i++) {
       await expenseHistoriesRepository.create({
         name: 'job',
-        value: 1000 + i * 10,
+        value: (1000 + i * 10).toString(),
         description: 'Salary',
         category_id: `category-${i}`,
         user_id: user.id,
@@ -187,7 +187,7 @@ describe('Fetch user expenses history use case', () => {
 
     const expense = await expensesRepository.create({
       name: 'job',
-      value: 1000,
+      value: (1000).toString(),
       description: 'Salary',
       category_id: `category-48`,
       user_id: user.id,
@@ -196,7 +196,7 @@ describe('Fetch user expenses history use case', () => {
     for (let i = 1; i <= 22; i++) {
       await expenseHistoriesRepository.create({
         name: 'job',
-        value: 1000 + i * 10,
+        value: (1000 + i * 10).toString(),
         description: 'Salary',
         category_id: `category-${i}`,
         user_id: user.id,
@@ -226,7 +226,7 @@ describe('Fetch user expenses history use case', () => {
 
     const expense = await expensesRepository.create({
       name: 'job',
-      value: 1000,
+      value: (1000).toString(),
       description: 'Salary',
       category_id: `category-48`,
       user_id: user.id,
@@ -245,7 +245,7 @@ describe('Fetch user expenses history use case', () => {
 
       await expenseHistoriesRepository.create({
         name,
-        value: 1000 + i * 10,
+        value: (1000 + i * 10).toString(),
         description: 'Salary',
         category_id: `category-${i}`,
         user_id: user.id,

@@ -3,7 +3,7 @@ import { PaginationRequest } from './pagination.js'
 export interface SearchParams extends PaginationRequest {
   categoryId: string
   name: string
-  value: number
+  value: string
   sort: 'asc' | 'desc'
   createdAt?: {
     from?: string
