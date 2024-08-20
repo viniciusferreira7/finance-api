@@ -1,10 +1,19 @@
 import { Income, Prisma } from '@prisma/client'
 import { randomUUID } from 'crypto'
+import dayjs from 'dayjs'
 
 import { SearchParams } from '@/@types/search-params'
 
 import { compareDates } from '../../../utils/compare-dates'
 import { IncomesRepository } from '../../incomes-repository'
+
+interface FindMetricsMonthly {
+  userId: string
+  dates: {
+    lastMonth: string
+    startOfLastMonth: string
+  }
+}
 
 interface UpdateIncome {
   id: string
@@ -16,6 +25,44 @@ interface UpdateIncome {
 
 export class InMemoryIncomesRepository implements IncomesRepository {
   public incomes: Income[] = []
+
+  async getMetricsMonthly({ userId, dates }: FindMetricsMonthly) {
+    const incomeFromLastMonth = this.incomes.filter((income) => {
+      const lastMonth = dayjs(income.created_at).format('YYYY-MM')
+
+      return income.user_id === userId && lastMonth === dates.lastMonth
+    })
+
+    const incomeFromCurrentMonth = this.incomes.filter((income) => {
+      const currentMonth = dayjs().format('YYYY-MM')
+
+      return (
+        income.user_id === userId &&
+        currentMonth === dayjs(income.created_at).format('YYYY-MM')
+      )
+    })
+
+    const amountFromLastMonth = incomeFromLastMonth.reduce((amount, income) => {
+      return amount + Number(income.value)
+    }, 0)
+
+    const amountFromCurrentMonth = incomeFromCurrentMonth.reduce(
+      (amount, income) => {
+        return amount + Number(income.value)
+      },
+      0,
+    )
+
+    const differenceBetweenMonths =
+      amountFromLastMonth > 0
+        ? (amountFromCurrentMonth * 100) / amountFromLastMonth
+        : 0
+
+    return {
+      amount: amountFromLastMonth + amountFromCurrentMonth,
+      diff_from_last_month: differenceBetweenMonths,
+    }
+  }
 
   async findManyByUserId(userId: string, searchParams: Partial<SearchParams>) {
     const incomes = this.incomes.filter((income) => income.user_id === userId)

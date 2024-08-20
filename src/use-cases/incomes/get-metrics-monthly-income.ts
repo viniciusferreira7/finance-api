@@ -33,7 +33,7 @@ export class GetMetricsMonthlyIncome {
     const lastMonth = today.subtract(1, 'month')
     const startOfLastMonth = lastMonth.startOf('month').format('YYYY-MM')
 
-    const metrics = this.incomesRepository.getMetricsMonthly({
+    const metrics = await this.incomesRepository.getMetricsMonthly({
       userId,
       dates: {
         lastMonth: lastMonth.format('YYYY-MM'),
