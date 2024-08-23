@@ -14,6 +14,7 @@ import {
   fetchIncomesSchemaToJson,
 } from './fetch-incomes-history'
 import { getIncome, getIncomeBodySchemaToJson } from './get-income'
+import { getMetricsMonthlyIncome } from './get-metrics-monthly-income'
 import {
   incomeSchemaBodyToZod,
   incomeSchemaParamsToJson,
@@ -363,5 +364,39 @@ export async function incomesRoutes(app: FastifyInstance) {
       },
     },
     deleteIncome,
+  )
+
+  app.get(
+    '/incomes/metrics-monthly',
+    {
+      schema: {
+        summary: 'Get metrics monthly',
+        description: 'Returns a metrics of your income',
+        tags: ['Income'],
+        security: [{ jwt: [] }],
+        params: getIncomeBodySchemaToJson,
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              amount: { type: 'number' },
+              diff_from_last_month: { type: 'number' },
+            },
+          },
+          404: {
+            description: 'Resource not found',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                description: 'Resource not found',
+                default: 'Resource not found',
+              },
+            },
+          },
+        },
+      },
+    },
+    getMetricsMonthlyIncome,
   )
 }
