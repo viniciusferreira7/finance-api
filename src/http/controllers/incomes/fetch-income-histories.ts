@@ -89,7 +89,7 @@ export async function fetchIncomeHistories(
       incomeId: id,
       searchParams: {
         name,
-        value,
+        value: value ? value.toString() : undefined,
         categoryId: category_id,
         createdAt: {
           from: created_at_from,

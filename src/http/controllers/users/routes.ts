@@ -7,6 +7,8 @@ import { profile } from './profile'
 import { register, registerBodySchemaToJSON } from './register'
 
 export async function usersRoutes(app: FastifyInstance) {
+  app.addHook('onRequest', verifyJWT)
+
   app.post(
     '/users',
     {
@@ -67,7 +69,6 @@ export async function usersRoutes(app: FastifyInstance) {
     authenticate,
   )
 
-  // Authenticate
   app.get(
     '/me',
     {
