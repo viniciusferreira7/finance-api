@@ -14,6 +14,7 @@ import {
   fetchExpensesSchemaToJson,
 } from './fetch-expenses-history'
 import { getExpense, getExpenseBodySchemaToJson } from './get-expense'
+import { getMetricsMonthlyExpense } from './get-metrics-monthly-expense'
 import {
   expenseSchemaParamsToJson,
   updatedExpenseSchemaBodyToJson,
@@ -363,5 +364,39 @@ export async function expensesRoutes(app: FastifyInstance) {
       },
     },
     deleteExpense,
+  )
+
+  app.get(
+    '/expenses/metrics-monthly',
+    {
+      schema: {
+        summary: 'Get metrics monthly',
+        description: 'Returns a metrics of your expense',
+        tags: ['Expense'],
+        security: [{ jwt: [] }],
+        params: getExpenseBodySchemaToJson,
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              amount: { type: 'number' },
+              diff_from_last_month: { type: 'number' },
+            },
+          },
+          404: {
+            description: 'Resource not found',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                description: 'Resource not found',
+                default: 'Resource not found',
+              },
+            },
+          },
+        },
+      },
+    },
+    getMetricsMonthlyExpense,
   )
 }
