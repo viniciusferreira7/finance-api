@@ -20,7 +20,7 @@ export class DeleteUserIncome {
     private incomesRepository: IncomesRepository,
     private incomeHistoriesRepository: IncomeHistoriesRepository,
     private usersRepository: UsersRepository,
-  ) {}
+  ) { }
 
   async execute({
     userId,
