@@ -8,7 +8,9 @@ interface BalanceRequest {
 }
 
 interface BalanceResponse {
-  balance: number
+  incomes_total: number
+  expense_total: number
+  balance_total: number
 }
 
 export class BalanceUseCase {
@@ -24,10 +26,12 @@ export class BalanceUseCase {
       throw new ResourceNotFound()
     }
 
-    const balance = await this.balanceRepository.getBalance(user.id)
+    const metrics = await this.balanceRepository.getBalance(user.id)
 
     return {
-      balance,
+      incomes_total: metrics.incomes_total,
+      expense_total: metrics.expense_total,
+      balance_total: metrics.balance_total,
     }
   }
 }
