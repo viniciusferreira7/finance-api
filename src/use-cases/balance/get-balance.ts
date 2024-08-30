@@ -13,11 +13,11 @@ interface BalanceResponse {
   balance_total: number
 }
 
-export class BalanceUseCase {
+export class GetBalanceUseCase {
   constructor(
     private balanceRepository: BalanceRepository,
     private usersRepository: UsersRepository,
-  ) { }
+  ) {}
 
   async execute({ userId }: BalanceRequest): Promise<BalanceResponse> {
     const user = await this.usersRepository.findById(userId)

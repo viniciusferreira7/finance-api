@@ -40,7 +40,7 @@ describe('Fetch user expenses history use case', () => {
     for (let i = 1; i <= 2; i++) {
       await expensesRepository.create({
         name: 'video game',
-        value: 500 + i * 10,
+        value: (500 + i * 10).toString(),
         description: 'Course',
         category_id: `category-${i}`,
         user_id: user.id,
@@ -68,7 +68,7 @@ describe('Fetch user expenses history use case', () => {
     for (let i = 1; i <= 22; i++) {
       await expensesRepository.create({
         name: 'video game',
-        value: 500 + i * 10,
+        value: (500 + i * 10).toString(),
         description: 'Course',
         category_id: `category-${i}`,
         user_id: 'non-existing-id',
@@ -96,7 +96,7 @@ describe('Fetch user expenses history use case', () => {
     for (let i = 1; i <= 22; i++) {
       await expensesRepository.create({
         name: 'video game',
-        value: 500 + i * 10,
+        value: (500 + i * 10).toString(),
         description: 'Course',
         category_id: `category-${i}`,
         user_id: user.id,
@@ -130,7 +130,7 @@ describe('Fetch user expenses history use case', () => {
     for (let i = 1; i <= 22; i++) {
       await expensesRepository.create({
         name: 'video game',
-        value: 500 + i * 10,
+        value: (500 + i * 10).toString(),
         description: 'Course',
         category_id: `category-${i}`,
         user_id: user.id,
@@ -169,7 +169,7 @@ describe('Fetch user expenses history use case', () => {
 
       await expensesRepository.create({
         name,
-        value: 1000 + i * 10,
+        value: (1000 + i * 10).toString(),
         description: 'Salary',
         category_id: `category-${i}`,
         user_id: user.id,
@@ -252,7 +252,7 @@ describe('Fetch user expenses history use case', () => {
     await expensesRepository.update({
       id: updatedExpenseId,
       name: 'New',
-      value: valueToFilter,
+      value: valueToFilter.toString(),
       categoryId: categoryToFilter,
     })
 

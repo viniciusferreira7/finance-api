@@ -11,12 +11,12 @@ export class PrismaBalanceRepository implements BalanceRepository {
   async getBalance(userId: string) {
     const metrics = await prisma.$queryRaw<GetBalance>`
       WITH incomes_balance AS (
-        SELECT SUM(value) AS total
+        SELECT SUM(CAST(value AS NUMERIC)) AS total
         FROM incomes
         WHERE user_id = ${userId}
       ), 
       expenses_balance AS (
-        SELECT SUM(value) AS total
+        SELECT SUM(CAST(value AS NUMERIC)) AS total
         FROM expenses
         WHERE user_id = ${userId}
       )
