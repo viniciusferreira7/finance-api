@@ -49,6 +49,7 @@ export class PrismaIncomeHistoriesRepository
       const incomeHistories = await prisma.incomeHistory.findMany({
         where: {
           user_id: userId,
+          income_id: incomeId,
           name: {
             equals: searchParams.name,
           },
@@ -102,6 +103,7 @@ export class PrismaIncomeHistoriesRepository
     const incomeHistoriesPaginated = await prisma.incomeHistory.findMany({
       where: {
         user_id: userId,
+        income_id: incomeId,
         name: {
           contains: searchParams.name,
         },

@@ -49,6 +49,7 @@ export class PrismaExpenseHistoriesRepository
       const expenseHistories = await prisma.expenseHistory.findMany({
         where: {
           user_id: userId,
+          expense_id: expenseId,
           name: {
             equals: searchParams.name,
           },
@@ -102,6 +103,7 @@ export class PrismaExpenseHistoriesRepository
     const expenseHistoriesPaginated = await prisma.expenseHistory.findMany({
       where: {
         user_id: userId,
+        expense_id: expenseId,
         name: {
           contains: searchParams.name,
         },
