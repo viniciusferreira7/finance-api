@@ -374,7 +374,6 @@ export async function expensesRoutes(app: FastifyInstance) {
         description: 'Returns a metrics of your expense',
         tags: ['Expense'],
         security: [{ jwt: [] }],
-        params: getExpenseBodySchemaToJson,
         response: {
           200: {
             type: 'object',

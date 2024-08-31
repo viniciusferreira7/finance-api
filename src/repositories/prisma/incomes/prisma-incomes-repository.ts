@@ -53,7 +53,7 @@ export class PrismaIncomesRepository implements IncomesRepository {
     )
     SELECT 
       COALESCE(current_month.total, 0) AS amount, 
-      COALESCE(current_month.total, 0) - COALESCE(last_month.total, 0) AS diff_from_last_month 
+      (COALESCE(current_month.total, 0) * 100) / COALESCE(last_month.total, 0) AS diff_from_last_month 
     FROM 
       current_month, last_month;
   `

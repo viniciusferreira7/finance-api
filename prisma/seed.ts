@@ -208,7 +208,7 @@ async function seed() {
       id: expenseId,
       name: faker.commerce.productName(),
       value: convertToCents(
-        Number(faker.commerce.price({ min: 10, max: 1_000_000 })),
+        Number(faker.commerce.price({ min: 10, max: 1_000 })),
       ),
       description,
       user_id: newUser.id,
@@ -232,7 +232,7 @@ async function seed() {
         id: randomUUID(),
         name: faker.commerce.productName(),
         value: convertToCents(
-          Number(faker.commerce.price({ min: 10, max: 1_000_000 })),
+          Number(faker.commerce.price({ min: 10, max: 1_000 })),
         ),
         description: updateDescription,
         user_id: newUser.id,
