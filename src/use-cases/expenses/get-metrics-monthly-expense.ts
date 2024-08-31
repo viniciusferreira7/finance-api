@@ -31,12 +31,12 @@ export class GetMetricsMonthlyExpense {
 
     const today = dayjs()
     const lastMonth = today.subtract(1, 'month')
-    const startOfLastMonth = lastMonth.startOf('month').format('YYYY-MM')
+    const startOfLastMonth = lastMonth.startOf('month').toDate()
 
     const metrics = await this.expensesRepository.getMetricsMonthly({
       userId,
       dates: {
-        lastMonth: lastMonth.format('YYYY-MM'),
+        lastMonth: lastMonth.toDate(),
         startOfLastMonth,
       },
     })

@@ -374,7 +374,6 @@ export async function incomesRoutes(app: FastifyInstance) {
         description: 'Returns a metrics of your income',
         tags: ['Income'],
         security: [{ jwt: [] }],
-        params: getIncomeBodySchemaToJson,
         response: {
           200: {
             type: 'object',

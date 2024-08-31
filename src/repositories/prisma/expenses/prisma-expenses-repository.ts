@@ -10,8 +10,8 @@ import { ExpensesRepository } from '../../expenses-repository'
 interface getMetricsMonthlyParams {
   userId: string
   dates: {
-    lastMonth: string
-    startOfLastMonth: string
+    lastMonth: Date
+    startOfLastMonth: Date
   }
 }
 
@@ -34,29 +34,29 @@ export class PrismaExpensesRepository implements ExpensesRepository {
     const [metrics] = await prisma.$queryRaw<
       { amount: number; diff_from_last_month: number }[]
     >`
-    WITH current_month AS (
-      SELECT 
-        SUM(value) AS total 
-      FROM expenses 
-      WHERE 
-        user_id = ${userId} AND 
-        created_at >= ${startOfLastMonth}::date AND 
-        created_at < (${startOfLastMonth}::date + interval '1 month')
-    ), last_month AS (
-      SELECT 
-        SUM(value) AS total 
-      FROM expenses 
-      WHERE 
-        user_id = ${userId} AND 
-        created_at >= ${lastMonth}::date AND 
-        created_at < (${lastMonth}::date + interval '1 month')
-    )
+  WITH current_month AS (
     SELECT 
-      COALESCE(current_month.total, 0) AS amount, 
-      COALESCE(current_month.total, 0) - COALESCE(last_month.total, 0) AS diff_from_last_month 
-    FROM 
-      current_month, last_month;
-  `
+      SUM(CAST(value AS numeric)) AS total 
+    FROM expenses 
+    WHERE 
+      user_id = ${userId} AND 
+      created_at >= ${startOfLastMonth} AND 
+      created_at < (${startOfLastMonth} + interval '1 month')
+  ), last_month AS (
+    SELECT 
+      SUM(CAST(value AS numeric)) AS total 
+    FROM expenses 
+    WHERE 
+      user_id = ${userId} AND 
+      created_at >= ${lastMonth} AND 
+      created_at < (${lastMonth} + interval '1 month')
+  )
+  SELECT 
+    COALESCE(current_month.total, 0) AS amount, 
+    COALESCE(current_month.total, 0) - COALESCE(last_month.total, 0) AS diff_from_last_month 
+  FROM 
+    current_month, last_month;
+`
 
     return metrics
   }

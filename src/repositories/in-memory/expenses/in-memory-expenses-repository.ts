@@ -10,8 +10,8 @@ import { ExpensesRepository } from '../../expenses-repository'
 interface GetMetricsMonthly {
   userId: string
   dates: {
-    lastMonth: string
-    startOfLastMonth: string
+    lastMonth: Date
+    startOfLastMonth: Date
   }
 }
 
@@ -30,7 +30,10 @@ export class InMemoryExpensesRepository implements ExpensesRepository {
     const expenseFromLastMonth = this.expenses.filter((expense) => {
       const lastMonth = dayjs(expense.created_at).format('YYYY-MM')
 
-      return expense.user_id === userId && lastMonth === dates.lastMonth
+      return (
+        expense.user_id === userId &&
+        lastMonth === dayjs(dates.lastMonth).format('YYYY-MM')
+      )
     })
 
     const expenseFromCurrentMonth = this.expenses.filter((expense) => {

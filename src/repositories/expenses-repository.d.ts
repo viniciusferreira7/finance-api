@@ -6,8 +6,8 @@ import { SearchParams } from '@/@types/search-params'
 interface getMetricsMonthlyParams {
   userId: string
   dates: {
-    lastMonth: string
-    startOfLastMonth: string
+    lastMonth: Date
+    startOfLastMonth: Date
   }
 }
 

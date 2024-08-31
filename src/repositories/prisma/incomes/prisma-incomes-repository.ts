@@ -10,8 +10,8 @@ import { IncomesRepository } from '../../incomes-repository'
 interface getMetricsMonthlyParams {
   userId: string
   dates: {
-    lastMonth: string
-    startOfLastMonth: string
+    lastMonth: Date
+    startOfLastMonth: Date
   }
 }
 
@@ -36,20 +36,20 @@ export class PrismaIncomesRepository implements IncomesRepository {
     >`
     WITH current_month AS (
       SELECT 
-        SUM(value) AS total 
+        SUM(CAST(value AS numeric)) AS total 
       FROM incomes 
       WHERE 
         user_id = ${userId} AND 
-        created_at >= ${startOfLastMonth}::date AND 
-        created_at < (${startOfLastMonth}::date + interval '1 month')
+        created_at >= ${startOfLastMonth} AND 
+        created_at < (${startOfLastMonth} + interval '1 month')
     ), last_month AS (
       SELECT 
-        SUM(value) AS total 
+        SUM(CAST(value AS numeric)) AS total 
       FROM incomes 
       WHERE 
         user_id = ${userId} AND 
-        created_at >= ${lastMonth}::date AND 
-        created_at < (${lastMonth}::date + interval '1 month')
+        created_at >= ${lastMonth} AND 
+        created_at < (${lastMonth} + interval '1 month')
     )
     SELECT 
       COALESCE(current_month.total, 0) AS amount, 
