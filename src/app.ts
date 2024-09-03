@@ -4,6 +4,7 @@ import fastify from 'fastify'
 import { ZodError } from 'zod'
 
 import { env } from './env'
+import { balanceRoute } from './http/controllers/balance/route'
 import { categoriesRoutes } from './http/controllers/categories/routes'
 import { expensesRoutes } from './http/controllers/expenses/routes'
 import { incomesRoutes } from './http/controllers/incomes/routes'
@@ -26,6 +27,7 @@ app.register(usersRoutes)
 app.register(incomesRoutes)
 app.register(expensesRoutes)
 app.register(categoriesRoutes)
+app.register(balanceRoute)
 
 app.setErrorHandler((error, _, reply) => {
   if (error instanceof ZodError) {

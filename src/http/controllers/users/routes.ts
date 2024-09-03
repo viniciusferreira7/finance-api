@@ -72,7 +72,6 @@ export async function usersRoutes(app: FastifyInstance) {
   app.get(
     '/me',
     {
-      onRequest: [verifyJWT],
       schema: {
         summary: 'Get profile',
         description: 'Get profile of user',
