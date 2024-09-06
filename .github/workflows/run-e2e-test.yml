@@ -30,4 +30,5 @@ jobs:
       - run: npm run test:e2e
         env:
           JWT_SECRET: ${{ secrets.DATABASE_URL }}
+          FINANCE_APP_TOKEN: ${{ secrets.FINANCE_APP_TOKEN }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
