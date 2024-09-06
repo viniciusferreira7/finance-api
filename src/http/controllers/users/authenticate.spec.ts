@@ -4,7 +4,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { app } from '@/app'
 import { env } from '@/env'
 
-describe('Register (e2e)', () => {
+describe('Authenticate (e2e)', () => {
   beforeAll(async () => {
     await app.ready()
   })
@@ -13,8 +13,8 @@ describe('Register (e2e)', () => {
     await app.close()
   })
 
-  it('should be able to register', async () => {
-    const response = await request(app.server)
+  it('should be able to authenticate', async () => {
+    await request(app.server)
       .post('/users')
       .set('Authorization', `Bearer ${env.FINANCE_APP_TOKEN}`)
       .send({
@@ -22,6 +22,16 @@ describe('Register (e2e)', () => {
         email: 'john.doe@example.com',
         password: '123456',
       })
-    expect(response.statusCode).toEqual(201)
+
+    const response = await request(app.server)
+      .post('/sessions')
+      .set('Authorization', `Bearer ${env.FINANCE_APP_TOKEN}`)
+      .send({
+        email: 'john.doe@example.com',
+        password: '123456',
+      })
+
+    expect(response.statusCode).toEqual(200)
+    expect(response.body.token).toEqual(expect.any(String))
   })
 })
