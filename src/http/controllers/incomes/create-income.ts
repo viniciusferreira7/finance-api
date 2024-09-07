@@ -12,7 +12,7 @@ const incomeSchemaBody = z.object({
     .max(40, 'Must be 40 characters.'),
   value: z.number().positive({ message: 'Must be the positive number.' }),
   description: z.string().max(220, 'Must be 220 characters.').optional(),
-  category_id: z.string(),
+  category_id: z.string().nullable(),
 })
 
 export const incomeSchemaBodyToJson = zodToJsonSchema(incomeSchemaBody)

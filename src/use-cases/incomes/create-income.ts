@@ -12,7 +12,7 @@ interface CreateIncomeRequest {
   name: string
   value: number
   description: string | null
-  category_id: string
+  category_id: string | null
   user_id: string
 }
 
@@ -35,10 +35,12 @@ export class CreateIncomeUseCase {
     category_id,
     user_id,
   }: CreateIncomeRequest): Promise<CreateIncomeResponse> {
-    const category = await this.categoriesRepositores.findById(category_id)
+    if (category_id) {
+      const category = await this.categoriesRepositores.findById(category_id)
 
-    if (!category) {
-      throw new ResourceNotFound()
+      if (!category) {
+        throw new ResourceNotFound()
+      }
     }
 
     const user = await this.usersRepositores.findById(user_id)
