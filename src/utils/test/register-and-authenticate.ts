@@ -1,3 +1,5 @@
+import { env } from 'node:process'
+
 import { hash } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import request from 'supertest'
@@ -13,10 +15,13 @@ export async function registerAndAuthenticateUser(app: FastifyInstance) {
     },
   })
 
-  const authResponse = await request(app.server).post('/sessions').send({
-    email: 'john.doe@example.com',
-    password: '123456',
-  })
+  const authResponse = await request(app.server)
+    .post('/sessions')
+    .set('Authorization', `Bearer ${env.FINANCE_APP_TOKEN}`)
+    .send({
+      email: 'john.doe@example.com',
+      password: '123456',
+    })
 
   const { token } = authResponse.body
 
