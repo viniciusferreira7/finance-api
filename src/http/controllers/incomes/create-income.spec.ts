@@ -13,7 +13,7 @@ describe('Create an income (E2E)', () => {
     await app.close()
   })
 
-  it('should be able to create a income', async () => {
+  it('should be able to create an income', async () => {
     const { user, token } = await registerAndAuthenticateUser(app)
 
     const response = await request(app.server)

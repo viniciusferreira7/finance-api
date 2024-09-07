@@ -33,7 +33,7 @@ export async function generateIncomes({
     categories.push(...prismaCategories)
   }
 
-  for (let i = 0; i <= amount; i++) {
+  for (let i = 0; i <= amount - 1; i++) {
     const incomeId = randomUUID()
 
     const description = faker.helpers.arrayElement([
@@ -126,4 +126,6 @@ export async function generateIncomes({
       data: incomeHistories,
     })
   }
+
+  return { categories, incomes, incomeHistories }
 }
