@@ -13,7 +13,7 @@ export async function getBalance(request: FastifyRequest, reply: FastifyReply) {
 
     return reply.status(200).send({
       incomes_total: metrics.incomes_total,
-      expense_total: metrics.expense_total,
+      expenses_total: metrics.expenses_total,
       balance_total: metrics.balance_total,
     })
   } catch (err) {

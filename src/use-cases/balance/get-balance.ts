@@ -9,7 +9,7 @@ interface BalanceRequest {
 
 interface BalanceResponse {
   incomes_total: number
-  expense_total: number
+  expenses_total: number
   balance_total: number
 }
 
@@ -30,7 +30,7 @@ export class GetBalanceUseCase {
 
     return {
       incomes_total: metrics.incomes_total,
-      expense_total: metrics.expense_total,
+      expenses_total: metrics.expenses_total,
       balance_total: metrics.balance_total,
     }
   }

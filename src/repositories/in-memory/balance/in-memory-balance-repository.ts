@@ -19,7 +19,7 @@ export class InMemoryBalanceRepository implements BalanceRepository {
 
     return {
       incomes_total: incomesTotal,
-      expense_total: expensesTotal,
+      expenses_total: expensesTotal,
       balance_total: balance,
     }
   }

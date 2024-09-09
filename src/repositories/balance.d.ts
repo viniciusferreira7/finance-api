@@ -1,6 +1,6 @@
 interface GetBalance {
   incomes_total: number
-  expense_total: number
+  expenses_total: number
   balance_total: number
 }
 

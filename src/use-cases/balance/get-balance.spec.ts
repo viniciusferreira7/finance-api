@@ -84,7 +84,7 @@ describe('Balance use case', () => {
     })
 
     expect(metrics.incomes_total).toEqual(expect.any(Number))
-    expect(metrics.expense_total).toEqual(expect.any(Number))
+    expect(metrics.expenses_total).toEqual(expect.any(Number))
     expect(metrics.balance_total).toEqual(expect.any(Number))
   })
 })
