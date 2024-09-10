@@ -21,7 +21,9 @@ describe('Delete an income (E2E)', () => {
       userId: user.id,
       amount: 1,
       withCategory: true,
-      withHistory: false,
+      withIncomeHistories: {
+        disabled: true,
+      },
     })
 
     const response = await request(app.server)

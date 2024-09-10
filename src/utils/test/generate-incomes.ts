@@ -11,14 +11,19 @@ interface GenerateIncomes {
   userId: string
   amount: number
   withCategory: boolean
-  withHistory: boolean
+  withIncomeHistories: {
+    amount?: number
+    min?: number
+    max?: number
+    disabled: boolean
+  }
 }
 
 export async function generateIncomes({
   userId,
   amount,
   withCategory,
-  withHistory,
+  withIncomeHistories,
 }: GenerateIncomes) {
   const incomes: Income[] = []
   const incomeHistories: IncomeHistory[] = []
@@ -73,7 +78,7 @@ export async function generateIncomes({
     data: incomes,
   })
 
-  if (withHistory) {
+  if (!withIncomeHistories.disabled) {
     function getCategoriesAndGenerateCategoryId() {
       const categoryId = faker.helpers.arrayElement([
         ...categories.map((category) => category.id),
@@ -109,10 +114,10 @@ export async function generateIncomes({
       }
 
       const historyRange = faker.helpers.arrayElements(
-        Array.from({ length: 45 }),
+        Array.from({ length: withIncomeHistories.amount ?? 45 }),
         {
-          min: 5,
-          max: 35,
+          min: withIncomeHistories?.min ?? 5,
+          max: withIncomeHistories?.max ?? 35,
         },
       )
 

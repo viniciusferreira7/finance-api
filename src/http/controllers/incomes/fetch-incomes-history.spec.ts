@@ -21,7 +21,9 @@ describe('Fetch incomes history (E2E)', () => {
       userId: user.id,
       amount: 20,
       withCategory: true,
-      withHistory: false,
+      withIncomeHistories: {
+        disabled: true,
+      },
     })
 
     const response = await request(app.server)
