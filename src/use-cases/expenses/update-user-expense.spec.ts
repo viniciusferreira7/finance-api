@@ -164,6 +164,4 @@ describe('Update user expense use case', () => {
       }),
     ).rejects.toBeInstanceOf(ResourceNotFound)
   })
-
-  // TODO: creates another test to update expense
 })

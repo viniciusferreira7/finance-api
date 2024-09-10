@@ -45,7 +45,7 @@ export async function updateIncome(
       updateIncome: {
         id,
         name,
-        value,
+        value: value?.toString(),
         description: description ?? null,
         categoryId: category_id,
       },
