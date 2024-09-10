@@ -39,7 +39,7 @@ const fetchIncomeHistorieSearchParamsSchema = z
     per_page: z.coerce
       .number()
       .positive({ message: 'Must be the positive number.' })
-      .default(1)
+      .default(10)
       .optional(),
     pagination_disabled: z
       .union([z.string(), z.boolean()])
