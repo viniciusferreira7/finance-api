@@ -1,4 +1,4 @@
-import { PrismaBalanceRepository } from '@/repositories/prisma/balanca/prisma-balance-repository'
+import { PrismaBalanceRepository } from '@/repositories/prisma/balance/prisma-balance-repository'
 import { PrismaUsersRepository } from '@/repositories/prisma/users/prisma-users-repository'
 import { GetBalanceUseCase } from '@/use-cases/balance/get-balance'
 
