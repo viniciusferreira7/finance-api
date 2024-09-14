@@ -38,7 +38,7 @@ export async function generateIncomes({
     categories.push(...categoriesCreated)
   }
 
-  for (let i = 0; i <= amount - 1; i++) {
+  for (let i = 0; i <= (amount === 1 ? 1 : amount - 1); i++) {
     const incomeId = randomUUID()
 
     const description = faker.helpers.arrayElement([
