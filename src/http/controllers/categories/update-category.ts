@@ -60,5 +60,5 @@ export async function updateCategory(
     }
   }
 
-  return reply.status(201).send()
+  return reply.status(204).send()
 }
