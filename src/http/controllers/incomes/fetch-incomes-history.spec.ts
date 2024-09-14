@@ -41,7 +41,9 @@ describe('Fetch incomes history (E2E)', () => {
         total_pages: 2,
         per_page: 10,
         pagination_disabled: false,
+        results: expect.any(Array),
       }),
     )
+    expect(response.body.results).length(10)
   })
 })
