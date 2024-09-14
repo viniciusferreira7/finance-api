@@ -175,8 +175,6 @@ export class PrismaCategoriesRepository implements CategoriesRepository {
       skip: (currentPage - 1) * perPage,
     })
 
-    // TODO: continue adding the filters in category, now you must have add in in-memory-category
-
     const nextPage = totalPages === currentPage ? null : currentPage + 1
     const previousPage = currentPage === 1 ? null : currentPage - 1
 

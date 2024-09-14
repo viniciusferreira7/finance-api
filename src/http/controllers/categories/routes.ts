@@ -89,6 +89,7 @@ export async function categoriesRoutes(app: FastifyInstance) {
                 type: 'number',
                 description: 'previous page',
                 default: null,
+                nullable: true,
               },
               page: {
                 type: 'number',
