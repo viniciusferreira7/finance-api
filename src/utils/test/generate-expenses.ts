@@ -30,12 +30,12 @@ export async function generateExpenses({
   const categories: Category[] = []
 
   if (withCategory) {
-    const prismaCategories = await generateCategories({
+    const { categoriesCreated } = await generateCategories({
       userId,
       amount: Math.round(amount / 2),
     })
 
-    categories.push(...prismaCategories)
+    categories.push(...categoriesCreated)
   }
 
   for (let i = 0; i <= amount - 1; i++) {
