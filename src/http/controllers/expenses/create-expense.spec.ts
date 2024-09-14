@@ -14,7 +14,7 @@ describe('Create an expense (E2E)', () => {
   })
 
   it('should be able to create an expense', async () => {
-    const { user, token } = await registerAndAuthenticateUser(app)
+    const { token } = await registerAndAuthenticateUser(app)
 
     const response = await request(app.server)
       .post('/expenses')
@@ -24,7 +24,6 @@ describe('Create an expense (E2E)', () => {
         value: 1000,
         description: 'game',
         category_id: null,
-        user_id: user.id,
       })
 
     expect(response.statusCode).toEqual(201)

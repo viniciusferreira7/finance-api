@@ -14,7 +14,7 @@ describe('Create an income (E2E)', () => {
   })
 
   it('should be able to create an income', async () => {
-    const { user, token } = await registerAndAuthenticateUser(app)
+    const { token } = await registerAndAuthenticateUser(app)
 
     const response = await request(app.server)
       .post('/incomes')
@@ -24,7 +24,6 @@ describe('Create an income (E2E)', () => {
         value: 1000,
         description: 'Salary',
         category_id: null,
-        user_id: user.id,
       })
 
     expect(response.statusCode).toEqual(201)
