@@ -30,5 +30,5 @@ export async function generateCategories({
     },
   })
 
-  return categoriesCreated
+  return { categoriesCreated }
 }
