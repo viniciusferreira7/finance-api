@@ -144,7 +144,7 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
         description:
           updateCategory?.description === null
             ? ''
-            : updateCategory.description ?? category.description,
+            : (updateCategory.description ?? category.description),
         updated_at: new Date(),
       }
 
