@@ -1,18 +1,17 @@
 interface GetMonthlyFinancialSummary {
   userId: string
-  startDate?: string
+  endDate?: string
 }
 
 type GetMonthlyFinancialSummaryResponse = Array<{
-  [key: string]: {
-    incomes_total: number
-    expenses_total: number
-  }
+  date: string
+  incomes_total: number
+  expenses_total: number
 }>
 
 export interface MetricsRepository {
   getMonthlyFinancialSummary({
     userId,
-    startDate,
+    endDate,
   }: GetMonthlyFinancialSummary): Promise<GetMonthlyFinancialSummaryResponse>
 }

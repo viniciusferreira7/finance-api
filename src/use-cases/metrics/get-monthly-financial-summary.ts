@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+
 import type { MetricsRepository } from '@/repositories/metrics-repository'
 import type { UsersRepository } from '@/repositories/users-repository'
 
@@ -5,16 +7,14 @@ import { ResourceNotFound } from '../error/resource-not-found-error'
 
 interface GetMonthlyFinancialSummaryRequestUseCase {
   userId: string
-  startDate?: string
+  endDate?: string
 }
 
 type GetMonthlyFinancialSummaryResponseUseCase = Array<{
-  [key: string]: {
-    incomes_total: number
-    expenses_total: number
-  }
+  date: string
+  incomes_total: number
+  expenses_total: number
 }>
-
 export class GetMonthlyFinancialSummary {
   constructor(
     private usersRepository: UsersRepository,
@@ -23,7 +23,7 @@ export class GetMonthlyFinancialSummary {
 
   async execute({
     userId,
-    startDate,
+    endDate,
   }: GetMonthlyFinancialSummaryRequestUseCase): Promise<GetMonthlyFinancialSummaryResponseUseCase> {
     const user = this.usersRepository.findById(userId)
 
@@ -31,9 +31,13 @@ export class GetMonthlyFinancialSummary {
       throw new ResourceNotFound()
     }
 
+    const formattedEndDate = dayjs(endDate).isValid()
+      ? dayjs(endDate).format('YYYY-MM')
+      : dayjs().format('YYYY-MM')
+
     const metrics = this.metricsRepository.getMonthlyFinancialSummary({
       userId,
-      startDate,
+      endDate: formattedEndDate,
     })
 
     return metrics
