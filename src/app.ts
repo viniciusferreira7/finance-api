@@ -8,6 +8,7 @@ import { balanceRoute } from './http/controllers/balance/route'
 import { categoriesRoutes } from './http/controllers/categories/routes'
 import { expensesRoutes } from './http/controllers/expenses/routes'
 import { incomesRoutes } from './http/controllers/incomes/routes'
+import { metricsRoute } from './http/controllers/metrics/route'
 import { usersRoutes } from './http/controllers/users/routes'
 import { swagger } from './lib/swagger'
 
@@ -28,6 +29,7 @@ app.register(incomesRoutes)
 app.register(expensesRoutes)
 app.register(categoriesRoutes)
 app.register(balanceRoute)
+app.register(metricsRoute)
 
 app.setErrorHandler((error, _, reply) => {
   if (error instanceof ZodError) {
