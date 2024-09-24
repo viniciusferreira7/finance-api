@@ -50,6 +50,23 @@ export async function balanceRoute(app: FastifyInstance) {
               },
             },
           },
+         401: {
+            description: 'Invalid credentials.',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                default: 'Invalid credentials.',
+              },
+            },
+          },
+
+          500: {
+            type: 'object',
+            properties: {
+              message: { type: 'string' },
+            },
+          },
         },
       },
     },

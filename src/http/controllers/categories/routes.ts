@@ -46,6 +46,23 @@ export async function categoriesRoutes(app: FastifyInstance) {
               },
             },
           },
+         401: {
+            description: 'Invalid credentials.',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                default: 'Invalid credentials.',
+              },
+            },
+          },
+
+          500: {
+            type: 'object',
+            properties: {
+              message: { type: 'string' },
+            },
+          },
           400: {
             description: 'Category already exist',
             type: 'object',
@@ -145,6 +162,23 @@ export async function categoriesRoutes(app: FastifyInstance) {
               },
             },
           },
+         401: {
+            description: 'Invalid credentials.',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                default: 'Invalid credentials.',
+              },
+            },
+          },
+
+          500: {
+            type: 'object',
+            properties: {
+              message: { type: 'string' },
+            },
+          },
         },
       },
     },
@@ -183,6 +217,23 @@ export async function categoriesRoutes(app: FastifyInstance) {
               },
             },
           },
+         401: {
+            description: 'Invalid credentials.',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                default: 'Invalid credentials.',
+              },
+            },
+          },
+
+          500: {
+            type: 'object',
+            properties: {
+              message: { type: 'string' },
+            },
+          },
         },
       },
     },
@@ -215,6 +266,23 @@ export async function categoriesRoutes(app: FastifyInstance) {
               },
             },
           },
+         401: {
+            description: 'Invalid credentials.',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                default: 'Invalid credentials.',
+              },
+            },
+          },
+
+          500: {
+            type: 'object',
+            properties: {
+              message: { type: 'string' },
+            },
+          },
         },
       },
     },
@@ -244,6 +312,23 @@ export async function categoriesRoutes(app: FastifyInstance) {
                 description: 'Resource not found',
                 default: 'Resource not found',
               },
+            },
+          },
+         401: {
+            description: 'Invalid credentials.',
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                default: 'Invalid credentials.',
+              },
+            },
+          },
+
+          500: {
+            type: 'object',
+            properties: {
+              message: { type: 'string' },
             },
           },
         },
