@@ -47,11 +47,11 @@ export async function generateIncomes({
       null,
     ])
 
-    const createdAt = faker.date.recent({ days: 120 })
+    const createdAt = faker.date.recent({ days: 365 })
     const updatedAt = faker.helpers.arrayElement([
       createdAt,
-      faker.date.recent({ days: 100 }),
-      faker.date.recent({ days: 45 }),
+      faker.date.recent({ days: 250 }),
+      faker.date.recent({ days: 200 }),
     ])
 
     const categoryId = categories.length

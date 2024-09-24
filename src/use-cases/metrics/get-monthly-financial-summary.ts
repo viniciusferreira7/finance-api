@@ -40,6 +40,6 @@ export class GetMonthlyFinancialSummaryUseCase {
       endDate: formattedEndDate,
     })
 
-    return metrics
+    return metrics.slice(0, 12)
   }
 }

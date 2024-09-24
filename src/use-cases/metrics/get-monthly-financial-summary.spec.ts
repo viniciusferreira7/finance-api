@@ -70,7 +70,7 @@ describe('Get Monthly financial summary', () => {
       userId: user.id,
     })
 
-    expect(summary.length).toBeGreaterThanOrEqual(12)
+    expect(summary.length).toBeLessThanOrEqual(12)
     expect(summary).toEqual(
       expect.objectContaining([
         {
@@ -132,12 +132,13 @@ describe('Get Monthly financial summary', () => {
     expect(
       summary.every((item, index) => {
         const expectedMonth = endDate
+          .add(1, 'month')
           .subtract(1 + index, 'months')
           .format('YYYY-MM')
 
         return item.date === expectedMonth
       }),
-    )
+    ).toEqual(true)
   })
 
   it('should able to get monthly financial summary without user id', async () => {
