@@ -12,7 +12,7 @@ type GetMonthlyFinancialSummaryResponse = Array<{
   expenses_total: number
 }>
 
-export class metricsRepository implements MetricsRepository {
+export class PrismaMetricsRepository implements MetricsRepository {
   async getMonthlyFinancialSummary({
     userId,
     endDate,
