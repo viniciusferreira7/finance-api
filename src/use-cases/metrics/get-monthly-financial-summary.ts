@@ -15,7 +15,7 @@ type GetMonthlyFinancialSummaryResponseUseCase = Array<{
   incomes_total: number
   expenses_total: number
 }>
-export class GetMonthlyFinancialSummary {
+export class GetMonthlyFinancialSummaryUseCase {
   constructor(
     private usersRepository: UsersRepository,
     private metricsRepository: MetricsRepository,
@@ -25,7 +25,7 @@ export class GetMonthlyFinancialSummary {
     userId,
     endDate,
   }: GetMonthlyFinancialSummaryRequestUseCase): Promise<GetMonthlyFinancialSummaryResponseUseCase> {
-    const user = this.usersRepository.findById(userId)
+    const user = await this.usersRepository.findById(userId)
 
     if (!user) {
       throw new ResourceNotFound()
@@ -35,7 +35,7 @@ export class GetMonthlyFinancialSummary {
       ? dayjs(endDate).format('YYYY-MM')
       : dayjs().format('YYYY-MM')
 
-    const metrics = this.metricsRepository.getMonthlyFinancialSummary({
+    const metrics = await this.metricsRepository.getMonthlyFinancialSummary({
       userId,
       endDate: formattedEndDate,
     })

@@ -1,7 +1,10 @@
 import type { Expense, Income } from '@prisma/client'
 import dayjs from 'dayjs'
+import isBetween from 'dayjs/plugin/isBetween'
 
-import type { metricsRepository } from '../prisma/metrics/prisma-metrics-repository'
+import type { metricsRepository } from '@/repositories/prisma/metrics/prisma-metrics-repository'
+
+dayjs.extend(isBetween)
 
 interface GetMonthlyFinancialSummary {
   userId: string
@@ -14,7 +17,7 @@ interface GetMonthlyFinancialSummaryResponse {
   expenses_total: number
 }
 
-interface ByMonth {
+interface SummaryByMonth {
   type: 'income' | 'expense'
   date: string
   total: number
@@ -30,22 +33,37 @@ export class InMemoryMetricsRepository implements metricsRepository {
   }: GetMonthlyFinancialSummary): Promise<
     GetMonthlyFinancialSummaryResponse[]
   > {
+    const twelveMonthsBefore = dayjs(endDate).subtract(12, 'months')
+
     const incomesFiltered = this.incomes.filter((item) => {
       const fromTheUser = item.user_id === userId
-      const dateRange = dayjs(endDate).subtract(12, 'months')
-      const updatedAt = dayjs(item.created_at)
+      const createdAt = dayjs(item.created_at)
 
-      return fromTheUser && updatedAt.isAfter(dateRange)
+      return (
+        fromTheUser &&
+        createdAt.isBetween(
+          twelveMonthsBefore,
+          dayjs(endDate).add(1, 'month'),
+          'month',
+        )
+      )
     })
+
     const expensesFiltered = this.expenses.filter((item) => {
       const fromTheUser = item.user_id === userId
-      const dateRange = dayjs(endDate).subtract(12, 'months')
-      const updatedAt = dayjs(item.created_at)
+      const createdAt = dayjs(item.created_at)
 
-      return fromTheUser && updatedAt.isAfter(dateRange)
+      return (
+        fromTheUser &&
+        createdAt.isBetween(
+          twelveMonthsBefore,
+          dayjs(endDate).add(1, 'month'),
+          'month',
+        )
+      )
     })
 
-    const incomesByMonth = incomesFiltered.map<ByMonth>((item) => {
+    const incomesByMonth = incomesFiltered.map<SummaryByMonth>((item) => {
       return {
         type: 'income',
         date: dayjs(item.created_at).format('YYYY-MM'),
@@ -53,7 +71,7 @@ export class InMemoryMetricsRepository implements metricsRepository {
       }
     })
 
-    const expenseByMonth = expensesFiltered.map<ByMonth>((item) => {
+    const expenseByMonth = expensesFiltered.map<SummaryByMonth>((item) => {
       return {
         type: 'expense',
         date: dayjs(item.created_at).format('YYYY-MM'),
