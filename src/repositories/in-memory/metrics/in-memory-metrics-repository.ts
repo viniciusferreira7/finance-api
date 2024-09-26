@@ -1,10 +1,20 @@
-import type { Expense, Income } from '@prisma/client'
+import type { Category, Expense, Income } from '@prisma/client'
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 
-import type { metricsRepository } from '@/repositories/prisma/metrics/prisma-metrics-repository'
+import type {
+  FindCategoriesWithTheMostRecord,
+  FindCategoriesWithTheMostRecordResponse,
+  MetricsRepository,
+} from '@/repositories/metrics-repository'
 
 dayjs.extend(isBetween)
+
+interface CategoriesWithTheMostRecord {
+  name: string
+  incomes_quantity: number
+  expenses_quantity: number
+}
 
 interface GetMonthlyFinancialSummary {
   userId: string
@@ -23,9 +33,69 @@ interface SummaryByMonth {
   total: number
 }
 
-export class InMemoryMetricsRepository implements metricsRepository {
+export class InMemoryMetricsRepository implements MetricsRepository {
+  public categories: Category[] = []
   public incomes: Income[] = []
   public expenses: Expense[] = []
+
+  async findCategoriesWithTheMostRecord({
+    userId,
+  }: FindCategoriesWithTheMostRecord): Promise<FindCategoriesWithTheMostRecordResponse> {
+    const categoriesByUserId = this.categories.filter(
+      (item) => item.user_id === userId,
+    )
+
+    const incomesByCategory: Income[] = this.incomes.filter((income) => {
+      return categoriesByUserId.some((category) => {
+        return category.id === income.category_id && income.user_id === userId
+      })
+    })
+
+    const expensesByCategory: Expense[] = this.expenses.filter((expense) => {
+      return categoriesByUserId.some((category) => {
+        return category.id === expense.category_id && expense.user_id === userId
+      })
+    })
+
+    const categoryMostRecords =
+      categoriesByUserId.map<CategoriesWithTheMostRecord>((category) => {
+        const incomesQuantity = incomesByCategory.reduce<number>(
+          (acc, income) => {
+            if (income.category_id === category.id) {
+              return acc + 1
+            }
+
+            return acc
+          },
+          0,
+        )
+        const expensesQuantity = expensesByCategory.reduce<number>(
+          (acc, expense) => {
+            if (expense.category_id === category.id) {
+              return acc + 1
+            }
+
+            return acc
+          },
+          0,
+        )
+
+        return {
+          name: category.name,
+          incomes_quantity: incomesQuantity,
+          expenses_quantity: expensesQuantity,
+        }
+      })
+
+    const categoryMostRecordsSorted = categoryMostRecords.sort((a, b) => {
+      const totalA = a.incomes_quantity + a.expenses_quantity
+      const totalB = b.incomes_quantity + b.expenses_quantity
+
+      return totalB - totalA
+    })
+
+    return categoryMostRecordsSorted
+  }
 
   async getMonthlyFinancialSummary({
     userId,

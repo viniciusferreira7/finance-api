@@ -1,6 +1,5 @@
 interface FindCategoriesWithTheMostRecord {
   userId: string
-  endDate?: string
 }
 
 type FindCategoriesWithTheMostRecordResponse = Array<{
@@ -23,7 +22,6 @@ type GetMonthlyFinancialSummaryResponse = Array<{
 export interface MetricsRepository {
   findCategoriesWithTheMostRecord({
     userId,
-    endDate,
   }: FindCategoriesWithTheMostRecord): Promise<FindCategoriesWithTheMostRecordResponse>
   getMonthlyFinancialSummary({
     userId,
