@@ -17,6 +17,10 @@ interface GenerateIncomes {
     max?: number
     disabled: boolean
   }
+  dateRage?: {
+    createdAt?: number[]
+    updatedAt?: number[]
+  }
 }
 
 export async function generateIncomes({
@@ -24,6 +28,7 @@ export async function generateIncomes({
   amount,
   withCategory,
   withIncomeHistories,
+  dateRage,
 }: GenerateIncomes) {
   const incomes: Income[] = []
   const incomeHistories: IncomeHistory[] = []
@@ -47,12 +52,25 @@ export async function generateIncomes({
       null,
     ])
 
-    const createdAt = faker.date.recent({ days: 365 })
-    const updatedAt = faker.helpers.arrayElement([
-      createdAt,
-      faker.date.recent({ days: 250 }),
-      faker.date.recent({ days: 200 }),
-    ])
+    const createdAtRages = dateRage?.createdAt
+      ? dateRage?.createdAt.map((days) => {
+          return faker.date.recent({ days })
+        })
+      : [faker.date.recent({ days: 120 })]
+
+    const createdAt = faker.helpers.arrayElement(createdAtRages)
+
+    const updatedAtRages = dateRage?.updatedAt
+      ? dateRage?.updatedAt.map((days) => {
+          return faker.date.recent({ days })
+        })
+      : [
+          createdAt,
+          faker.date.recent({ days: 45 }),
+          faker.date.recent({ days: 100 }),
+        ]
+
+    const updatedAt = faker.helpers.arrayElement(updatedAtRages)
 
     const categoryId = categories.length
       ? faker.helpers.arrayElement([...categories.map((item) => item.id)])

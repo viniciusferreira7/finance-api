@@ -54,6 +54,10 @@ describe('Get metrics (e2e)', () => {
           max: 20,
           disabled: false,
         },
+        dateRage: {
+          createdAt: [365],
+          updatedAt: [250, 200],
+        },
       }),
       await generateExpenses({
         userId: user.id,
@@ -63,6 +67,10 @@ describe('Get metrics (e2e)', () => {
           min: 20,
           max: 20,
           disabled: false,
+        },
+        dateRage: {
+          createdAt: [365],
+          updatedAt: [250, 200],
         },
       }),
     ])
