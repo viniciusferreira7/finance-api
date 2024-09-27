@@ -8,7 +8,7 @@ import { InMemoryIncomesRepository } from '@/repositories/in-memory/incomes/in-m
 import { InMemoryUsersRepository } from '@/repositories/in-memory/users/in-memory-users-repository'
 
 import { ResourceNotFound } from '../error/resource-not-found-error'
-import { FetchUserIncomesHistoriesUseCase } from './fetch-income-histories'
+import { FetchUserIncomesHistoriesUseCase } from './fetch-user-income-histories'
 
 let incomesRepository: InMemoryIncomesRepository
 

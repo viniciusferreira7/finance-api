@@ -1,7 +1,7 @@
 import { PrismaIncomeHistoriesRepository } from '@/repositories/prisma/incomes/prisma-income-histories-repository'
 import { PrismaIncomesRepository } from '@/repositories/prisma/incomes/prisma-incomes-repository'
 import { PrismaUsersRepository } from '@/repositories/prisma/users/prisma-users-repository'
-import { FetchUserIncomesHistoriesUseCase } from '@/use-cases/incomes/fetch-income-histories'
+import { FetchUserIncomesHistoriesUseCase } from '@/use-cases/incomes/fetch-user-income-histories'
 
 export function makeFetchUserIncomeHistories() {
   const incomesRepository = new PrismaIncomesRepository()
