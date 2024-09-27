@@ -1,5 +1,9 @@
 import { prisma } from '@/lib/prisma'
-import type { MetricsRepository } from '@/repositories/metrics-repository'
+import type {
+  FindCategoriesWithTheMostRecord,
+  FindCategoriesWithTheMostRecordResponse,
+  MetricsRepository,
+} from '@/repositories/metrics-repository'
 
 interface GetMonthlyFinancialSummary {
   userId: string
@@ -13,6 +17,40 @@ type GetMonthlyFinancialSummaryResponse = Array<{
 }>
 
 export class PrismaMetricsRepository implements MetricsRepository {
+  async findCategoriesWithTheMostRecord({
+    userId,
+  }: FindCategoriesWithTheMostRecord): Promise<FindCategoriesWithTheMostRecordResponse> {
+    const categories = await prisma.category.findMany({
+      select: {
+        name: true,
+        _count: {
+          select: {
+            Income: true,
+            Expense: true,
+          },
+        },
+      },
+      where: {
+        user_id: userId,
+      },
+    })
+
+    const categoryMostRecords = categories.map((category) => ({
+      name: category.name,
+      incomes_quantity: category._count.Income,
+      expenses_quantity: category._count.Expense,
+    }))
+
+    const categoryMostRecordsSorted = categoryMostRecords.sort((a, b) => {
+      const totalA = a.incomes_quantity + a.expenses_quantity
+      const totalB = b.incomes_quantity + b.expenses_quantity
+
+      return totalB - totalA
+    })
+
+    return categoryMostRecordsSorted
+  }
+
   async getMonthlyFinancialSummary({
     userId,
     endDate,
