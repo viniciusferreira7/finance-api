@@ -21,7 +21,9 @@ describe('Get balance (E2E)', () => {
     await generateExpenses({
       userId: user.id,
       amount: 20,
-      withCategory: true,
+      categoriesInfo: {
+        amount: 3,
+      },
       withExpenseHistories: {
         disabled: true,
       },
@@ -30,7 +32,9 @@ describe('Get balance (E2E)', () => {
     await generateIncomes({
       userId: user.id,
       amount: 20,
-      withCategory: true,
+      categoriesInfo: {
+        amount: 3,
+      },
       withIncomeHistories: {
         disabled: true,
       },

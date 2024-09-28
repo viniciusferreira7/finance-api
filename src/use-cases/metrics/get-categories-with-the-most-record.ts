@@ -27,10 +27,11 @@ export class GetCategoriesWithTheMostRecordUseCase {
     if (!user) {
       throw new ResourceNotFound()
     }
-    const metrics = this.metricsRepository.findCategoriesWithTheMostRecord({
-      userId,
-    })
+    const metrics =
+      await this.metricsRepository.findCategoriesWithTheMostRecord({
+        userId,
+      })
 
-    return metrics
+    return metrics.slice(0, 10)
   }
 }
