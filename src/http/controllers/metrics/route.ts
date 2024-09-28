@@ -44,6 +44,29 @@ export async function metricsRoute(app: FastifyInstance) {
                   required: ['date', 'incomes_total', 'expenses_total'],
                 },
               },
+              categories_with_most_records: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    name: {
+                      type: 'string',
+                      description: 'The name of category',
+                    },
+                    incomes_quantity: {
+                      type: 'number',
+                      description: 'Quantify of incomes with this category',
+                      example: 10,
+                    },
+                    expenses_quantity: {
+                      type: 'number',
+                      description: 'Quantify of expenses with this category',
+                      example: 8,
+                    },
+                  },
+                  required: ['name', 'incomes_quantity', 'expenses_quantity'],
+                },
+              },
             },
           },
           404: {

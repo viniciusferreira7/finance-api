@@ -4,6 +4,7 @@ import { z } from 'zod'
 import zodToJsonSchema from 'zod-to-json-schema'
 
 import { ResourceNotFound } from '@/use-cases/error/resource-not-found-error'
+import { makeGetCategoriesWithTheMostRecordUseCase } from '@/use-cases/factories/metrics/make-get-categories-with-the-most-record'
 import { makeGetMonthlyFinancialSummary } from '@/use-cases/factories/metrics/make-get-monthly-financial-summary'
 
 const getMetricsSearchParamsSchema = z.object({
@@ -22,15 +23,23 @@ export async function getMetrics(request: FastifyRequest, reply: FastifyReply) {
 
   try {
     const getMonthlyFinancialSummaryUseCase = makeGetMonthlyFinancialSummary()
+    const getCategoriesWithTheMostRecordUseCase =
+      makeGetCategoriesWithTheMostRecordUseCase()
 
-    const monthlyFinancialSummary =
-      await getMonthlyFinancialSummaryUseCase.execute({
-        userId: request.user.sub,
-        endDate: searchParams.end_date,
-      })
+    const [monthlyFinancialSummary, categoriesWithMostRecords] =
+      await Promise.all([
+        getMonthlyFinancialSummaryUseCase.execute({
+          userId: request.user.sub,
+          endDate: searchParams.end_date,
+        }),
+        getCategoriesWithTheMostRecordUseCase.execute({
+          userId: request.user.sub,
+        }),
+      ])
 
     return reply.status(200).send({
       monthly_financial_summary: monthlyFinancialSummary,
+      categories_with_most_records: categoriesWithMostRecords,
     })
   } catch (err) {
     if (err instanceof ResourceNotFound) {
