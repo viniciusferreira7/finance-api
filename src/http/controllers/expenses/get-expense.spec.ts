@@ -20,7 +20,9 @@ describe('Get an expense (E2E)', () => {
     const { expenses } = await generateExpenses({
       userId: user.id,
       amount: 1,
-      withCategory: true,
+      categoriesInfo: {
+        amount: 2,
+      },
       withExpenseHistories: {
         disabled: true,
       },

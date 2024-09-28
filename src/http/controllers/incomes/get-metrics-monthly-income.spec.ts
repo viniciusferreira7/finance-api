@@ -20,7 +20,9 @@ describe('Get metrics monthly income (E2E)', () => {
     await generateIncomes({
       userId: user.id,
       amount: 30,
-      withCategory: true,
+      categoriesInfo: {
+        amount: 4,
+      },
       withIncomeHistories: {
         disabled: true,
       },

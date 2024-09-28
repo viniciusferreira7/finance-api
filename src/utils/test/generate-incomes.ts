@@ -10,7 +10,11 @@ import { generateCategories } from './generate-categories'
 interface GenerateIncomes {
   userId: string
   amount: number
-  withCategory: boolean
+  categoriesInfo?: {
+    isExternal?: boolean
+    categories?: Category[]
+    amount?: number
+  }
   withIncomeHistories: {
     amount?: number
     min?: number
@@ -26,7 +30,7 @@ interface GenerateIncomes {
 export async function generateIncomes({
   userId,
   amount,
-  withCategory,
+  categoriesInfo,
   withIncomeHistories,
   dateRage,
 }: GenerateIncomes) {
@@ -34,13 +38,15 @@ export async function generateIncomes({
   const incomeHistories: IncomeHistory[] = []
   const categories: Category[] = []
 
-  if (withCategory) {
+  if (!categoriesInfo?.isExternal) {
     const { categoriesCreated } = await generateCategories({
       userId,
-      amount: Math.round(amount / 2),
+      amount: categoriesInfo?.amount ?? 0,
     })
 
     categories.push(...categoriesCreated)
+  } else if (categoriesInfo.categories) {
+    categories.push(...categoriesInfo.categories)
   }
 
   for (let i = 0; i <= (amount === 1 ? 1 : amount - 1); i++) {

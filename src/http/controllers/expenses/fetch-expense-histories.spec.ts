@@ -20,7 +20,9 @@ describe('Fetch expense histories (E2E)', () => {
     const { expenses } = await generateExpenses({
       userId: user.id,
       amount: 2,
-      withCategory: true,
+      categoriesInfo: {
+        amount: 1,
+      },
       withExpenseHistories: {
         min: 20,
         max: 20,

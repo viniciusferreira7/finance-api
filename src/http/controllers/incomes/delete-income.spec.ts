@@ -20,7 +20,9 @@ describe('Delete an income (E2E)', () => {
     const { incomes } = await generateIncomes({
       userId: user.id,
       amount: 1,
-      withCategory: true,
+      categoriesInfo: {
+        amount: 2,
+      },
       withIncomeHistories: {
         disabled: true,
       },

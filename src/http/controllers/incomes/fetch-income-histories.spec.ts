@@ -20,7 +20,9 @@ describe('Fetch income histories (E2E)', () => {
     const { incomes } = await generateIncomes({
       userId: user.id,
       amount: 2,
-      withCategory: true,
+      categoriesInfo: {
+        amount: 1,
+      },
       withIncomeHistories: {
         min: 20,
         max: 20,

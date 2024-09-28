@@ -20,7 +20,9 @@ describe('Fetch expenses history (E2E)', () => {
     await generateExpenses({
       userId: user.id,
       amount: 20,
-      withCategory: true,
+      categoriesInfo: {
+        amount: 2,
+      },
       withExpenseHistories: {
         disabled: true,
       },

@@ -1,17 +1,10 @@
+import type { User } from '@prisma/client'
 import dayjs from 'dayjs'
 import request from 'supertest'
-import {
-  afterAll,
-  afterEach,
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from 'vitest'
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 
 import { app } from '@/app'
+import { generateCategories } from '@/utils/test/generate-categories'
 import { generateExpenses } from '@/utils/test/generate-expenses'
 import { generateIncomes } from '@/utils/test/generate-incomes'
 import { registerAndAuthenticateUser } from '@/utils/test/register-and-authenticate'
@@ -22,33 +15,40 @@ type MonthlyFinancialSummaryResponse = Array<{
   expenses_total: number
 }>
 
+type CategoriesWithTheMostRecordResponse = Array<{
+  name: string
+  incomes_quantity: number
+  expenses_quantity: number
+}>
+
+let token: string
+let user: User
+
 describe('Get metrics (e2e)', () => {
   beforeAll(async () => {
     await app.ready()
-  })
 
-  afterAll(async () => {
-    await app.close()
-  })
+    const registeredUser = await registerAndAuthenticateUser(app)
 
-  beforeEach(() => {
+    token = registeredUser.token
+    user = registeredUser.user
+
     vi.useFakeTimers()
-  })
-
-  afterEach(() => {
-    vi.useRealTimers()
-  })
-
-  it('should be able to get metrics', async () => {
     vi.setSystemTime(new Date(2000, 1, 1, 1, 13, 40))
 
-    const { token, user } = await registerAndAuthenticateUser(app)
+    const { categoriesCreated } = await generateCategories({
+      userId: user.id,
+      amount: 12,
+    })
 
     await Promise.all([
       await generateIncomes({
         userId: user.id,
         amount: 100,
-        withCategory: true,
+        categoriesInfo: {
+          isExternal: true,
+          categories: categoriesCreated,
+        },
         withIncomeHistories: {
           min: 20,
           max: 20,
@@ -62,7 +62,10 @@ describe('Get metrics (e2e)', () => {
       await generateExpenses({
         userId: user.id,
         amount: 100,
-        withCategory: true,
+        categoriesInfo: {
+          isExternal: true,
+          categories: categoriesCreated,
+        },
         withExpenseHistories: {
           min: 20,
           max: 20,
@@ -74,7 +77,15 @@ describe('Get metrics (e2e)', () => {
         },
       }),
     ])
+  })
 
+  afterAll(async () => {
+    vi.useRealTimers()
+
+    await app.close()
+  })
+
+  it('should be able to get monthly financial summary', async () => {
     const response = await request(app.server)
       .get('/metrics')
       .set('Authorization', `Bearer ${token}`)
@@ -105,6 +116,30 @@ describe('Get metrics (e2e)', () => {
           date: expect.any(String),
           incomes_total: expect.any(Number),
           expenses_total: expect.any(Number),
+        }),
+      ]),
+    )
+  })
+
+  it('should be able to get categories with most records', async () => {
+    const response = await request(app.server)
+      .get('/metrics')
+      .set('Authorization', `Bearer ${token}`)
+      .send()
+
+    const categoriesWithMostRecords: CategoriesWithTheMostRecordResponse =
+      response.body.categories_with_most_records
+
+    expect(response.statusCode).toEqual(200)
+
+    expect(categoriesWithMostRecords.length).toBeGreaterThanOrEqual(1)
+
+    expect(categoriesWithMostRecords).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: expect.any(String),
+          incomes_quantity: expect.any(Number),
+          expenses_quantity: expect.any(Number),
         }),
       ]),
     )

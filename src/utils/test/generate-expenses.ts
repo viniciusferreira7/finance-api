@@ -10,7 +10,11 @@ import { generateCategories } from './generate-categories'
 interface GenerateExpenses {
   userId: string
   amount: number
-  withCategory: boolean
+  categoriesInfo?: {
+    isExternal?: boolean
+    categories?: Category[]
+    amount?: number
+  }
   withExpenseHistories: {
     amount?: number
     min?: number
@@ -26,7 +30,7 @@ interface GenerateExpenses {
 export async function generateExpenses({
   userId,
   amount,
-  withCategory,
+  categoriesInfo,
   withExpenseHistories,
   dateRage,
 }: GenerateExpenses) {
@@ -34,13 +38,15 @@ export async function generateExpenses({
   const expenseHistories: ExpenseHistory[] = []
   const categories: Category[] = []
 
-  if (withCategory) {
+  if (!categoriesInfo?.isExternal) {
     const { categoriesCreated } = await generateCategories({
       userId,
-      amount: Math.round(amount / 2),
+      amount: categoriesInfo?.amount ?? 0,
     })
 
     categories.push(...categoriesCreated)
+  } else if (categoriesInfo.categories) {
+    categories.push(...categoriesInfo.categories)
   }
 
   for (let i = 0; i <= (amount === 1 ? 1 : amount - 1); i++) {
