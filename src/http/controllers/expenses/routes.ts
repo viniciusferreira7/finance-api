@@ -49,7 +49,7 @@ export async function expensesRoutes(app: FastifyInstance) {
               },
             },
           },
-         401: {
+          401: {
             description: 'Invalid credentials.',
             type: 'object',
             properties: {
@@ -168,7 +168,7 @@ export async function expensesRoutes(app: FastifyInstance) {
               },
             },
           },
-         401: {
+          401: {
             description: 'Invalid credentials.',
             type: 'object',
             properties: {
@@ -281,7 +281,7 @@ export async function expensesRoutes(app: FastifyInstance) {
               },
             },
           },
-         401: {
+          401: {
             description: 'Invalid credentials.',
             type: 'object',
             properties: {
@@ -348,7 +348,7 @@ export async function expensesRoutes(app: FastifyInstance) {
               },
             },
           },
-         401: {
+          401: {
             description: 'Invalid credentials.',
             type: 'object',
             properties: {
@@ -397,7 +397,7 @@ export async function expensesRoutes(app: FastifyInstance) {
               },
             },
           },
-         401: {
+          401: {
             description: 'Invalid credentials.',
             type: 'object',
             properties: {
@@ -445,7 +445,7 @@ export async function expensesRoutes(app: FastifyInstance) {
               },
             },
           },
-         401: {
+          401: {
             description: 'Invalid credentials.',
             type: 'object',
             properties: {
@@ -495,7 +495,7 @@ export async function expensesRoutes(app: FastifyInstance) {
               },
             },
           },
-         401: {
+          401: {
             description: 'Invalid credentials.',
             type: 'object',
             properties: {
