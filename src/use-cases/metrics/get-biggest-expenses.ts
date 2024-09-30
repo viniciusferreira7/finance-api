@@ -29,9 +29,9 @@ export class GetBiggestExpensesUseCase {
       throw new ResourceNotFound()
     }
 
-    const formattedEndDate = dayjs(endDate).isValid()
+    const formattedEndDate = endDate
       ? dayjs(endDate).format('YYYY-MM')
-      : dayjs().format('YYYY-MM')
+      : undefined
 
     const metrics = await this.metricsRepository.findBiggestExpenses({
       userId,

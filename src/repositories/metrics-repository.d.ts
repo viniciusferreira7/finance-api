@@ -27,7 +27,10 @@ type GetMonthlyFinancialSummaryResponse = Array<{
 }>
 
 export interface MetricsRepository {
-  findBiggestExpenses({ userId, endDate }): Promise<Expense[]>
+  findBiggestExpenses({
+    userId,
+    endDate,
+  }: FindBiggestExpenses): Promise<Expense[]>
   findCategoriesWithTheMostRecord({
     userId,
   }: FindCategoriesWithTheMostRecord): Promise<FindCategoriesWithTheMostRecordResponse>

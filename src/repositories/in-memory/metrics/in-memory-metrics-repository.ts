@@ -52,11 +52,15 @@ export class InMemoryMetricsRepository implements MetricsRepository {
     )
 
     const expensesByEndDate = expensesByUser.filter((expense) => {
-      const formattedEndDate = dayjs(endDate).startOf('month').toDate()
+      if (endDate) {
+        const formattedEndDate = dayjs(endDate).startOf('month').toDate()
 
-      const isSameDate = dayjs(expense.created_at).isSame(formattedEndDate)
+        const isSameDate = dayjs(expense.created_at).isSame(formattedEndDate)
 
-      return isSameDate
+        return isSameDate
+      }
+
+      return true
     })
 
     const biggestExpenses = expensesByEndDate.sort((a, b) => {
