@@ -10,6 +10,11 @@ import type {
 
 dayjs.extend(isBetween)
 
+interface FindBiggestExpenses {
+  userId: string
+  endDate?: string
+}
+
 interface CategoriesWithTheMostRecord {
   name: string
   incomes_quantity: number
@@ -37,6 +42,29 @@ export class InMemoryMetricsRepository implements MetricsRepository {
   public categories: Category[] = []
   public incomes: Income[] = []
   public expenses: Expense[] = []
+
+  async findBiggestExpenses({
+    userId,
+    endDate,
+  }: FindBiggestExpenses): Promise<Expense[]> {
+    const expensesByUser = this.expenses.filter(
+      (expense) => expense.user_id === userId,
+    )
+
+    const expensesByEndDate = expensesByUser.filter((expense) => {
+      const formattedEndDate = dayjs(endDate).startOf('month').toDate()
+
+      const isSameDate = dayjs(expense.created_at).isSame(formattedEndDate)
+
+      return isSameDate
+    })
+
+    const biggestExpenses = expensesByEndDate.sort((a, b) => {
+      return Number(b.value) - Number(a.value)
+    })
+
+    return biggestExpenses
+  }
 
   async findCategoriesWithTheMostRecord({
     userId,
