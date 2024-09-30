@@ -1,3 +1,10 @@
+import type { Expense } from '@prisma/client'
+
+interface FindBiggestExpenses {
+  userId: string
+  endDate?: string
+}
+
 interface FindCategoriesWithTheMostRecord {
   userId: string
 }
@@ -20,6 +27,7 @@ type GetMonthlyFinancialSummaryResponse = Array<{
 }>
 
 export interface MetricsRepository {
+  findBiggestExpenses({ userId, endDate }): Promise<Expense[]>
   findCategoriesWithTheMostRecord({
     userId,
   }: FindCategoriesWithTheMostRecord): Promise<FindCategoriesWithTheMostRecordResponse>

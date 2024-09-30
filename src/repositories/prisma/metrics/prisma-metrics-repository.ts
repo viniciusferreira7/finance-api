@@ -1,9 +1,17 @@
+import type { Expense } from '@prisma/client'
+import dayjs from 'dayjs'
+
 import { prisma } from '@/lib/prisma'
 import type {
   FindCategoriesWithTheMostRecord,
   FindCategoriesWithTheMostRecordResponse,
   MetricsRepository,
 } from '@/repositories/metrics-repository'
+
+interface FindBiggestExpenses {
+  userId: string
+  endDate?: string
+}
 
 interface GetMonthlyFinancialSummary {
   userId: string
@@ -17,6 +25,27 @@ type GetMonthlyFinancialSummaryResponse = Array<{
 }>
 
 export class PrismaMetricsRepository implements MetricsRepository {
+  async findBiggestExpenses({
+    userId,
+    endDate,
+  }: FindBiggestExpenses): Promise<Expense[]> {
+    const expenses = await prisma.expense.findMany({
+      where: {
+        user_id: userId,
+        created_at: {
+          equals: dayjs(endDate).startOf('month').toDate(),
+        },
+      },
+      take: 20,
+    })
+
+    const biggestExpenses = expenses.sort((a, b) => {
+      return Number(b.value) - Number(a.value)
+    })
+
+    return biggestExpenses
+  }
+
   async findCategoriesWithTheMostRecord({
     userId,
   }: FindCategoriesWithTheMostRecord): Promise<FindCategoriesWithTheMostRecordResponse> {
