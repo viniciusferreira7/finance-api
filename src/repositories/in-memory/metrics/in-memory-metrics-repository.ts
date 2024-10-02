@@ -16,7 +16,7 @@ interface GenericParams {
 
 type GetTheBalanceOverTimeResponse = Array<{
   date: string
-  balance: string
+  balance: number
 }>
 
 interface CategoriesWithTheMostRecord {
@@ -100,10 +100,20 @@ export class InMemoryMetricsRepository implements MetricsRepository {
 
       if (sameDateIndex !== -1) {
         if (item.type === 'income') {
-          acc[sameDateIndex].balance += item.total
+          acc[sameDateIndex].balance = Number(
+            Number(acc[sameDateIndex].balance) + item.total,
+          )
         } else {
-          acc[sameDateIndex].balance += -item.total
+          acc[sameDateIndex].balance = Number(
+            Number(acc[sameDateIndex].balance) - item.total,
+          )
         }
+      } else {
+        acc.push({
+          date: item.date,
+          balance:
+            item.type === 'income' ? Number(item.total) : Number(-item.total),
+        })
       }
 
       return acc

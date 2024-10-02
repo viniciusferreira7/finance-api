@@ -7,7 +7,7 @@ interface GenericParams {
 
 type GetTheBalanceOverTimeResponse = Array<{
   date: string
-  balance: string
+  balance: number
 }>
 
 type FindCategoriesWithTheMostRecordResponse = Array<{

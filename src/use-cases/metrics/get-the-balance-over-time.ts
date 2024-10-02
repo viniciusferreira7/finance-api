@@ -12,7 +12,7 @@ interface GetTheBalanceOverTimeUseCaseRequest {
 
 type GetTheBalanceOverTimeUseCaseResponse = Array<{
   date: string
-  balance: string
+  balance: number
 }>
 
 export class GetTheBalanceOverTimeUseCase {

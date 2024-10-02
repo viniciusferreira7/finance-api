@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker'
 import { hash } from 'bcryptjs'
 import { randomUUID } from 'crypto'
 import dayjs from 'dayjs'
@@ -5,22 +6,20 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { InMemoryMetricsRepository } from '@/repositories/in-memory/metrics/in-memory-metrics-repository'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/users/in-memory-users-repository'
+import { convertToCents } from '@/utils/convert-to-cents'
 
 import { ResourceNotFound } from '../error/resource-not-found-error'
-import { GetMonthlyFinancialSummaryUseCase } from './get-monthly-financial-summary'
+import { GetTheBalanceOverTimeUseCase } from './get-the-balance-over-time'
 
 let usersRepository: InMemoryUsersRepository
 let metricsRepository: InMemoryMetricsRepository
-let sut: GetMonthlyFinancialSummaryUseCase
+let sut: GetTheBalanceOverTimeUseCase
 
-describe('Get Monthly financial summary', () => {
+describe('Get The Balance Over Time', () => {
   beforeEach(() => {
     usersRepository = new InMemoryUsersRepository()
     metricsRepository = new InMemoryMetricsRepository()
-    sut = new GetMonthlyFinancialSummaryUseCase(
-      usersRepository,
-      metricsRepository,
-    )
+    sut = new GetTheBalanceOverTimeUseCase(usersRepository, metricsRepository)
     vi.useFakeTimers()
   })
 
@@ -28,7 +27,7 @@ describe('Get Monthly financial summary', () => {
     vi.useRealTimers()
   })
 
-  it('should able to get monthly financial summary', async () => {
+  it('should able to get the balance over time', async () => {
     const user = await usersRepository.create({
       name: 'John',
       email: 'john@example.com',
@@ -39,7 +38,9 @@ describe('Get Monthly financial summary', () => {
       metricsRepository.incomes.push({
         id: randomUUID(),
         name: 'job',
-        value: (1000 + i * 10).toString(),
+        value: convertToCents(
+          Number(faker.finance.amount({ min: 100, max: 1_000 })),
+        ),
         description: 'Salary',
         category_id: `category-${i}`,
         user_id: user.id,
@@ -53,7 +54,9 @@ describe('Get Monthly financial summary', () => {
       metricsRepository.expenses.push({
         id: randomUUID(),
         name: 'video game',
-        value: (100 + i * 10).toString(),
+        value: convertToCents(
+          Number(faker.finance.amount({ min: 100, max: 900 })),
+        ),
         description: 'Course',
         category_id: `category-${i}`,
         user_id: user.id,
@@ -66,23 +69,22 @@ describe('Get Monthly financial summary', () => {
       })
     }
 
-    const summary = await sut.execute({
+    const balanceOverTime = await sut.execute({
       userId: user.id,
     })
 
-    expect(summary.length).toBeLessThanOrEqual(12)
-    expect(summary).toEqual(
+    expect(balanceOverTime.length).toBeLessThanOrEqual(12)
+    expect(balanceOverTime).toEqual(
       expect.objectContaining([
         {
           date: expect.any(String),
-          incomes_total: expect.any(Number),
-          expenses_total: expect.any(Number),
+          balance: expect.any(Number),
         },
       ]),
     )
   })
 
-  it('should able to get monthly financial summary filtering by date', async () => {
+  it('should able to get monthly financial balance over time filtering by date', async () => {
     vi.setSystemTime(new Date(2000, 1, 1, 1, 13, 40))
 
     const user = await usersRepository.create({
@@ -124,13 +126,13 @@ describe('Get Monthly financial summary', () => {
 
     const endDate = dayjs('1999-01')
 
-    const summary = await sut.execute({
+    const balanceOverTime = await sut.execute({
       userId: user.id,
       endDate: endDate.format('YYYY-MM'),
     })
 
     expect(
-      summary.every((item, index) => {
+      balanceOverTime.every((item, index) => {
         const expectedMonth = endDate
           .add(1, 'month')
           .subtract(1 + index, 'months')
@@ -141,7 +143,7 @@ describe('Get Monthly financial summary', () => {
     ).toEqual(true)
   })
 
-  it('should able to get monthly financial summary without user id', async () => {
+  it('should able to get monthly financial balance over time without user id', async () => {
     await expect(() =>
       sut.execute({
         userId: 'non-exiting-id',
