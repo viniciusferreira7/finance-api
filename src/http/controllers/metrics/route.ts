@@ -90,7 +90,7 @@ export async function metricsRoute(app: FastifyInstance) {
                   ],
                 },
               },
-              balance_over_time: {
+              monthly_balance_over_time: {
                 type: 'array',
                 items: {
                   type: 'object',

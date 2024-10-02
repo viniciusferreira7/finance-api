@@ -5,7 +5,7 @@ interface GenericParams {
   endDate?: string
 }
 
-type GetTheBalanceOverTimeResponse = Array<{
+type GetMonthlyBalanceOverTimeResponse = Array<{
   date: string
   balance: number
 }>
@@ -23,10 +23,10 @@ type GetMonthlyFinancialSummaryResponse = Array<{
 }>
 
 export interface MetricsRepository {
-  getTheBalanceOverTime({
+  getMonthlyBalanceOverTime({
     userId,
     endDate,
-  }: GenericParams): Promise<GetTheBalanceOverTimeResponse>
+  }: GenericParams): Promise<GetMonthlyBalanceOverTimeResponse>
   findBiggestExpenses({ userId, endDate }: GenericParams): Promise<Expense[]>
   findCategoriesWithTheMostRecord({
     userId,

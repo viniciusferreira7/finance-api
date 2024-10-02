@@ -14,7 +14,7 @@ interface GenericParams {
   endDate?: string
 }
 
-type GetTheBalanceOverTimeResponse = Array<{
+type GetMonthlyBalanceOverTimeResponse = Array<{
   date: string
   balance: number
 }>
@@ -42,10 +42,10 @@ export class InMemoryMetricsRepository implements MetricsRepository {
   public incomes: Income[] = []
   public expenses: Expense[] = []
 
-  async getTheBalanceOverTime({
+  async getMonthlyBalanceOverTime({
     userId,
     endDate,
-  }: GenericParams): Promise<GetTheBalanceOverTimeResponse> {
+  }: GenericParams): Promise<GetMonthlyBalanceOverTimeResponse> {
     const twelveMonthsBefore = dayjs(endDate).subtract(12, 'months')
 
     const incomesFiltered = this.incomes.filter((item) => {
@@ -95,7 +95,7 @@ export class InMemoryMetricsRepository implements MetricsRepository {
     const balanceOverTime = [
       ...incomesByMonth,
       ...expenseByMonth,
-    ].reduce<GetTheBalanceOverTimeResponse>((acc, item) => {
+    ].reduce<GetMonthlyBalanceOverTimeResponse>((acc, item) => {
       const sameDateIndex = acc.findIndex((entry) => entry.date === item.date)
 
       if (sameDateIndex !== -1) {

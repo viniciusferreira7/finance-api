@@ -1,11 +1,11 @@
 import { PrismaMetricsRepository } from '@/repositories/prisma/metrics/prisma-metrics-repository'
 import { PrismaUsersRepository } from '@/repositories/prisma/users/prisma-users-repository'
-import { GetTheBalanceOverTimeUseCase } from '@/use-cases/metrics/get-the-balance-over-time'
+import { GetMonthlyBalanceOverTimeUseCase } from '@/use-cases/metrics/get-monthly-balance-over-time'
 
-export function makeGetTheBalanceOverTimeUseCase() {
+export function makeGetMonthlyBalanceOverTimeUseCase() {
   const usersRepository = new PrismaUsersRepository()
   const metricsRepository = new PrismaMetricsRepository()
-  const useCase = new GetTheBalanceOverTimeUseCase(
+  const useCase = new GetMonthlyBalanceOverTimeUseCase(
     usersRepository,
     metricsRepository,
   )

@@ -9,17 +9,20 @@ import { InMemoryUsersRepository } from '@/repositories/in-memory/users/in-memor
 import { convertToCents } from '@/utils/convert-to-cents'
 
 import { ResourceNotFound } from '../error/resource-not-found-error'
-import { GetTheBalanceOverTimeUseCase } from './get-the-balance-over-time'
+import { GetMonthlyBalanceOverTimeUseCase } from './get-monthly-balance-over-time'
 
 let usersRepository: InMemoryUsersRepository
 let metricsRepository: InMemoryMetricsRepository
-let sut: GetTheBalanceOverTimeUseCase
+let sut: GetMonthlyBalanceOverTimeUseCase
 
-describe('Get The Balance Over Time', () => {
+describe('Get Monthly Balance Over Time', () => {
   beforeEach(() => {
     usersRepository = new InMemoryUsersRepository()
     metricsRepository = new InMemoryMetricsRepository()
-    sut = new GetTheBalanceOverTimeUseCase(usersRepository, metricsRepository)
+    sut = new GetMonthlyBalanceOverTimeUseCase(
+      usersRepository,
+      metricsRepository,
+    )
     vi.useFakeTimers()
   })
 
@@ -27,7 +30,7 @@ describe('Get The Balance Over Time', () => {
     vi.useRealTimers()
   })
 
-  it('should able to get the balance over time', async () => {
+  it('should able to get monthly balance over time', async () => {
     const user = await usersRepository.create({
       name: 'John',
       email: 'john@example.com',

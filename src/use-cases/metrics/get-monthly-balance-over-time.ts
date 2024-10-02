@@ -5,17 +5,17 @@ import type { UsersRepository } from '@/repositories/users-repository'
 
 import { ResourceNotFound } from '../error/resource-not-found-error'
 
-interface GetTheBalanceOverTimeUseCaseRequest {
+interface GetMonthlyBalanceOverTimeUseCaseRequest {
   userId: string
   endDate?: string
 }
 
-type GetTheBalanceOverTimeUseCaseResponse = Array<{
+type GetMonthlyBalanceOverTimeUseCaseResponse = Array<{
   date: string
   balance: number
 }>
 
-export class GetTheBalanceOverTimeUseCase {
+export class GetMonthlyBalanceOverTimeUseCase {
   constructor(
     private usersRepository: UsersRepository,
     private metricsRepository: MetricsRepository,
@@ -24,7 +24,7 @@ export class GetTheBalanceOverTimeUseCase {
   async execute({
     userId,
     endDate,
-  }: GetTheBalanceOverTimeUseCaseRequest): Promise<GetTheBalanceOverTimeUseCaseResponse> {
+  }: GetMonthlyBalanceOverTimeUseCaseRequest): Promise<GetMonthlyBalanceOverTimeUseCaseResponse> {
     const user = await this.usersRepository.findById(userId)
 
     if (!user) {
@@ -35,7 +35,7 @@ export class GetTheBalanceOverTimeUseCase {
       ? dayjs(endDate).format('YYYY-MM')
       : dayjs().format('YYYY-MM')
 
-    const metrics = await this.metricsRepository.getTheBalanceOverTime({
+    const metrics = await this.metricsRepository.getMonthlyBalanceOverTime({
       userId,
       endDate: formattedEndDate,
     })

@@ -12,7 +12,7 @@ interface GenericParams {
   endDate?: string
 }
 
-type GetTheBalanceOverTimeResponse = Array<{
+type GetMonthlyBalanceOverTimeResponse = Array<{
   date: string
   balance: number
 }>
@@ -24,27 +24,27 @@ type GetMonthlyFinancialSummaryResponse = Array<{
 }>
 
 export class PrismaMetricsRepository implements MetricsRepository {
-  async getTheBalanceOverTime({
+  async getMonthlyBalanceOverTime({
     userId,
     endDate,
-  }: GenericParams): Promise<GetTheBalanceOverTimeResponse> {
-    const metrics = await prisma.$queryRaw<GetTheBalanceOverTimeResponse>`
-    SELECT 
-      TO_CHAR(date_trunc('month', months), 'YYYY-MM') AS date,
-      COALESCE(SUM(i.value::numeric), 0) - COALESCE(SUM(e.value::numeric), 0) AS balance
-    FROM generate_series(
-          date_trunc('month', TO_DATE(${endDate}, 'YYYY-MM')) - INTERVAL '12 months', 
-          date_trunc('month', TO_DATE(${endDate}, 'YYYY-MM')), 
-          '1 month'
-       ) AS months
-    LEFT JOIN incomes i 
-      ON date_trunc('month', i.created_at) = months
-    AND i.user_id = ${userId}
-    LEFT JOIN expenses e 
-      ON date_trunc('month', e.created_at) = months
-    AND e.user_id = ${userId}
-    GROUP BY date
-    ORDER BY date;`
+  }: GenericParams): Promise<GetMonthlyBalanceOverTimeResponse> {
+    const metrics = await prisma.$queryRaw<GetMonthlyBalanceOverTimeResponse>`
+      SELECT 
+        TO_CHAR(date_trunc('month', months), 'YYYY-MM') AS date,
+        COALESCE(SUM(i.value::numeric), 0) - COALESCE(SUM(e.value::numeric), 0) AS balance
+      FROM generate_series(
+            date_trunc('month', TO_DATE(${endDate}, 'YYYY-MM')) - INTERVAL '12 months', 
+            date_trunc('month', TO_DATE(${endDate}, 'YYYY-MM')), 
+            '1 month'
+         ) AS months
+      LEFT JOIN incomes i 
+        ON date_trunc('month', i.created_at) = months
+      AND i.user_id = ${userId}
+      LEFT JOIN expenses e 
+        ON date_trunc('month', e.created_at) = months
+      AND e.user_id = ${userId}
+      GROUP BY date
+      ORDER BY date;`
 
     return metrics
   }
@@ -117,10 +117,11 @@ export class PrismaMetricsRepository implements MetricsRepository {
     endDate,
   }: GenericParams): Promise<GetMonthlyFinancialSummaryResponse> {
     const metrics = await prisma.$queryRaw<GetMonthlyFinancialSummaryResponse>`
-    SELECT 
+   SELECT 
       TO_CHAR(date_trunc('month', months), 'YYYY-MM') AS date,
       COALESCE(SUM(i.value::numeric), 0) AS incomes_total,
-      COALESCE(SUM(e.value::numeric), 0) AS expenses_total
+      COALESCE(SUM(e.value::numeric), 0) AS expenses_total,
+      COALESCE(SUM(i.value::numeric), 0) - COALESCE(SUM(e.value::numeric), 0) AS balance
     FROM generate_series(
           date_trunc('month', TO_DATE(${endDate}, 'YYYY-MM')) - INTERVAL '12 months', 
           date_trunc('month', TO_DATE(${endDate}, 'YYYY-MM')), 
