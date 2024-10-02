@@ -90,6 +90,25 @@ export async function metricsRoute(app: FastifyInstance) {
                   ],
                 },
               },
+              balance_over_time: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    date: {
+                      type: 'string',
+                      description: 'The date in the format YYYY-MM',
+                      example: '1999-01',
+                    },
+                    balance: {
+                      type: 'number',
+                      description: 'The balance of each month',
+                      example: 5000,
+                    },
+                  },
+                  required: ['date', 'balance'],
+                },
+              },
             },
           },
           404: {

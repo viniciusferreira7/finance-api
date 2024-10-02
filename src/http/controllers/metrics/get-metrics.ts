@@ -7,6 +7,7 @@ import { ResourceNotFound } from '@/use-cases/error/resource-not-found-error'
 import { makeGetBiggestExpensesUseCase } from '@/use-cases/factories/metrics/make-get-biggest-expenses'
 import { makeGetCategoriesWithTheMostRecordUseCase } from '@/use-cases/factories/metrics/make-get-categories-with-the-most-record'
 import { makeGetMonthlyFinancialSummary } from '@/use-cases/factories/metrics/make-get-monthly-financial-summary'
+import { makeGetTheBalanceOverTimeUseCase } from '@/use-cases/factories/metrics/make-get-the-balance-over-time'
 
 const getMetricsSearchParamsSchema = z.object({
   end_date: z
@@ -28,11 +29,13 @@ export async function getMetrics(request: FastifyRequest, reply: FastifyReply) {
       makeGetCategoriesWithTheMostRecordUseCase()
 
     const getBiggestExpenses = makeGetBiggestExpensesUseCase()
+    const getTheBalanceOVerTime = makeGetTheBalanceOverTimeUseCase()
 
     const [
       monthlyFinancialSummary,
       categoriesWithMostRecords,
       biggestExpenses,
+      balanceOverTime,
     ] = await Promise.all([
       getMonthlyFinancialSummaryUseCase.execute({
         userId: request.user.sub,
@@ -45,12 +48,17 @@ export async function getMetrics(request: FastifyRequest, reply: FastifyReply) {
         userId: request.user.sub,
         endDate: searchParams.end_date,
       }),
+      getTheBalanceOVerTime.execute({
+        userId: request.user.sub,
+        endDate: searchParams.end_date,
+      }),
     ])
 
     return reply.status(200).send({
       monthly_financial_summary: monthlyFinancialSummary,
       categories_with_most_records: categoriesWithMostRecords,
       biggest_expenses: biggestExpenses,
+      balance_over_time: balanceOverTime,
     })
   } catch (err) {
     if (err instanceof ResourceNotFound) {
