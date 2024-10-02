@@ -3,27 +3,26 @@ import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 
 import type {
-  FindCategoriesWithTheMostRecord,
   FindCategoriesWithTheMostRecordResponse,
   MetricsRepository,
 } from '@/repositories/metrics-repository'
 
 dayjs.extend(isBetween)
 
-interface FindBiggestExpenses {
+interface GenericParams {
   userId: string
   endDate?: string
 }
+
+type GetTheBalanceOverTimeResponse = Array<{
+  date: string
+  balance: string
+}>
 
 interface CategoriesWithTheMostRecord {
   name: string
   incomes_quantity: number
   expenses_quantity: number
-}
-
-interface GetMonthlyFinancialSummary {
-  userId: string
-  endDate?: string
 }
 
 interface GetMonthlyFinancialSummaryResponse {
@@ -43,10 +42,80 @@ export class InMemoryMetricsRepository implements MetricsRepository {
   public incomes: Income[] = []
   public expenses: Expense[] = []
 
+  async getTheBalanceOverTime({
+    userId,
+    endDate,
+  }: GenericParams): Promise<GetTheBalanceOverTimeResponse> {
+    const twelveMonthsBefore = dayjs(endDate).subtract(12, 'months')
+
+    const incomesFiltered = this.incomes.filter((item) => {
+      const fromTheUser = item.user_id === userId
+      const createdAt = dayjs(item.created_at)
+
+      return (
+        fromTheUser &&
+        createdAt.isBetween(
+          twelveMonthsBefore,
+          dayjs(endDate).add(1, 'month'),
+          'month',
+        )
+      )
+    })
+
+    const expensesFiltered = this.expenses.filter((item) => {
+      const fromTheUser = item.user_id === userId
+      const createdAt = dayjs(item.created_at)
+
+      return (
+        fromTheUser &&
+        createdAt.isBetween(
+          twelveMonthsBefore,
+          dayjs(endDate).add(1, 'month'),
+          'month',
+        )
+      )
+    })
+
+    const incomesByMonth = incomesFiltered.map<SummaryByMonth>((item) => {
+      return {
+        type: 'income',
+        date: dayjs(item.created_at).format('YYYY-MM'),
+        total: Number(item.value),
+      }
+    })
+
+    const expenseByMonth = expensesFiltered.map<SummaryByMonth>((item) => {
+      return {
+        type: 'expense',
+        date: dayjs(item.created_at).format('YYYY-MM'),
+        total: Number(item.value),
+      }
+    })
+
+    const balanceOverTime = [
+      ...incomesByMonth,
+      ...expenseByMonth,
+    ].reduce<GetTheBalanceOverTimeResponse>((acc, item) => {
+      const sameDateIndex = acc.findIndex((entry) => entry.date === item.date)
+
+      if (sameDateIndex !== -1) {
+        if (item.type === 'income') {
+          acc[sameDateIndex].balance += item.total
+        } else {
+          acc[sameDateIndex].balance += -item.total
+        }
+      }
+
+      return acc
+    }, [])
+
+    return balanceOverTime
+  }
+
   async findBiggestExpenses({
     userId,
     endDate,
-  }: FindBiggestExpenses): Promise<Expense[]> {
+  }: GenericParams): Promise<Expense[]> {
     const expensesByUser = this.expenses.filter(
       (expense) => expense.user_id === userId,
     )
@@ -72,7 +141,10 @@ export class InMemoryMetricsRepository implements MetricsRepository {
 
   async findCategoriesWithTheMostRecord({
     userId,
-  }: FindCategoriesWithTheMostRecord): Promise<FindCategoriesWithTheMostRecordResponse> {
+  }: Omit<
+    GenericParams,
+    'endDate'
+  >): Promise<FindCategoriesWithTheMostRecordResponse> {
     const categoriesByUserId = this.categories.filter(
       (item) => item.user_id === userId,
     )
@@ -132,9 +204,7 @@ export class InMemoryMetricsRepository implements MetricsRepository {
   async getMonthlyFinancialSummary({
     userId,
     endDate,
-  }: GetMonthlyFinancialSummary): Promise<
-    GetMonthlyFinancialSummaryResponse[]
-  > {
+  }: GenericParams): Promise<GetMonthlyFinancialSummaryResponse[]> {
     const twelveMonthsBefore = dayjs(endDate).subtract(12, 'months')
 
     const incomesFiltered = this.incomes.filter((item) => {
