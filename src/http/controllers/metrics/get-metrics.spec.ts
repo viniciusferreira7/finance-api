@@ -1,4 +1,4 @@
-import type { User } from '@prisma/client'
+import type { Expense, User } from '@prisma/client'
 import dayjs from 'dayjs'
 import request from 'supertest'
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
@@ -140,6 +140,33 @@ describe('Get metrics (e2e)', () => {
           name: expect.any(String),
           incomes_quantity: expect.any(Number),
           expenses_quantity: expect.any(Number),
+        }),
+      ]),
+    )
+  })
+
+  it('should be able to get biggest expenses', async () => {
+    const response = await request(app.server)
+      .get('/metrics')
+      .set('Authorization', `Bearer ${token}`)
+      .send()
+
+    const biggestExpenses: Expense[] = response.body.biggest_expenses
+
+    expect(response.statusCode).toEqual(200)
+
+    expect(biggestExpenses.length).toBeLessThanOrEqual(10)
+
+    expect(biggestExpenses).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: expect.any(String),
+          name: expect.any(String),
+          description: expect.any(String),
+          value: expect.any(String),
+          category_id: expect.any(String),
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
         }),
       ]),
     )

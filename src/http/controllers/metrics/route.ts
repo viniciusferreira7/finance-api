@@ -67,6 +67,29 @@ export async function metricsRoute(app: FastifyInstance) {
                   required: ['name', 'incomes_quantity', 'expenses_quantity'],
                 },
               },
+              biggest_expenses: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    id: { type: 'string' },
+                    name: { type: 'string' },
+                    value: { type: 'string' },
+                    description: { type: 'string' },
+                    created_at: { type: 'string' },
+                    updated_at: { type: 'string' },
+                    user_id: { type: 'string' },
+                    category_id: { type: 'string' },
+                  },
+                  required: [
+                    'id',
+                    'name',
+                    'created_at',
+                    'updated_at',
+                    'user_id',
+                  ],
+                },
+              },
             },
           },
           404: {

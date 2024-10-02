@@ -115,17 +115,14 @@ describe('Get Biggest Expenses', () => {
 
     const endDate = dayjs('1999-01')
 
-    const summary = await sut.execute({
+    const biggestExpenses = await sut.execute({
       userId: user.id,
       endDate: endDate.format('YYYY-MM'),
     })
 
     expect(
-      summary.every((item, index) => {
-        const expectedMonth = endDate
-          .add(1, 'month')
-          .subtract(1 + index, 'months')
-          .format('YYYY-MM')
+      biggestExpenses.every((item) => {
+        const expectedMonth = endDate.format('YYYY-MM')
 
         const createdAt = dayjs(item.created_at).format('YYYY-MM')
 

@@ -33,8 +33,13 @@ export class PrismaMetricsRepository implements MetricsRepository {
       where: {
         user_id: userId,
         created_at: {
-          equals: dayjs(endDate).startOf('month').toDate(),
+          equals: endDate
+            ? dayjs(endDate).startOf('month').toDate()
+            : undefined,
         },
+      },
+      orderBy: {
+        value: 'desc',
       },
       take: 20,
     })
