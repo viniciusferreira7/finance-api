@@ -1,24 +1,20 @@
 import type { Expense } from '@prisma/client'
 
-interface FindBiggestExpenses {
+interface GenericParams {
   userId: string
   endDate?: string
 }
 
-interface FindCategoriesWithTheMostRecord {
-  userId: string
-}
+type GetTheBalanceOverTimeResponse = Array<{
+  date: string
+  balance: string
+}>
 
 type FindCategoriesWithTheMostRecordResponse = Array<{
   name: string
   incomes_quantity: number
   expenses_quantity: number
 }>
-
-interface GetMonthlyFinancialSummary {
-  userId: string
-  endDate?: string
-}
 
 type GetMonthlyFinancialSummaryResponse = Array<{
   date: string
@@ -27,15 +23,19 @@ type GetMonthlyFinancialSummaryResponse = Array<{
 }>
 
 export interface MetricsRepository {
-  findBiggestExpenses({
+  getTheBalanceOverTime({
     userId,
     endDate,
-  }: FindBiggestExpenses): Promise<Expense[]>
+  }: GenericParams): Promise<GetTheBalanceOverTimeResponse>
+  findBiggestExpenses({ userId, endDate }: GenericParams): Promise<Expense[]>
   findCategoriesWithTheMostRecord({
     userId,
-  }: FindCategoriesWithTheMostRecord): Promise<FindCategoriesWithTheMostRecordResponse>
+  }: Omit<
+    GenericParams,
+    'endDate'
+  >): Promise<FindCategoriesWithTheMostRecordResponse>
   getMonthlyFinancialSummary({
     userId,
     endDate,
-  }: GetMonthlyFinancialSummary): Promise<GetMonthlyFinancialSummaryResponse>
+  }: GenericParams): Promise<GetMonthlyFinancialSummaryResponse>
 }
