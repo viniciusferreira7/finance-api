@@ -177,7 +177,7 @@ describe('Get metrics (e2e)', () => {
     )
   })
 
-  it.only('should be able to get monthly balance over time', async () => {
+  it('should be able to get monthly balance over time', async () => {
     const response = await request(app.server)
       .get('/metrics')
       .set('Authorization', `Bearer ${token}`)
