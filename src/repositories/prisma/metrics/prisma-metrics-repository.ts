@@ -3,20 +3,19 @@ import dayjs from 'dayjs'
 
 import { prisma } from '@/lib/prisma'
 import type {
-  FindCategoriesWithTheMostRecord,
   FindCategoriesWithTheMostRecordResponse,
   MetricsRepository,
 } from '@/repositories/metrics-repository'
 
-interface FindBiggestExpenses {
+interface GenericParams {
   userId: string
   endDate?: string
 }
 
-interface GetMonthlyFinancialSummary {
-  userId: string
-  endDate?: string
-}
+type GetTheBalanceOverTimeResponse = Array<{
+  date: string
+  balance: string
+}>
 
 type GetMonthlyFinancialSummaryResponse = Array<{
   date: string
@@ -25,10 +24,35 @@ type GetMonthlyFinancialSummaryResponse = Array<{
 }>
 
 export class PrismaMetricsRepository implements MetricsRepository {
+  async getTheBalanceOverTime({
+    userId,
+    endDate,
+  }: GenericParams): Promise<GetTheBalanceOverTimeResponse> {
+    const metrics = await prisma.$queryRaw<GetTheBalanceOverTimeResponse>`
+    SELECT 
+      TO_CHAR(date_trunc('month', months), 'YYYY-MM') AS date,
+      COALESCE(SUM(i.value::numeric), 0) - COALESCE(SUM(e.value::numeric), 0) AS balance
+    FROM generate_series(
+          date_trunc('month', TO_DATE(${endDate}, 'YYYY-MM')) - INTERVAL '12 months', 
+          date_trunc('month', TO_DATE(${endDate}, 'YYYY-MM')), 
+          '1 month'
+       ) AS months
+    LEFT JOIN incomes i 
+      ON date_trunc('month', i.created_at) = months
+    AND i.user_id = ${userId}
+    LEFT JOIN expenses e 
+      ON date_trunc('month', e.created_at) = months
+    AND e.user_id = ${userId}
+    GROUP BY date
+    ORDER BY date;`
+
+    return metrics
+  }
+
   async findBiggestExpenses({
     userId,
     endDate,
-  }: FindBiggestExpenses): Promise<Expense[]> {
+  }: GenericParams): Promise<Expense[]> {
     const expenses = await prisma.expense.findMany({
       where: {
         user_id: userId,
@@ -53,7 +77,10 @@ export class PrismaMetricsRepository implements MetricsRepository {
 
   async findCategoriesWithTheMostRecord({
     userId,
-  }: FindCategoriesWithTheMostRecord): Promise<FindCategoriesWithTheMostRecordResponse> {
+  }: Omit<
+    GenericParams,
+    'endDate'
+  >): Promise<FindCategoriesWithTheMostRecordResponse> {
     const categories = await prisma.category.findMany({
       select: {
         name: true,
@@ -88,7 +115,7 @@ export class PrismaMetricsRepository implements MetricsRepository {
   async getMonthlyFinancialSummary({
     userId,
     endDate,
-  }: GetMonthlyFinancialSummary): Promise<GetMonthlyFinancialSummaryResponse> {
+  }: GenericParams): Promise<GetMonthlyFinancialSummaryResponse> {
     const metrics = await prisma.$queryRaw<GetMonthlyFinancialSummaryResponse>`
     SELECT 
       TO_CHAR(date_trunc('month', months), 'YYYY-MM') AS date,
