@@ -1,11 +1,18 @@
 import { faker } from '@faker-js/faker'
-import { Expense, ExpenseHistory, Income, IncomeHistory } from '@prisma/client'
+import {
+  Expense,
+  ExpenseHistory,
+  Income,
+  IncomeHistory,
+  PrismaClient,
+} from '@prisma/client'
 import { hash } from 'bcryptjs'
 import chalk from 'chalk'
 import { randomUUID } from 'crypto'
 
-import { prisma } from '@/lib/prisma'
 import { convertToCents } from '@/utils/convert-to-cents'
+
+const prisma = new PrismaClient()
 
 async function seed() {
   const tableNames = await prisma.$queryRaw<
@@ -102,7 +109,7 @@ async function seed() {
   const incomes: Income[] = []
   const incomeHistories: IncomeHistory[] = []
 
-  for (let i = 0; i <= 200; i++) {
+  for (let i = 0; i <= 500; i++) {
     const incomeId = randomUUID()
 
     const description = faker.helpers.arrayElement([
@@ -111,18 +118,20 @@ async function seed() {
       null,
     ])
 
-    const createdAt = faker.date.recent({ days: 120 })
+    const createdAt = faker.date.recent({ days: 365 * 2 })
     const updatedAt = faker.helpers.arrayElement([
       createdAt,
+      faker.date.recent({ days: 250 }),
+      faker.date.recent({ days: 200 }),
       faker.date.recent({ days: 100 }),
-      faker.date.recent({ days: 45 }),
+      faker.date.recent({ days: 50 }),
     ])
 
     const income: Income = {
       id: incomeId,
       name: faker.finance.accountName(),
       value: convertToCents(
-        Number(faker.finance.amount({ min: 10, max: 1_000_000 })),
+        Number(faker.finance.amount({ min: 10, max: 10_000 })),
       ),
       description,
       user_id: newUser.id,
@@ -146,7 +155,7 @@ async function seed() {
         id: randomUUID(),
         name: faker.finance.accountName(),
         value: convertToCents(
-          Number(faker.finance.amount({ min: 10, max: 1_000_000 })),
+          Number(faker.finance.amount({ min: 10, max: 20_000 })),
         ),
         description: updateDescription,
         user_id: newUser.id,
@@ -188,7 +197,7 @@ async function seed() {
   const expenses: Expense[] = []
   const expensesHistories: ExpenseHistory[] = []
 
-  for (let i = 0; i <= 200; i++) {
+  for (let i = 0; i <= 700; i++) {
     const expenseId = randomUUID()
 
     const description = faker.helpers.arrayElement([
@@ -197,11 +206,13 @@ async function seed() {
       null,
     ])
 
-    const createdAt = faker.date.recent({ days: 120 })
+    const createdAt = faker.date.recent({ days: 365 * 2 })
     const updatedAt = faker.helpers.arrayElement([
       createdAt,
+      faker.date.recent({ days: 250 }),
+      faker.date.recent({ days: 200 }),
       faker.date.recent({ days: 100 }),
-      faker.date.recent({ days: 45 }),
+      faker.date.recent({ days: 50 }),
     ])
 
     const expense: Expense = {
