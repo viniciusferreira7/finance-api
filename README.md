@@ -12,7 +12,8 @@
 - [x] Fast performance for calculations and chart rendering.
 - [x] Scalability to handle a large number of users and data.
 - [x] Intuitive and responsive interface, compatible with browsers and mobile devices.
-- [x] Must include E2E testing.
+- [x] Must include E2E and unity testing.
+- [X] Must have run test in github's CI environment 
 - [x] Advanced security (HTTPS, JWT authentication, attack prevention).
 
 ## 💻 Prerequisites
