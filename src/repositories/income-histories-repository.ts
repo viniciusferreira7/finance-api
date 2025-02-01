@@ -1,7 +1,7 @@
 import { IncomeHistory, Prisma } from '@prisma/client'
 
-import { PaginationResponse } from '@/@types/pagination'
-import { SearchParams } from '@/@types/search-params'
+import { PaginationResponse } from '@/interfaces/pagination'
+import { SearchParams } from '@/interfaces/search-params'
 
 export interface IncomeHistoriesRepository {
   findManyByUserId(

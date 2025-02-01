@@ -1,7 +1,7 @@
 import { Category, Prisma } from '@prisma/client'
 import { randomUUID } from 'crypto'
 
-import { CategorySearchParams } from '@/@types/search-params'
+import { CategorySearchParams } from '@/interfaces/search-params'
 import { compareDates } from '@/utils/compare-dates'
 
 import { CategoriesRepository } from '../../categories-repository'

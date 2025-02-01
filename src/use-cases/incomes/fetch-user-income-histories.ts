@@ -1,7 +1,7 @@
 import { IncomeHistory } from '@prisma/client'
 
-import { PaginationResponse } from '@/@types/pagination'
-import { SearchParams } from '@/@types/search-params'
+import { PaginationResponse } from '@/interfaces/pagination'
+import { SearchParams } from '@/interfaces/search-params'
 import { IncomeHistoriesRepository } from '@/repositories/income-histories-repository'
 import { IncomesRepository } from '@/repositories/incomes-repository'
 import { UsersRepository } from '@/repositories/users-repository'

@@ -1,4 +1,4 @@
-import { BalanceRepository } from '@/repositories/balance'
+import { BalanceRepository } from '@/repositories/balance.'
 import { UsersRepository } from '@/repositories/users-repository'
 
 import { ResourceNotFound } from '../error/resource-not-found-error'

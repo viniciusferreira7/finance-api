@@ -1,8 +1,8 @@
 import { ExpenseHistory, Prisma } from '@prisma/client'
 import dayjs from 'dayjs'
 
-import { PaginationResponse } from '@/@types/pagination'
-import { SearchParams } from '@/@types/search-params'
+import { PaginationResponse } from '@/interfaces/pagination'
+import { SearchParams } from '@/interfaces/search-params'
 import { prisma } from '@/lib/prisma'
 
 import { ExpenseHistoriesRepository } from '../../expense-histories-repository'

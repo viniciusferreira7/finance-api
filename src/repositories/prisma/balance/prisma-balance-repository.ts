@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma'
-import { BalanceRepository } from '@/repositories/balance'
+import { BalanceRepository } from '@/repositories/balance.'
 
 interface GetBalance {
   incomes_total: number

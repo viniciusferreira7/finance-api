@@ -2,7 +2,7 @@ import { Income, Prisma } from '@prisma/client'
 import { randomUUID } from 'crypto'
 import dayjs from 'dayjs'
 
-import { SearchParams } from '@/@types/search-params'
+import { SearchParams } from '@/interfaces/search-params'
 
 import { compareDates } from '../../../utils/compare-dates'
 import { IncomesRepository } from '../../incomes-repository'

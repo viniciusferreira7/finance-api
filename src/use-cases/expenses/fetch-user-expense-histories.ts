@@ -1,7 +1,7 @@
 import { Expense } from '@prisma/client'
 
-import { PaginationResponse } from '@/@types/pagination'
-import { SearchParams } from '@/@types/search-params'
+import { PaginationResponse } from '@/interfaces/pagination'
+import { SearchParams } from '@/interfaces/search-params'
 import { ExpenseHistoriesRepository } from '@/repositories/expense-histories-repository'
 import { ExpensesRepository } from '@/repositories/expenses-repository'
 import { UsersRepository } from '@/repositories/users-repository'

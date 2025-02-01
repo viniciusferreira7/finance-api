@@ -1,8 +1,8 @@
 import { Category, Prisma } from '@prisma/client'
 import dayjs from 'dayjs'
 
-import { PaginationResponse } from '@/@types/pagination'
-import { CategorySearchParams } from '@/@types/search-params'
+import { PaginationResponse } from '@/interfaces/pagination'
+import { CategorySearchParams } from '@/interfaces/search-params'
 import { prisma } from '@/lib/prisma'
 
 import { CategoriesRepository } from '../../categories-repository'

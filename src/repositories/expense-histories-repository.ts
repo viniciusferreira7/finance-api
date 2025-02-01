@@ -1,3 +1,8 @@
+import type { ExpenseHistory, Prisma } from '@prisma/client'
+
+import type { PaginationResponse } from '@/interfaces/pagination'
+import type { SearchParams } from '@/interfaces/search-params'
+
 export interface ExpenseHistoriesRepository {
   findManyByUserId(
     userId: string,

@@ -1,7 +1,7 @@
 import { IncomeHistory, Prisma } from '@prisma/client'
 import { randomUUID } from 'crypto'
 
-import { SearchParams } from '@/@types/search-params'
+import { SearchParams } from '@/interfaces/search-params'
 import { compareDates } from '@/utils/compare-dates'
 
 import { IncomeHistoriesRepository } from '../../income-histories-repository'

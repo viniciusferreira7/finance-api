@@ -1,6 +1,6 @@
 import { Expense, Income } from '@prisma/client'
 
-import { BalanceRepository } from '@/repositories/balance'
+import { BalanceRepository } from '@/repositories/balance.'
 
 export class InMemoryBalanceRepository implements BalanceRepository {
   public incomes: Income[] = []

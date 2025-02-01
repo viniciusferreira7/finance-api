@@ -1,7 +1,7 @@
 import { Category, Prisma } from '@prisma/client'
 
-import { PaginationResponse } from '@/@types/pagination'
-import { CategorySearchParams } from '@/@types/search-params'
+import { PaginationResponse } from '@/interfaces/pagination'
+import { CategorySearchParams } from '@/interfaces/search-params'
 
 interface UpdateParams {
   id: string
