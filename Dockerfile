@@ -1,16 +1,16 @@
-FROM node:20-alpine AS builder
+FROM  node:20-alpine3.20 AS builder
 
-# Install dependencies using apk (Alpine's package manager)
-RUN apk update && apk add --no-cache build-base
+# Instalar dependências necessárias (compilação e OpenSSL)
+RUN apk add --no-cache openssl
 
 WORKDIR /app
 
 COPY package*.json ./
 
-# Install project dependencies
+# Instalar dependências do projeto
 RUN npm ci --production
 
-COPY . .
+COPY . . 
 
 FROM builder AS production
 
@@ -18,12 +18,13 @@ WORKDIR /app
 
 COPY --from=builder /app /app
 
-# Clean npm cache
+# Limpar cache do npm
 RUN npm cache clean --force
 
 EXPOSE 3333
 
-# Healthcheck for the container
+# Healthcheck para o container
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s CMD npm run healthcheck-manual
 
-CMD ["sh", "-c", "npm run db:deploy && npm run build"]
+# Rodar migração e build
+CMD ["sh", "-c", "npm run db:deploy && npm run build && npm start"]

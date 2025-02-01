@@ -1,8 +1,7 @@
 services:
   finance-api-postgresql:
     container_name: finance-api-postgresql
-    hostname: postgres_db
-    image: postgres:15
+    image: bitnami/postgresql:17.2.0
     ports:
       - 5432:5432
     restart: always
@@ -34,7 +33,7 @@ services:
       DATABASE_USERNAME: ${DATABASE_USERNAME}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       DATABASE_NAME: ${DATABASE_NAME}
-      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: ${DATABASE_URL_CONTAINER}
     ports:
       - 3333:3333
     depends_on:

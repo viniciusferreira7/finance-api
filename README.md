@@ -118,7 +118,7 @@ Create .env file following .env.example
 ### 3. Run the Containers
 
 ```bash
-docker compose -f compose.yml up --build -d
+npm run start:containers
 ```
 
 This command will:
@@ -143,6 +143,9 @@ This will list the active containers and show their status
 
 #### Scalar
 - **http://localhost:3333/reference**
+
+### Prisma studio
+- **http://localhost:5555**
 
 ### 6. Stop the Containers
 
