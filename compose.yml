@@ -1,14 +1,43 @@
-services: 
-  finance-api:
-    container_name: finance-api
+services:
+  finance-api-postgresql:
+    container_name: finance-api-postgresql
     image: bitnami/postgresql
-    ports: 
+    ports:
       - 5432:5432
-    environment: 
+    environment:
       POSTGRESQL_USERNAME: ${DATABASE_USERNAME}
       POSTGRESQL_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRESQL_DATABASE: ${DATABASE_NAME}
+
+    networks:
+      - finance-api-network
+
     volumes:
       - finance_api_data:/bitnami/postgresql
+
+  finance-api:
+    build:
+      context: .
+    image: finance-api:1.0.3
+    container_name: finance-api
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      JWT_SECRET: ${JWT_SECRET}
+      FINANCE_APP_TOKEN: ${FINANCE_APP_TOKEN}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_URL: ${DATABASE_URL}
+    ports:
+      - 3333:3333
+    depends_on:
+      - finance-api-postgresql
+    networks:
+      - finance-api-network
+
+networks:
+  finance-api-network:
+    driver: bridge
+
 volumes:
   finance_api_data:
