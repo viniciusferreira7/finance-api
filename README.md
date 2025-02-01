@@ -89,6 +89,72 @@ DATABASE_URL=
   npm start:dev
 ```
 
+## Running the Project with Docker
+
+This project can be easily run using **Docker** and **Docker Compose**. Below are the instructions to run the project in a container.
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- [Docker](https://www.docker.com/products/docker-desktop) installed on your machine.
+- [Docker Compose](https://docs.docker.com/compose/) installed (usually included with Docker Desktop).
+
+## Steps to Run the Project
+
+### 1. Clone the Repository
+
+First, clone the project repository to your local machine:
+
+```bash
+git clone https://github.com/username/repository-name.git
+cd repository-name
+```
+
+### 2. Set Up Environment Variables
+
+Create .env file following .env.example
+
+### 3. Run the Containers
+
+```bash
+docker compose -f compose.yml up --build -d
+```
+
+This command will:
+
+- Build the container images.
+- Run PostgreSQL (finance-api-postgresql container).
+- Run the application (finance-api container).
+- Run Prisma migrations if configured.
+
+### 4. Check the Status
+After running the command, you can check if the containers are working properly by running:
+
+```bash
+docker-compose ps
+```
+This will list the active containers and show their status
+
+### 5. Access the Application
+
+#### Swagger
+- **http://localhost:3333/documentation**
+
+#### Scalar
+- **http://localhost:3333/reference**
+
+### 6. Stop the Containers
+
+To stop the running containers, use the following command:
+
+```bash
+docker-compose down
+```
+
+This will stop and remove all the created containers, but will keep the volumes and networks persistent.
+
+
 ## Packages and Versions
 ### Dependencies:
 
