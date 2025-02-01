@@ -9,7 +9,7 @@
 
 ### Technical Requirements:
 
-- [x] Fast performance for calculations and chart rendering.
+- [x] Fast performance for calculations.
 - [x] Scalability to handle a large number of users and data.
 - [x] Intuitive and responsive interface, compatible with browsers and mobile devices.
 - [x] Must include E2E and unity testing.
