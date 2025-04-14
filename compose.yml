@@ -4,7 +4,6 @@ services:
     image: bitnami/postgresql:17.2.0
     ports:
       - 5432:5432
-    restart: always
     environment:
       POSTGRESQL_USERNAME: ${DATABASE_USERNAME}
       POSTGRESQL_PASSWORD: ${DATABASE_PASSWORD}
