@@ -1,5 +1,8 @@
 # Finance API
 
+- **Swagger documentation:** https://finance-api-jr5p.onrender.com/documentation
+- **Scalar documentation:** https://finance-api-jr5p.onrender.com/reference
+
 ## **Main Features:**
 
 - [x] Secure authentication for user registration and login.
